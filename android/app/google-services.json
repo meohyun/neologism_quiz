@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "23963364658",
+    "project_id": "neologism-quiz",
+    "storage_bucket": "neologism-quiz.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:23963364658:android:ac06534782d96cba30fb2b",
+        "android_client_info": {
+          "package_name": "com.example.neologism"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "23963364658-qu7fb9qkp2ahl4nmkpkv94as2kltdc8o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB8bUtggRD9cbFcWt-MHIGJYTGPc21b35U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "23963364658-qu7fb9qkp2ahl4nmkpkv94as2kltdc8o.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "23963364658-sa1ttchhlqr2am7fikse02lrmkkfbhsq.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.neologism"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

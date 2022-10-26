@@ -1,13 +1,23 @@
+import 'package:firebase_core/firebase_core.dart';
 import "package:flutter/material.dart";
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:neologism/dict_neologism.dart';
+import 'package:neologism/firebase_options.dart';
+import 'package:neologism/login/login_func.dart';
 import 'package:neologism/neologismquiz.dart';
 
 bool blackmode = false;
 var blackmodecolor = Colors.black;
 var notblackmodecolor = Colors.deepPurple[100];
 
-void main() => runApp(Neologism());
+void main() async {
+  // 메인메소드 내에서 비동기 방식으로 불러오고 initiallizeapp을 불러온다.
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  runApp(const Neologism());
+}
 
 class Neologism extends StatelessWidget {
   const Neologism({super.key});
@@ -15,8 +25,9 @@ class Neologism extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: "신조어 퀴즈",
-      initialRoute: '/',
+      initialRoute: 'start',
       routes: {
+        'start': (context) => LoginPage(),
         '/': (context) => Startpage(),
         '/neologism': (context) => NeologismQuiz(),
         '/dict': (context) => NeologismDict(),
@@ -59,7 +70,7 @@ class _StartpageState extends State<Startpage> {
           elevation: 0.0,
           toolbarHeight: 100.0,
           centerTitle: true,
-          title: Padding(
+          title: const Padding(
             padding: const EdgeInsets.only(top: 30.0),
             child: Text(
               "Neologism Quiz",
@@ -87,11 +98,11 @@ class _StartpageState extends State<Startpage> {
                     blackmode == true ? blackmodecolor : notblackmodecolor,
                 radius: 80.0,
               ),
-              MainPageButton(
+              const MainPageButton(
                 page: '/neologism',
                 text: "시작하기",
               ),
-              MainPageButton(
+              const MainPageButton(
                 page: '/dict',
                 text: "신조어 사전",
               )
@@ -110,7 +121,7 @@ class MyDrawer extends StatelessWidget {
       elevation: 0.0,
       child: ListView(
         children: [
-          const UserAccountsDrawerHeader(
+          UserAccountsDrawerHeader(
               currentAccountPicture: CircleAvatar(
                 backgroundImage: AssetImage("assets/odong.png"),
                 backgroundColor: Colors.blue,
@@ -139,7 +150,7 @@ class MyDrawer extends StatelessWidget {
 class MainPageButton extends StatelessWidget {
   const MainPageButton({super.key, required this.page, this.text});
 
-  final page;
+  final String page;
   final text;
 
   @override

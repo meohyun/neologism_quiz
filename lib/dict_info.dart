@@ -43,52 +43,61 @@ class _DictInfoState extends State<DictInfo> {
       ),
       body: Column(
         children: [
-          Container(
-            height: MediaQuery.of(context).size.height,
-            color: blackmode == true ? blackmodecolor : notblackmodecolor,
-            child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(15.0),
-                    child: SizedBox(
-                      height: 100,
-                      child: Column(
-                        children: [
-                          Text(
-                            datas[widget.index]["desc_title"],
-                            style: TextStyle(
-                                fontSize: 28.0,
-                                color: blackmode == true
-                                    ? Colors.white
-                                    : blackmodecolor,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          SizedBox(
-                            height: 30,
-                          ),
-                          Text(
-                            datas[widget.index]["desc"],
-                            style: TextStyle(
-                                color: blackmode == true
-                                    ? Colors.white
-                                    : blackmodecolor,
-                                fontSize: 15.0),
-                          ),
-                        ],
+          Expanded(
+            child: Container(
+              height: MediaQuery.of(context).size.height,
+              color: blackmode == true ? blackmodecolor : notblackmodecolor,
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: SizedBox(
+                        height: 150,
+                        child: Column(
+                          children: [
+                            Text(
+                              datas[widget.index]["desc_title"],
+                              style: TextStyle(
+                                  fontSize: 28.0,
+                                  color: blackmode == true
+                                      ? Colors.white
+                                      : blackmodecolor,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            SizedBox(
+                              height: 30,
+                            ),
+                            Text(
+                              datas[widget.index]["desc"],
+                              style: TextStyle(
+                                  color: blackmode == true
+                                      ? Colors.white
+                                      : blackmodecolor,
+                                  fontSize: 20.0),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                  Divider(
-                    height: 0.0,
-                    color: blackmode == true ? Colors.white : blackmodecolor,
-                  ),
-                  Text("예시: " + datas[widget.index]["example"],
-                      style: TextStyle(
-                          color:
-                              blackmode == true ? Colors.white : blackmodecolor,
-                          fontSize: 18.0))
-                ]),
+                    Divider(
+                      height: 0.0,
+                      color: blackmode == true ? Colors.white : blackmodecolor,
+                    ),
+                    SizedBox(
+                      height: 100,
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Text("예시: " + datas[widget.index]["example"],
+                            style: TextStyle(
+                                color: blackmode == true
+                                    ? Colors.white
+                                    : blackmodecolor,
+                                fontSize: 18.0)),
+                      ),
+                    )
+                  ]),
+            ),
           ),
         ],
       ),
