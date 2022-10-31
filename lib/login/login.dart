@@ -1,22 +1,23 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:neologism/login/login_func.dart';
 
-class Login extends StatelessWidget {
-  const Login({super.key});
+class LoginPage extends StatelessWidget {
+  const LoginPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
-      body: Center(
-        child: TextButton(
-            onPressed: () {
-              FirebaseAuth.instance.signOut();
-            },
-            child: Text("구글 로그인")),
-      ),
-    );
+        appBar: AppBar(),
+        body: Center(
+            child: GestureDetector(
+          onTap: () async {
+            try {
+              await AuthService().signInWithGoogle();
+            } catch (e) {
+              null;
+            }
+          },
+          child: Image(image: AssetImage('assets/odong.png')),
+        )));
   }
 }

@@ -1,8 +1,7 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:neologism/dict_info.dart';
+import 'package:neologism/pages/dict_info.dart';
+import 'package:neologism/pages/startpage.dart';
 import 'package:neologism/quizdata.dart';
-import 'main.dart';
 
 var category_filtered = "";
 bool category_selected = false;
@@ -68,10 +67,13 @@ class _NeologismDictState extends State<NeologismDict> {
                         itemCount: datas.length,
                         itemBuilder: ((context, index) {
                           return Card(
+                            color: blackmode == true
+                                ? blackmodecolor
+                                : notblackmodecolor,
                             child: ListTile(
                               shape: RoundedRectangleBorder(
                                 side: BorderSide(color: Colors.white),
-                                //borderRadius: BorderRadius.circular(15),
+                                borderRadius: BorderRadius.circular(15),
                               ),
                               tileColor: blackmode == true
                                   ? Colors.black
@@ -132,10 +134,11 @@ class CustomSearchDelegate extends SearchDelegate {
             itemBuilder: ((context, index) {
               var result = matchQuery[index];
               return Card(
+                color: blackmode == true ? blackmodecolor : notblackmodecolor,
                 child: ListTile(
                   shape: RoundedRectangleBorder(
                     side: BorderSide(color: Colors.white),
-                    //borderRadius: BorderRadius.circular(15),
+                    borderRadius: BorderRadius.circular(15),
                   ),
                   tileColor: blackmode == true ? Colors.black : Colors.white,
                   title: Text(
@@ -177,10 +180,13 @@ class CustomSearchDelegate extends SearchDelegate {
                 return query == ''
                     ? Container()
                     : Card(
+                        color: blackmode == true
+                            ? blackmodecolor
+                            : notblackmodecolor,
                         child: ListTile(
                           shape: RoundedRectangleBorder(
                             side: BorderSide(color: Colors.white),
-                            //borderRadius: BorderRadius.circular(15),
+                            borderRadius: BorderRadius.circular(15),
                           ),
                           tileColor:
                               blackmode == true ? Colors.black : Colors.white,
@@ -292,10 +298,11 @@ class _CategoryFilterState extends State<CategoryFilter> {
             itemBuilder: ((context, index) {
               var result = matchQuery[index];
               return Card(
+                color: blackmode == true ? blackmodecolor : notblackmodecolor,
                 child: ListTile(
                   shape: RoundedRectangleBorder(
                     side: BorderSide(color: Colors.white),
-                    //borderRadius: BorderRadius.circular(15),
+                    borderRadius: BorderRadius.circular(15),
                   ),
                   tileColor: blackmode == true ? Colors.black : Colors.white,
                   title: Text(

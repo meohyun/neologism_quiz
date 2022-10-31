@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:neologism/pages/startpage.dart';
 import 'package:neologism/quizdata.dart';
-import 'main.dart';
 
 class DictInfo extends StatefulWidget {
   // 2. required를 통해서 필수 argument로 index를 받음.

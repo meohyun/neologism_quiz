@@ -39,9 +39,9 @@ dependencies:
   fluttertoast: ^8.0.9
   firebase_auth: ^4.0.2
   google_sign_in: ^5.4.2
-  firebase: ^9.0.3
-  firebase_core: ^2.1.0
-  flutterfire_ui: ^0.4.3+17
+  shared_preferences: ^2.0.15
+
+
 
 dev_dependencies:
   flutter_test:
