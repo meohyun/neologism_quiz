@@ -43,7 +43,7 @@ class _MyWidgetState extends State<NeologismQuiz> {
         backgroundColor: blackmode == true ? blackmodecolor : notblackmodecolor,
         appBar: AppBar(
           //automaticallyImplyLeading: false,
-          title: Text("신조어 퀴즈"),
+          title: Text("단어 퀴즈"),
           backgroundColor:
               blackmode == true ? blackmodecolor : notblackmodecolor,
           centerTitle: false,
@@ -73,7 +73,7 @@ class _MyWidgetState extends State<NeologismQuiz> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              height: MediaQuery.of(context).size.height * 0.3,
+              height: MediaQuery.of(context).size.height * 0.4,
               padding: EdgeInsets.fromLTRB(0.0, 20.0, 15.0, 80.0),
               child: Column(
                 children: [
@@ -102,7 +102,7 @@ class _MyWidgetState extends State<NeologismQuiz> {
                                           hintblocked == false &&
                                           hint_num != 0
                                       ? () {
-                                          showhint(context);
+                                          showhint(context, datas, order);
                                           setState(() {
                                             hintclicked = true;
                                             hint_num--;
@@ -149,74 +149,72 @@ class _MyWidgetState extends State<NeologismQuiz> {
               color: blackmode == true ? Colors.white : Colors.black,
             ),
             Expanded(
-              child: Container(
-                child: ListView.builder(
-                    physics: NeverScrollableScrollPhysics(),
-                    itemCount: 4,
-                    itemBuilder: (context, index) {
-                      return Card(
-                        color: blackmode == true
-                            ? blackmodecolor
-                            : notblackmodecolor,
-                        elevation: 0.0,
-                        child: Padding(
-                          padding: const EdgeInsets.only(top: 13.0),
-                          child: ListTile(
-                            shape: RoundedRectangleBorder(
-                              side: BorderSide(
-                                  color: blackmode == true
-                                      ? Colors.white
-                                      : Colors.teal),
-                              borderRadius: BorderRadius.circular(15),
-                            ),
-                            tileColor: blackmode == true
-                                ? blackmodecolor
-                                : Colors.blue[300],
-                            leading: Text(
-                              (index + 1).toString() + ".",
-                              style: TextStyle(
-                                  color: blackmode == true
-                                      ? Colors.white
-                                      : blackmodecolor),
-                            ),
-                            trailing: answershow == true
-                                ? datas[order]["options"][index] ==
-                                        datas[order]["answer"]
-                                    ? Icon(
-                                        Icons.circle,
-                                        color: Colors.greenAccent[400],
-                                      )
-                                    : Icon(
-                                        Icons.dangerous,
-                                        color: Colors.red,
-                                      )
-                                : null,
-                            title: Text(
-                              datas[order]["options"][index].toString(),
-                              style: TextStyle(
-                                  color: blackmode == true
-                                      ? Colors.white
-                                      : blackmodecolor),
-                            ),
-                            onTap: () {
-                              if (datas[order]["options"][index] ==
-                                      datas[order]["answer"] &&
-                                  answershow == false) {
-                                number_answer++;
-                              }
-                              setState(() {
-                                showanswer();
-                              });
-                            },
+              child: ListView.builder(
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: 4,
+                  itemBuilder: (context, index) {
+                    return Card(
+                      color: blackmode == true
+                          ? blackmodecolor
+                          : notblackmodecolor,
+                      elevation: 0.0,
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 13.0),
+                        child: ListTile(
+                          shape: RoundedRectangleBorder(
+                            side: BorderSide(
+                                color: blackmode == true
+                                    ? Colors.white
+                                    : Colors.teal),
+                            borderRadius: BorderRadius.circular(15),
                           ),
+                          tileColor: blackmode == true
+                              ? blackmodecolor
+                              : Colors.blue[300],
+                          leading: Text(
+                            (index + 1).toString() + ".",
+                            style: TextStyle(
+                                color: blackmode == true
+                                    ? Colors.white
+                                    : blackmodecolor),
+                          ),
+                          trailing: answershow == true
+                              ? datas[order]["options"][index] ==
+                                      datas[order]["answer"]
+                                  ? Icon(
+                                      Icons.circle,
+                                      color: Colors.greenAccent[400],
+                                    )
+                                  : Icon(
+                                      Icons.dangerous,
+                                      color: Colors.red,
+                                    )
+                              : null,
+                          title: Text(
+                            datas[order]["options"][index].toString(),
+                            style: TextStyle(
+                                color: blackmode == true
+                                    ? Colors.white
+                                    : blackmodecolor),
+                          ),
+                          onTap: () {
+                            if (datas[order]["options"][index] ==
+                                    datas[order]["answer"] &&
+                                answershow == false) {
+                              number_answer++;
+                            }
+                            setState(() {
+                              showanswer();
+                            });
+                          },
                         ),
-                      );
-                    }),
-              ),
+                      ),
+                    );
+                  }),
             ),
             answershow == true
                 ? Padding(
-                    padding: const EdgeInsets.only(bottom: 30.0),
+                    padding: const EdgeInsets.only(bottom: 10.0),
                     child: TextButton(
                         style: TextButton.styleFrom(
                             backgroundColor: Colors.blue[400],
@@ -259,6 +257,7 @@ nextpage() {
 
 endpage(context) {
   showDialog(
+      useRootNavigator: false,
       barrierDismissible: false,
       context: context,
       builder: (context) {
@@ -304,7 +303,7 @@ endpage(context) {
                               backgroundColor: Colors.blue),
                           onPressed: () {
                             setinit();
-                            Navigator.pushNamed(context, '/neologism');
+                            Navigator.pushNamed(context, '/word');
                           },
                           child: Text(
                             "다시하기",
@@ -394,7 +393,7 @@ makenumber(int num) {
   return numberList;
 }
 
-showhint(context) {
+showhint(context, data, int order) {
   showDialog(
       context: context,
       builder: (context) {
@@ -416,7 +415,7 @@ showhint(context) {
                       color: blackmode == true ? Colors.white : blackmodecolor),
                 ),
                 Text(
-                  datas[order]["hint"],
+                  data[order]["hint"],
                   style: TextStyle(
                       fontSize: 20.0,
                       color: blackmode == true ? Colors.white : blackmodecolor),

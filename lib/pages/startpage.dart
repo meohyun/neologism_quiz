@@ -1,13 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:neologism/pages/dict_neologism.dart';
-import 'package:neologism/pages/neologismquiz.dart';
+import 'package:neologism/pages/word_quiz.dart';
+import 'package:neologism/pages/sentence_game.dart';
 
 bool blackmode = false;
 var blackmodecolor = Colors.black;
 var notblackmodecolor = Colors.deepPurple[100];
 
-class MainPage extends StatelessWidget {
+class MainPage extends StatefulWidget {
   const MainPage({super.key});
+
+  @override
+  State<MainPage> createState() => _MainPageState();
+}
+
+class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -15,8 +22,9 @@ class MainPage extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => Startpage(),
-        '/neologism': (context) => NeologismQuiz(),
+        '/word': (context) => NeologismQuiz(),
         '/dict': (context) => NeologismDict(),
+        '/sentence': ((context) => const SentenceGame())
       },
       debugShowCheckedModeBanner: false,
     );
@@ -84,9 +92,24 @@ class _StartpageState extends State<Startpage> {
                     blackmode == true ? blackmodecolor : notblackmodecolor,
                 radius: 80.0,
               ),
-              const MainPageButton(
-                page: '/neologism',
-                text: "시작하기",
+              SizedBox(
+                width: 100,
+                child: TextButton(
+                    style: TextButton.styleFrom(
+                      backgroundColor: Colors.blue,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        quiz_choice(context);
+                      });
+                    },
+                    child: Text(
+                      "시작하기",
+                      style: TextStyle(color: Colors.white, fontSize: 18.0),
+                    )),
               ),
               const MainPageButton(
                 page: '/dict',
@@ -141,26 +164,30 @@ class MainPageButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: 100,
-      child: TextButton(
-          style: TextButton.styleFrom(
-            backgroundColor: Colors.blue,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: SizedBox(
+        width: 100,
+        child: TextButton(
+            style: TextButton.styleFrom(
+              backgroundColor: Colors.blue,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
             ),
-          ),
-          onPressed: () {
-            Navigator.pushNamed(context, page);
-          },
-          child: Text(
-            text,
-            style: TextStyle(color: Colors.white, fontSize: 18.0),
-          )),
+            onPressed: () {
+              Navigator.pushNamed(context, page);
+            },
+            child: Text(
+              text,
+              style: TextStyle(color: Colors.white, fontSize: 18.0),
+            )),
+      ),
     );
   }
 }
 
+//blackmode
 class BlackModeButton extends StatefulWidget {
   const BlackModeButton({super.key, required this.ModeChanged});
 
@@ -185,4 +212,49 @@ class _BlackModeButtonState extends State<BlackModeButton> {
           color: blackmode == true ? Colors.yellow : Colors.grey,
         ));
   }
+}
+
+quiz_choice(context) {
+  showDialog(
+      useRootNavigator: false,
+      context: context,
+      builder: (context) {
+        return Dialog(
+          child: Container(
+            width: MediaQuery.of(context).size.width * 0.7,
+            height: 300,
+            decoration: BoxDecoration(
+                color: blackmode == true ? Colors.black : Colors.white,
+                borderRadius: BorderRadius.circular(15.0),
+                border: Border.all(color: Colors.white, width: 1.0)),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "퀴즈를 선택해주세요!",
+                  style: TextStyle(
+                      color: blackmode == true ? Colors.white : Colors.black,
+                      fontSize: 25.0),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 20.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const MainPageButton(
+                        page: '/word',
+                        text: "단어 퀴즈",
+                      ),
+                      const MainPageButton(
+                        page: '/sentence',
+                        text: "문장 퀴즈",
+                      )
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      });
 }

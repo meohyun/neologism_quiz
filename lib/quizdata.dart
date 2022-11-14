@@ -1,22 +1,3 @@
-// 클래스와 생성자를 만들어 준다.
-
-class Neo_Data {
-  final String name;
-  final String description;
-  final String example;
-
-  Neo_Data(this.name, this.description, this.example);
-}
-
-class Quiz_Data {
-  final int idx;
-  final String name;
-  final List<String> options;
-  final String answer;
-
-  Quiz_Data(this.idx, this.name, this.answer, this.options);
-}
-
 const List datas = [
   {
     "idx": 0,
