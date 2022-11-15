@@ -5,7 +5,7 @@ import 'package:neologism/quizdata.dart';
 
 setinit() {
   answer = false;
-  order = makenumber(80)[0];
+  order = makenumber(datas.length)[0];
   answershow = false;
   idx = 1;
   hint_num = 5;
@@ -216,7 +216,7 @@ class _MyWidgetState extends State<NeologismQuiz> {
                             if (idx < 10) {
                               nextpage();
                             } else {
-                              endpage(context);
+                              endpage(context, '/word');
                             }
                           });
                         },

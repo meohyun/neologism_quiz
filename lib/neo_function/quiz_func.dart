@@ -22,13 +22,13 @@ showanswer() {
 
 nextpage() {
   answershow = false;
-  order = makenumber(80)[idx - 1];
+  order = makenumber(datas.length)[idx - 1];
   hintclicked = false;
   hintblocked = false;
   idx++;
 }
 
-endpage(context) {
+endpage(context, page) {
   showDialog(
       useRootNavigator: false,
       barrierDismissible: false,
@@ -76,7 +76,7 @@ endpage(context) {
                               backgroundColor: Colors.blue),
                           onPressed: () {
                             setinit();
-                            Navigator.pushNamed(context, '/word');
+                            Navigator.pushNamed(context, page);
                           },
                           child: Text(
                             "다시하기",
@@ -192,6 +192,52 @@ showhint(context, data) {
                   style: TextStyle(
                       fontSize: 20.0,
                       color: blackmode == true ? Colors.white : blackmodecolor),
+                ),
+              ],
+            ),
+          ),
+        );
+      });
+}
+
+// mainpage quiz choice
+quiz_choice(context) {
+  showDialog(
+      useRootNavigator: false,
+      context: context,
+      builder: (context) {
+        return Dialog(
+          child: Container(
+            width: MediaQuery.of(context).size.width * 0.7,
+            height: 300,
+            decoration: BoxDecoration(
+                color: blackmode == true ? Colors.black : Colors.white,
+                borderRadius: BorderRadius.circular(15.0),
+                border: Border.all(color: Colors.white, width: 1.0)),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "퀴즈를 선택해주세요!",
+                  style: TextStyle(
+                      color: blackmode == true ? Colors.white : Colors.black,
+                      fontSize: 25.0),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 20.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const MainPageButton(
+                        page: '/word',
+                        text: "단어 퀴즈",
+                      ),
+                      const MainPageButton(
+                        page: '/sentence',
+                        text: "문장 퀴즈",
+                      )
+                    ],
+                  ),
                 ),
               ],
             ),

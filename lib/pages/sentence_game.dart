@@ -5,7 +5,7 @@ import 'package:neologism/sentence_data.dart';
 
 setinit() {
   answer = false;
-  order = makenumber(80)[0];
+  order = makenumber(sen_data.length)[0];
   answershow = false;
   idx = 1;
   hint_num = 5;
@@ -211,7 +211,7 @@ class _SentenceGameState extends State<SentenceGame> {
                           if (idx < 10) {
                             nextpage();
                           } else {
-                            endpage(context);
+                            endpage(context, '/sentence');
                           }
                         });
                       },
