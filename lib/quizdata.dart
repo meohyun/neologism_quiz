@@ -1046,4 +1046,15 @@ const List datas = [
     "hint": "진심모드",
     "category": "인방"
   },
+  {
+    "idx": 84,
+    "name": "JMT의 뜻은 무엇일까요?",
+    "answer": "정말 맛있다",
+    "options": ["정 떨어진다", "정말 맛있다", "너 좀 맞자", "너무 어렵다"],
+    "desc_title": "JMT",
+    "desc": "정말 맛있다는 뜻의 신조어로 존맛탱이 있는데 이를 영어스펠링 앞 글자만 따면 JMT가 된다.",
+    "example": "붕어빵 JMT",
+    "hint": "존맛탱",
+    "category": "생활"
+  },
 ];

@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:neologism/pages/startpage.dart';
 import 'package:neologism/quizdata.dart';
@@ -21,6 +20,7 @@ showanswer() {
 }
 
 nextpage() {
+  answer = false;
   answershow = false;
   order = makenumber(datas.length)[idx - 1];
   hintclicked = false;

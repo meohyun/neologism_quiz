@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:neologism/neo_function/quiz_func.dart';
 import 'package:neologism/pages/startpage.dart';
+import 'package:neologism/quizdata.dart';
 import 'package:neologism/sentence_data.dart';
-import 'package:neologism/widgets/next_button.dart';
+
+final TextEditingController textcontroller = TextEditingController();
+String entertext = "";
 
 setinit() {
   answer = false;
@@ -15,14 +18,14 @@ setinit() {
   hintblocked = false;
 }
 
-class SentenceGame extends StatefulWidget {
-  const SentenceGame({super.key});
+class EssayQuiz extends StatefulWidget {
+  EssayQuiz({super.key});
 
   @override
-  State<SentenceGame> createState() => _SentenceGameState();
+  State<EssayQuiz> createState() => _EssayQuizState();
 }
 
-class _SentenceGameState extends State<SentenceGame> {
+class _EssayQuizState extends State<EssayQuiz> {
   @override
   void initState() {
     super.initState();
@@ -60,10 +63,10 @@ class _SentenceGameState extends State<SentenceGame> {
                       fontSize: 20.0))
               .headline6,
         ),
-        body: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+        body: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
           Container(
             height: MediaQuery.of(context).size.height * 0.4,
-            padding: EdgeInsets.fromLTRB(0.0, 20.0, 15.0, 80.0),
+            padding: EdgeInsets.fromLTRB(0.0, 30.0, 15.0, 80.0),
             child: Column(
               children: [
                 Column(
@@ -135,93 +138,87 @@ class _SentenceGameState extends State<SentenceGame> {
             height: 40,
             color: blackmode == true ? Colors.white : Colors.black,
           ),
-          Expanded(
-            child: ListView.builder(
-                physics: NeverScrollableScrollPhysics(),
-                itemCount: 4,
-                itemBuilder: (context, index) {
-                  return Card(
-                    color:
-                        blackmode == true ? blackmodecolor : notblackmodecolor,
-                    elevation: 0.0,
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 13.0),
-                      child: ListTile(
-                        shape: RoundedRectangleBorder(
-                          side: BorderSide(
-                              color: blackmode == true
-                                  ? Colors.white
-                                  : Colors.teal),
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                        tileColor: blackmode == true
-                            ? blackmodecolor
-                            : Colors.blue[300],
-                        leading: Text(
-                          (index + 1).toString() + ".",
-                          style: TextStyle(
-                              color: blackmode == true
-                                  ? Colors.white
-                                  : blackmodecolor),
-                        ),
-                        trailing: answershow == true
-                            ? sen_data[order]["options"][index] ==
-                                    sen_data[order]["answer"]
-                                ? Icon(
-                                    Icons.circle,
-                                    color: Colors.greenAccent[400],
-                                  )
-                                : Icon(
-                                    Icons.dangerous,
-                                    color: Colors.red,
-                                  )
-                            : null,
-                        title: Text(
-                          sen_data[order]["options"][index].toString(),
-                          style: TextStyle(
-                              color: blackmode == true
-                                  ? Colors.white
-                                  : blackmodecolor),
-                        ),
-                        onTap: () {
-                          if (sen_data[order]["options"][index] ==
-                                  sen_data[order]["answer"] &&
-                              answershow == false) {
-                            number_answer++;
-                          }
-                          setState(() {
-                            showanswer();
-                          });
-                        },
-                      ),
-                    ),
-                  );
-                }),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 25.0),
+            child: TextField(
+              controller: textcontroller,
+              textCapitalization: TextCapitalization.characters,
+              onChanged: (newText) {
+                entertext = newText;
+              },
+              onSubmitted: (entertext) {
+                setState(() {
+                  isanswer(entertext);
+                  answershow = true;
+                });
+              },
+              style: TextStyle(
+                  color: blackmode == true ? Colors.white : Colors.black),
+              decoration: InputDecoration(
+                  hintText: "정답을 입력하세요.",
+                  focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.grey)),
+                  enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.grey))),
+            ),
           ),
           answershow == true
-              ? Padding(
-                  padding: const EdgeInsets.only(bottom: 10.0),
-                  child: TextButton(
-                      style: TextButton.styleFrom(
-                          backgroundColor: Colors.blue[400],
-                          shape: RoundedRectangleBorder(
-                              side: BorderSide(color: Colors.white, width: 1.0),
-                              borderRadius: BorderRadius.circular(15.0))),
-                      onPressed: () {
-                        setState(() {
-                          if (idx < 10) {
-                            nextpage();
-                          } else {
-                            endpage(context, '/sentence');
-                          }
-                        });
-                      },
+              ? answer == true
+                  ? Column(
+                      children: [
+                        Text(
+                          "정답입니다!",
+                          style: TextStyle(
+                              color: blackmode == true
+                                  ? Colors.white
+                                  : Colors.black),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 15.0),
+                          child: TextButton(
+                              style: TextButton.styleFrom(
+                                  backgroundColor: Colors.blue[400],
+                                  shape: RoundedRectangleBorder(
+                                      side: BorderSide(
+                                          color: Colors.white, width: 1.0),
+                                      borderRadius:
+                                          BorderRadius.circular(15.0))),
+                              onPressed: () {
+                                setState(() {
+                                  if (idx < 10) {
+                                    nextpage();
+                                    textcontroller.clear();
+                                  } else {
+                                    endpage(context, '/sentence');
+                                  }
+                                });
+                              },
+                              child: Text(
+                                "다음",
+                                style: TextStyle(color: Colors.white),
+                              )),
+                        )
+                      ],
+                    )
+                  : Padding(
+                      padding: const EdgeInsets.only(top: 20.0),
                       child: Text(
-                        "다음",
-                        style: TextStyle(color: Colors.white),
-                      )),
-                )
+                        "오답입니다!",
+                        style: TextStyle(
+                            color: blackmode == true
+                                ? Colors.white
+                                : Colors.black),
+                      ),
+                    )
               : SizedBox()
         ]));
+  }
+}
+
+isanswer(value) {
+  if (value == sen_data[order]["answer"].toString()) {
+    answer = true;
+    number_answer++;
+    hintblocked = true;
   }
 }

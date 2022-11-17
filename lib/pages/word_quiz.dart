@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:neologism/neo_function/quiz_func.dart';
 import 'package:neologism/pages/startpage.dart';
 import 'package:neologism/quizdata.dart';
+import 'package:neologism/widgets/next_button.dart';
 
 setinit() {
   answer = false;
