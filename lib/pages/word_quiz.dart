@@ -128,7 +128,8 @@ class _MyWidgetState extends State<NeologismQuiz> {
                       style: TextStyle(
                           color:
                               blackmode == true ? Colors.white : Colors.black,
-                          fontSize: 25.0),
+                          fontSize: 25.0,
+                          fontWeight: FontWeight.bold),
                     ),
                   ),
                 ],

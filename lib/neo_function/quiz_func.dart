@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:neologism/pages/essay_quiz.dart';
 import 'package:neologism/pages/startpage.dart';
 import 'package:neologism/quizdata.dart';
 
@@ -26,6 +27,9 @@ nextpage() {
   hintclicked = false;
   hintblocked = false;
   idx++;
+  textcontroller.clear();
+  typetext = true;
+  answer_chance = 3;
 }
 
 endpage(context, page) {
@@ -75,8 +79,8 @@ endpage(context, page) {
                           style: TextButton.styleFrom(
                               backgroundColor: Colors.blue),
                           onPressed: () {
-                            setinit();
                             Navigator.pushNamed(context, page);
+                            textcontroller.text = "";
                           },
                           child: Text(
                             "다시하기",
@@ -129,6 +133,7 @@ quizexit(context) {
                             TextButton.styleFrom(backgroundColor: Colors.blue),
                         onPressed: () {
                           Navigator.pushNamed(context, '/');
+                          textcontroller.text = "";
                         },
                         child: Text(
                           "나가기",

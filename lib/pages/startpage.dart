@@ -3,7 +3,6 @@ import 'package:neologism/neo_function/quiz_func.dart';
 import 'package:neologism/pages/dict_neologism.dart';
 import 'package:neologism/pages/essay_quiz.dart';
 import 'package:neologism/pages/word_quiz.dart';
-import 'package:neologism/pages/sentence_game.dart';
 
 bool blackmode = false;
 var blackmodecolor = Colors.black;
@@ -204,6 +203,7 @@ class _BlackModeButtonState extends State<BlackModeButton> {
   Widget build(BuildContext context) {
     return IconButton(
         onPressed: () {
+          widget.ModeChanged(blackmode);
           setState(() {
             blackmode = !blackmode;
           });
