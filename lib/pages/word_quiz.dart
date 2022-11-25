@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:neologism/neo_function/quiz_func.dart';
 import 'package:neologism/pages/startpage.dart';
-import 'package:neologism/quizdata.dart';
-import 'package:neologism/widgets/next_button.dart';
+import 'package:neologism/datas/quizdata.dart';
+import 'package:neologism/widgets/appbar.dart';
+import 'package:neologism/widgets/Buttons.dart';
 
 setinit() {
   answer = false;
@@ -31,34 +32,10 @@ class _MyWidgetState extends State<NeologismQuiz> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: blackmode == true ? blackmodecolor : notblackmodecolor,
-        appBar: AppBar(
-          //automaticallyImplyLeading: false,
-          title: Text("단어 퀴즈"),
-          backgroundColor:
-              blackmode == true ? blackmodecolor : notblackmodecolor,
-          centerTitle: false,
-          leading: GestureDetector(
-            child: Icon(
-              Icons.arrow_back_ios,
-              color: blackmode == true ? Colors.white : blackmodecolor,
-            ),
-            onTap: () {
-              quizexit(context);
-            },
-          ),
-          actions: [
-            BlackModeButton(
-              ModeChanged: (value) => setState(() => blackmode = value),
-            )
-          ],
-          elevation: 2.0,
-          shadowColor: blackmode == true ? Colors.white : blackmodecolor,
-          titleTextStyle: TextTheme(
-                  headline6: TextStyle(
-                      color: blackmode == true ? Colors.white : blackmodecolor,
-                      fontSize: 20.0))
-              .headline6,
-        ),
+        appBar: QuizAppBar(
+            apptitle: '단어 퀴즈',
+            blackbutton: BlackModeButton(
+                ModeChanged: (value) => setState(() => blackmode = value))),
         body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -204,28 +181,8 @@ class _MyWidgetState extends State<NeologismQuiz> {
                   }),
             ),
             answershow == true
-                ? Padding(
-                    padding: const EdgeInsets.only(bottom: 10.0),
-                    child: TextButton(
-                        style: TextButton.styleFrom(
-                            backgroundColor: Colors.blue[400],
-                            shape: RoundedRectangleBorder(
-                                side:
-                                    BorderSide(color: Colors.white, width: 1.0),
-                                borderRadius: BorderRadius.circular(15.0))),
-                        onPressed: () {
-                          setState(() {
-                            if (idx < 10) {
-                              nextpage();
-                            } else {
-                              endpage(context, '/word');
-                            }
-                          });
-                        },
-                        child: Text(
-                          "다음",
-                          style: TextStyle(color: Colors.white),
-                        )),
+                ? NextButton(
+                    page: '/word',
                   )
                 : SizedBox()
           ],

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:neologism/neo_function/dict_func.dart';
 import 'package:neologism/pages/dict_info.dart';
 import 'package:neologism/pages/startpage.dart';
-import 'package:neologism/quizdata.dart';
+import 'package:neologism/datas/quizdata.dart';
 
 var category_filtered = "";
 bool category_selected = false;
@@ -45,9 +45,9 @@ class _NeologismDictState extends State<NeologismDict> {
           SizedBox(
             width: 10,
           ),
-          BlackModeButton(
-            ModeChanged: (value) => setState(() => blackmode = value),
-          )
+          // BlackModeButton(
+          //   ModeChanged: (value) => setState(() => blackmode = value),
+          // )
         ],
       ),
       backgroundColor: blackmode == true ? blackmodecolor : notblackmodecolor,

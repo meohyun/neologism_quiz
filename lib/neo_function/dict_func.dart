@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:neologism/pages/dict_info.dart';
 import 'package:neologism/pages/dict_neologism.dart';
 import 'package:neologism/pages/startpage.dart';
-import 'package:neologism/quizdata.dart';
+import 'package:neologism/datas/quizdata.dart';
 
 // 검색 기능
 class CustomSearchDelegate extends SearchDelegate {

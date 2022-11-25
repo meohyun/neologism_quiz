@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:neologism/neo_function/quiz_func.dart';
 import 'package:neologism/pages/startpage.dart';
-import 'package:neologism/sentence_data.dart';
-import 'package:neologism/widgets/next_button.dart';
+import 'package:neologism/datas/sentence_data.dart';
+import 'package:neologism/widgets/Buttons.dart';
+import 'package:neologism/widgets/appbar.dart';
 
 setinit() {
   answer = false;
@@ -33,33 +34,10 @@ class _SentenceGameState extends State<SentenceGame> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: blackmode == true ? blackmodecolor : notblackmodecolor,
-        appBar: AppBar(
-          backgroundColor:
-              blackmode == true ? blackmodecolor : notblackmodecolor,
-          centerTitle: false,
-          title: Text("문장 퀴즈"),
-          leading: GestureDetector(
-            child: Icon(
-              Icons.arrow_back_ios,
-              color: blackmode == true ? Colors.white : blackmodecolor,
-            ),
-            onTap: () {
-              quizexit(context);
-            },
-          ),
-          actions: [
-            BlackModeButton(
-              ModeChanged: (value) => setState(() => blackmode = value),
-            )
-          ],
-          elevation: 2.0,
-          shadowColor: blackmode == true ? Colors.white : blackmodecolor,
-          titleTextStyle: TextTheme(
-                  headline6: TextStyle(
-                      color: blackmode == true ? Colors.white : blackmodecolor,
-                      fontSize: 20.0))
-              .headline6,
-        ),
+        appBar: QuizAppBar(
+            apptitle: '문장 퀴즈',
+            blackbutton: BlackModeButton(
+                ModeChanged: (value) => setState(() => blackmode = value))),
         body: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
           Container(
             height: MediaQuery.of(context).size.height * 0.4,

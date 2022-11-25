@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:neologism/pages/startpage.dart';
-import 'package:neologism/quizdata.dart';
+import 'package:neologism/datas/quizdata.dart';
+import 'package:neologism/widgets/Buttons.dart';
 
 class DictInfo extends StatefulWidget {
   // 2. required를 통해서 필수 argument로 index를 받음.
@@ -35,11 +36,6 @@ class _DictInfoState extends State<DictInfo> {
             Navigator.pop(context);
           },
         ),
-        actions: [
-          BlackModeButton(
-            ModeChanged: (value) => setState(() => blackmode = value),
-          )
-        ],
       ),
       body: Column(
         children: [

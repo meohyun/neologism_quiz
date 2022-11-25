@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:neologism/neo_function/essay_func.dart';
 import 'package:neologism/neo_function/quiz_func.dart';
 import 'package:neologism/pages/startpage.dart';
-import 'package:neologism/sentence_data.dart';
+import 'package:neologism/datas/sentence_data.dart';
+import 'package:neologism/widgets/Buttons.dart';
+import 'package:neologism/widgets/appbar.dart';
 
 final TextEditingController textcontroller = TextEditingController();
 String entertext = "";
@@ -37,35 +40,19 @@ class _EssayQuizState extends State<EssayQuiz> {
   }
 
   @override
+  void setState(VoidCallback fn) {
+    // TODO: implement setState
+    super.setState(fn);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: blackmode == true ? blackmodecolor : notblackmodecolor,
-        appBar: AppBar(
-          backgroundColor:
-              blackmode == true ? blackmodecolor : notblackmodecolor,
-          centerTitle: false,
-          title: Text("문장 퀴즈"),
-          leading: GestureDetector(
-            child: Icon(
-              Icons.arrow_back_ios,
-              color: blackmode == true ? Colors.white : blackmodecolor,
-            ),
-            onTap: () {
-              quizexit(context);
-            },
-          ),
-          actions: [
-            BlackModeButton(
-              ModeChanged: (value) => setState(() => blackmode = value),
-            )
-          ],
-          elevation: 2.0,
-          shadowColor: blackmode == true ? Colors.white : blackmodecolor,
-          titleTextStyle: TextTheme(
-                  headline6: TextStyle(
-                      color: blackmode == true ? Colors.white : blackmodecolor,
-                      fontSize: 20.0))
-              .headline6,
+        appBar: QuizAppBar(
+          apptitle: '문장 퀴즈',
+          blackbutton: BlackModeButton(
+              ModeChanged: (value) => setState(() => blackmode = value)),
         ),
         body: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
           Container(
@@ -273,80 +260,5 @@ class _EssayQuizState extends State<EssayQuiz> {
                         )
               : SizedBox()
         ]));
-  }
-}
-
-isanswer(value) {
-  if (value.toString().toUpperCase() == sen_data[order]["answer"].toString()) {
-    answer = true;
-    number_answer++;
-    hintblocked = true;
-    typetext = false;
-  } else {
-    answer_chance--;
-  }
-}
-
-spellingnum() {
-  List list = sen_data[order]["answer"].toString().split('');
-  int nums = list.length;
-
-  return nums;
-}
-
-Widget boxDecoration() {
-  return Padding(
-    padding: const EdgeInsets.fromLTRB(30.0, 30.0, 30.0, 0.0),
-    child: DecoratedBox(
-      decoration: BoxDecoration(
-        border: Border.all(
-          color: Colors.white,
-          width: 20,
-        ),
-      ),
-    ),
-  );
-}
-
-//next button
-class NextButton extends StatefulWidget {
-  NextButton({super.key, required this.PageChanged});
-
-  final ValueChanged<Function> PageChanged;
-
-  @override
-  State<NextButton> createState() => _NextButtonState();
-}
-
-class _NextButtonState extends State<NextButton> {
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 15.0),
-      child: SizedBox(
-        width: 100,
-        height: 40,
-        child: TextButton(
-            style: TextButton.styleFrom(
-                backgroundColor: Colors.blue[400],
-                shape: RoundedRectangleBorder(
-                    side: BorderSide(color: Colors.white, width: 1.0),
-                    borderRadius: BorderRadius.circular(15.0))),
-            onPressed: () {
-              widget.PageChanged(nextpage());
-              setState(() {
-                if (idx < 10) {
-                  nextpage();
-                } else {
-                  endpage(context, '/sentence');
-                }
-              });
-            },
-            child: Text(
-              "다음",
-              style: TextStyle(color: Colors.white, fontSize: 20.0),
-            )),
-      ),
-    );
   }
 }
