@@ -40,13 +40,8 @@ class _EssayQuizState extends State<EssayQuiz> {
   }
 
   @override
-  void setState(VoidCallback fn) {
-    // TODO: implement setState
-    super.setState(fn);
-  }
-
-  @override
   Widget build(BuildContext context) {
+    String ans = sen_data[order]["answer"].toString();
     return Scaffold(
         backgroundColor: blackmode == true ? blackmodecolor : notblackmodecolor,
         appBar: QuizAppBar(
@@ -118,7 +113,7 @@ class _EssayQuizState extends State<EssayQuiz> {
                   sen_data[order]["question"].toString(),
                   style: TextStyle(
                       color: blackmode == true ? Colors.white : Colors.black,
-                      fontSize: 25.0,
+                      fontSize: 23.0,
                       fontWeight: FontWeight.bold),
                 ),
               ),
@@ -150,6 +145,10 @@ class _EssayQuizState extends State<EssayQuiz> {
                   setState(() {
                     isanswer(entertext);
                     answershow = true;
+                    if (answer_chance == 0) {
+                      typetext = false;
+                      hintblocked = true;
+                    }
                   });
                 },
                 style: TextStyle(
@@ -215,48 +214,90 @@ class _EssayQuizState extends State<EssayQuiz> {
                       ],
                     )
                   : answer_chance == 0
-                      ? Padding(
-                          padding: const EdgeInsets.only(top: 15.0),
-                          child: SizedBox(
-                            width: 100,
-                            height: 40,
-                            child: TextButton(
-                                style: TextButton.styleFrom(
-                                    backgroundColor: Colors.blue[400],
-                                    shape: RoundedRectangleBorder(
-                                        side: BorderSide(
-                                            color: Colors.white, width: 1.0),
-                                        borderRadius:
-                                            BorderRadius.circular(15.0))),
-                                onPressed: () {
-                                  setState(() {
-                                    if (idx < 10) {
-                                      nextpage();
-                                      textcontroller.clear();
-                                      typetext = true;
-                                    } else {
-                                      endpage(context, '/sentence');
-                                    }
-                                  });
-                                },
-                                child: Text(
-                                  "다음",
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 20.0),
-                                )),
-                          ),
+                      ? Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(top: 15.0),
+                              child: SizedBox(
+                                width: 100,
+                                height: 40,
+                                child: TextButton(
+                                    style: TextButton.styleFrom(
+                                        backgroundColor: Colors.blue[400],
+                                        shape: RoundedRectangleBorder(
+                                            side: BorderSide(
+                                                color: Colors.white,
+                                                width: 1.0),
+                                            borderRadius:
+                                                BorderRadius.circular(15.0))),
+                                    onPressed: () {
+                                      setState(() {
+                                        if (idx < 10) {
+                                          nextpage();
+                                          textcontroller.clear();
+                                          typetext = true;
+                                        } else {
+                                          endpage(context, '/sentence');
+                                        }
+                                      });
+                                    },
+                                    child: Text(
+                                      "다음",
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 20.0),
+                                    )),
+                              ),
+                            ),
+                            Padding(
+                                padding: const EdgeInsets.only(top: 20.0),
+                                child: RichText(
+                                    text: TextSpan(
+                                        text: '정답은 ',
+                                        style: TextStyle(
+                                            color: blackmode == true
+                                                ? Colors.white
+                                                : Colors.black,
+                                            fontSize: 20.0,
+                                            fontWeight: FontWeight.bold),
+                                        children: <TextSpan>[
+                                      TextSpan(
+                                          text: "\"$ans" + "\"",
+                                          style: TextStyle(color: Colors.blue)),
+                                      TextSpan(
+                                          text: " 였습니다.",
+                                          style: TextStyle(
+                                              color: blackmode == true
+                                                  ? Colors.white
+                                                  : Colors.black,
+                                              fontSize: 20.0,
+                                              fontWeight: FontWeight.bold))
+                                    ])))
+                          ],
                         )
                       : Padding(
                           padding: const EdgeInsets.only(top: 20.0),
-                          child: Text(
-                            "오답입니다! 기회가 $answer_chance번 남았습니다!",
-                            style: TextStyle(
-                                color: blackmode == true
-                                    ? Colors.white
-                                    : Colors.black,
-                                fontSize: 20.0,
-                                fontWeight: FontWeight.bold),
-                          ),
+                          child: RichText(
+                              text: TextSpan(
+                                  text: '오답입니다! 기회가 ',
+                                  style: TextStyle(
+                                      color: blackmode == true
+                                          ? Colors.white
+                                          : Colors.black,
+                                      fontSize: 20.0,
+                                      fontWeight: FontWeight.bold),
+                                  children: <TextSpan>[
+                                TextSpan(
+                                    text: "$answer_chance",
+                                    style: TextStyle(color: Colors.blue)),
+                                TextSpan(
+                                    text: "번 남았습니다!",
+                                    style: TextStyle(
+                                        color: blackmode == true
+                                            ? Colors.white
+                                            : Colors.black,
+                                        fontSize: 20.0,
+                                        fontWeight: FontWeight.bold))
+                              ])),
                         )
               : SizedBox()
         ]));

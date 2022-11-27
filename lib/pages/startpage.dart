@@ -22,6 +22,7 @@ class _MainPageState extends State<MainPage> {
     return MaterialApp(
       title: "신조어 퀴즈",
       initialRoute: '/',
+      theme: ThemeData(fontFamily: 'MapleStory'),
       routes: {
         '/': (context) => Startpage(),
         '/word': (context) => NeologismQuiz(),
@@ -54,15 +55,16 @@ class _StartpageState extends State<Startpage> {
     return Scaffold(
         backgroundColor: blackmode == true ? blackmodecolor : notblackmodecolor,
         appBar: AppBar(
-          leading: Builder(
-              builder: (context) => IconButton(
-                  onPressed: () {
-                    Scaffold.of(context).openDrawer();
-                  },
-                  icon: Icon(
-                    Icons.menu_rounded,
-                    color: blackmode == true ? Colors.white : Colors.blue,
-                  ))),
+          //leading: Builder(
+          // builder: (context) => IconButton(
+          //     onPressed: () {
+          //       Scaffold.of(context).openDrawer();
+          //     },
+          // icon: Icon(
+          //   Icons.menu_rounded,
+          //   color: blackmode == true ? Colors.white : Colors.blue,
+          // )
+          //)),
           elevation: 0.0,
           toolbarHeight: 100.0,
           centerTitle: true,
@@ -70,7 +72,10 @@ class _StartpageState extends State<Startpage> {
             padding: const EdgeInsets.only(top: 30.0),
             child: Text(
               "Neologism Quiz",
-              style: TextStyle(color: Colors.teal, fontSize: 25.0),
+              style: TextStyle(
+                  color: Colors.teal,
+                  fontSize: 25.0,
+                  fontWeight: FontWeight.w700),
             ),
           ),
           backgroundColor:
@@ -83,7 +88,7 @@ class _StartpageState extends State<Startpage> {
                 ))
           ],
         ),
-        drawer: MyDrawer(),
+        //drawer: MyDrawer(),
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,

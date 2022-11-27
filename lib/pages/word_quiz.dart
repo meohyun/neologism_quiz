@@ -181,8 +181,33 @@ class _MyWidgetState extends State<NeologismQuiz> {
                   }),
             ),
             answershow == true
-                ? NextButton(
-                    page: '/word',
+                ? Padding(
+                    padding: const EdgeInsets.only(top: 15.0),
+                    child: SizedBox(
+                      width: 60,
+                      height: 30,
+                      child: TextButton(
+                          style: TextButton.styleFrom(
+                              backgroundColor: Colors.blue[400],
+                              shape: RoundedRectangleBorder(
+                                  side: BorderSide(
+                                      color: Colors.white, width: 1.0),
+                                  borderRadius: BorderRadius.circular(15.0))),
+                          onPressed: () {
+                            setState(() {
+                              if (idx < 10) {
+                                nextpage();
+                              } else {
+                                endpage(context, '/word');
+                              }
+                            });
+                          },
+                          child: Text(
+                            "다음",
+                            style:
+                                TextStyle(color: Colors.white, fontSize: 15.0),
+                          )),
+                    ),
                   )
                 : SizedBox()
           ],

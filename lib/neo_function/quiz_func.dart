@@ -44,7 +44,7 @@ endpage(context, page) {
             width: MediaQuery.of(context).size.width * 0.7,
             height: 300,
             decoration: BoxDecoration(
-                color: blackmode == true ? Colors.black : Colors.white,
+                color: blackmode == true ? Colors.black : notblackmodecolor,
                 borderRadius: BorderRadius.circular(10.0),
                 border: Border.all(
                     color: Colors.white, style: BorderStyle.solid, width: 1.0)),

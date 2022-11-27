@@ -94,6 +94,13 @@ flutter:
   #       - asset: fonts/TrajanPro.ttf
   #       - asset: fonts/TrajanPro_Bold.ttf
   #         weight: 700
-  #
+  fonts:
+    - family: MapleStory
+      fonts:
+        - asset: assets/font/MapleStory/Maplestory_OTF_Light.otf
+          weight: 300
+        - asset: assets/font/MapleStory/Maplestory_OTF_Bold.otf
+          weight: 700
+  
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
