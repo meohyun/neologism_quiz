@@ -62,7 +62,7 @@ class _NextButtonState extends State<NextButton> {
               if (idx < 10) {
                 nextpage();
               } else {
-                endpage(context, widget.page);
+                endpage(context, '/sentence');
               }
             });
           },

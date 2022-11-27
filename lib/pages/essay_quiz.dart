@@ -158,9 +158,9 @@ class _EssayQuizState extends State<EssayQuiz> {
                     hintStyle:
                         TextStyle(fontSize: 15.0, color: Colors.grey[500]),
                     focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.grey)),
+                        borderSide: BorderSide(color: Colors.greenAccent)),
                     enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.grey)),
+                        borderSide: BorderSide(color: Colors.white)),
                     disabledBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.grey)))),
           ),
@@ -258,11 +258,14 @@ class _EssayQuizState extends State<EssayQuiz> {
                                                 ? Colors.white
                                                 : Colors.black,
                                             fontSize: 20.0,
-                                            fontWeight: FontWeight.bold),
+                                            fontWeight: FontWeight.bold,
+                                            fontFamily: 'MapleStory'),
                                         children: <TextSpan>[
                                       TextSpan(
                                           text: "\"$ans" + "\"",
-                                          style: TextStyle(color: Colors.blue)),
+                                          style: TextStyle(
+                                              color: Colors.blue,
+                                              fontFamily: 'MapleStory')),
                                       TextSpan(
                                           text: " 였습니다.",
                                           style: TextStyle(
@@ -270,7 +273,8 @@ class _EssayQuizState extends State<EssayQuiz> {
                                                   ? Colors.white
                                                   : Colors.black,
                                               fontSize: 20.0,
-                                              fontWeight: FontWeight.bold))
+                                              fontWeight: FontWeight.bold,
+                                              fontFamily: 'MapleStory'))
                                     ])))
                           ],
                         )
@@ -284,11 +288,14 @@ class _EssayQuizState extends State<EssayQuiz> {
                                           ? Colors.white
                                           : Colors.black,
                                       fontSize: 20.0,
-                                      fontWeight: FontWeight.bold),
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: 'MapleStory'),
                                   children: <TextSpan>[
                                 TextSpan(
                                     text: "$answer_chance",
-                                    style: TextStyle(color: Colors.blue)),
+                                    style: TextStyle(
+                                        color: Colors.blue,
+                                        fontFamily: 'MapleStory')),
                                 TextSpan(
                                     text: "번 남았습니다!",
                                     style: TextStyle(
@@ -296,7 +303,8 @@ class _EssayQuizState extends State<EssayQuiz> {
                                             ? Colors.white
                                             : Colors.black,
                                         fontSize: 20.0,
-                                        fontWeight: FontWeight.bold))
+                                        fontWeight: FontWeight.bold,
+                                        fontFamily: 'MapleStory'))
                               ])),
                         )
               : SizedBox()
