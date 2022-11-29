@@ -27,16 +27,16 @@ class _StartpageState extends State<Startpage> {
     return Scaffold(
         backgroundColor: blackmode == true ? blackmodecolor : notblackmodecolor,
         appBar: AppBar(
-          //leading: Builder(
-          // builder: (context) => IconButton(
-          //     onPressed: () {
-          //       Scaffold.of(context).openDrawer();
-          //     },
-          // icon: Icon(
-          //   Icons.menu_rounded,
-          //   color: blackmode == true ? Colors.white : Colors.blue,
-          // )
-          //)),
+          leading: SizedBox(),
+          // leading: Builder(
+          //     builder: (context) => IconButton(
+          //         onPressed: () {
+          //           Scaffold.of(context).openDrawer();
+          //         },
+          //         icon: Icon(
+          //           Icons.menu_rounded,
+          //           color: blackmode == true ? Colors.white : Colors.blue,
+          //         ))),
           elevation: 0.0,
           toolbarHeight: 100.0,
           centerTitle: true,

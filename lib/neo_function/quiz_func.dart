@@ -74,6 +74,7 @@ endpage(context, page) {
                               backgroundColor: Colors.blue),
                           onPressed: () {
                             Navigator.pushNamed(context, '/');
+                            textcontroller.text = "";
                           },
                           child: Text("홈으로",
                               style: TextStyle(color: Colors.white))),

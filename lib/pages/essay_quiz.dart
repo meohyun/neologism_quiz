@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:neologism/neo_function/essay_func.dart';
 import 'package:neologism/neo_function/quiz_func.dart';
@@ -12,7 +10,6 @@ final TextEditingController textcontroller = TextEditingController();
 String entertext = "";
 String wordhint = "";
 bool typetext = true;
-bool _wordhintblocked = true;
 int answer_chance = 3;
 int word_num = 0;
 
@@ -29,7 +26,6 @@ setinit() {
   hintblocked = false;
   typetext = true;
   wordhint = "";
-  _wordhintblocked = true;
 }
 
 class EssayQuiz extends StatefulWidget {
@@ -61,7 +57,7 @@ class _EssayQuizState extends State<EssayQuiz> {
         ),
         body: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
           Container(
-            height: MediaQuery.of(context).size.height * 0.4,
+            height: MediaQuery.of(context).size.height * 0.42,
             padding: EdgeInsets.fromLTRB(0.0, 30.0, 15.0, 80.0),
             child: Column(children: [
               Column(
@@ -123,7 +119,7 @@ class _EssayQuizState extends State<EssayQuiz> {
                   sen_data[order]["question"].toString(),
                   style: TextStyle(
                       color: blackmode == true ? Colors.white : Colors.black,
-                      fontSize: 23.0,
+                      fontSize: 25.0,
                       fontWeight: FontWeight.bold),
                 ),
               ),
@@ -134,11 +130,10 @@ class _EssayQuizState extends State<EssayQuiz> {
                   children: [
                     for (int i = 0; i < spellingnum(); i++)
                       Padding(
-                        padding:
-                            const EdgeInsets.fromLTRB(10.0, 30.0, 10.0, 0.0),
+                        padding: const EdgeInsets.fromLTRB(5.0, 30.0, 5.0, 0.0),
                         child: SizedBox(
-                          width: 50,
-                          height: 50,
+                          width: 45,
+                          height: 45,
                           child: DecoratedBox(
                             decoration: BoxDecoration(
                               border: Border.all(
@@ -164,21 +159,6 @@ class _EssayQuizState extends State<EssayQuiz> {
               )
             ]),
           ),
-          answer_chance == 1
-              ? TextButton(
-                  onPressed: () {
-                    setState(() {
-                      if (_wordhintblocked == false) {
-                        wordhint = split_hint;
-                      }
-                    });
-                  },
-                  child: Text(
-                    "글자 힌트",
-                    style: TextStyle(
-                        color: blackmode == true ? Colors.white : Colors.black),
-                  ))
-              : SizedBox(),
           Divider(
             height: 40,
             color: blackmode == true ? Colors.white : Colors.black,
@@ -200,7 +180,7 @@ class _EssayQuizState extends State<EssayQuiz> {
                       typetext = false;
                       hintblocked = true;
                     } else if (answer_chance == 1) {
-                      _wordhintblocked = false;
+                      wordhint = split_hint;
                     }
                   });
                 },
@@ -363,32 +343,4 @@ class _EssayQuizState extends State<EssayQuiz> {
               : SizedBox()
         ]));
   }
-}
-
-Widget boxDecoration() {
-  return Padding(
-    padding: const EdgeInsets.fromLTRB(10.0, 30.0, 10.0, 0.0),
-    child: SizedBox(
-      width: 50,
-      height: 50,
-      child: DecoratedBox(
-        child: Center(
-          child: Text(
-            wordhint,
-            style: TextStyle(
-                color: Colors.black,
-                fontSize: 25,
-                fontWeight: FontWeight.bold,
-                fontFamily: 'MapleStory'),
-          ),
-        ),
-        decoration: BoxDecoration(
-          border: Border.all(
-            color: Colors.white,
-            width: 25,
-          ),
-        ),
-      ),
-    ),
-  );
 }

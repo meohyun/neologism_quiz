@@ -105,7 +105,7 @@ class _MyWidgetState extends State<NeologismQuiz> {
                       style: TextStyle(
                           color:
                               blackmode == true ? Colors.white : Colors.black,
-                          fontSize: 25.0,
+                          fontSize: 30.0,
                           fontWeight: FontWeight.bold),
                     ),
                   ),
@@ -127,7 +127,7 @@ class _MyWidgetState extends State<NeologismQuiz> {
                           : notblackmodecolor,
                       elevation: 0.0,
                       child: Padding(
-                        padding: const EdgeInsets.only(top: 13.0),
+                        padding: const EdgeInsets.only(top: 14.0),
                         child: ListTile(
                           shape: RoundedRectangleBorder(
                             side: BorderSide(
@@ -163,7 +163,8 @@ class _MyWidgetState extends State<NeologismQuiz> {
                             style: TextStyle(
                                 color: blackmode == true
                                     ? Colors.white
-                                    : blackmodecolor),
+                                    : blackmodecolor,
+                                fontSize: 18),
                           ),
                           onTap: () {
                             if (datas[order]["options"][index] ==
@@ -182,10 +183,10 @@ class _MyWidgetState extends State<NeologismQuiz> {
             ),
             answershow == true
                 ? Padding(
-                    padding: const EdgeInsets.only(top: 15.0),
+                    padding: const EdgeInsets.only(bottom: 20),
                     child: SizedBox(
-                      width: 60,
-                      height: 30,
+                      width: 100,
+                      height: 40,
                       child: TextButton(
                           style: TextButton.styleFrom(
                               backgroundColor: Colors.blue[400],
@@ -205,7 +206,7 @@ class _MyWidgetState extends State<NeologismQuiz> {
                           child: Text(
                             "다음",
                             style:
-                                TextStyle(color: Colors.white, fontSize: 15.0),
+                                TextStyle(color: Colors.white, fontSize: 20.0),
                           )),
                     ),
                   )
