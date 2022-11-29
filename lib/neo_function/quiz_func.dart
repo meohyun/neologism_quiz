@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:neologism/datas/sentence_data.dart';
 import 'package:neologism/pages/essay_quiz.dart';
 import 'package:neologism/pages/startpage.dart';
 import 'package:neologism/datas/quizdata.dart';
@@ -15,6 +16,7 @@ bool answershow = false;
 bool buttonclicked = false;
 bool hintclicked = false;
 bool hintblocked = false;
+bool _wordhintblocked = true;
 
 showanswer() {
   answershow = true;
@@ -31,6 +33,8 @@ nextpage() {
   textcontroller.clear();
   typetext = true;
   answer_chance = 3;
+  _wordhintblocked = true;
+  wordhint = "";
 }
 
 endpage(context, page) {

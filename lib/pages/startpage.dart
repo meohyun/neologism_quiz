@@ -1,38 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:neologism/neo_function/quiz_func.dart';
-import 'package:neologism/pages/dict_neologism.dart';
-import 'package:neologism/pages/essay_quiz.dart';
-import 'package:neologism/pages/word_quiz.dart';
 import 'package:neologism/widgets/Buttons.dart';
 
 bool blackmode = false;
 var blackmodecolor = Colors.black;
 var notblackmodecolor = Colors.deepPurple[100];
-
-class MainPage extends StatefulWidget {
-  const MainPage({super.key});
-
-  @override
-  State<MainPage> createState() => _MainPageState();
-}
-
-class _MainPageState extends State<MainPage> {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: "신조어 퀴즈",
-      initialRoute: '/',
-      theme: ThemeData(fontFamily: 'MapleStory'),
-      routes: {
-        '/': (context) => Startpage(),
-        '/word': (context) => NeologismQuiz(),
-        '/dict': (context) => NeologismDict(),
-        '/sentence': ((context) => EssayQuiz()),
-      },
-      debugShowCheckedModeBanner: false,
-    );
-  }
-}
 
 class Startpage extends StatefulWidget {
   @override

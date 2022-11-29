@@ -22,7 +22,10 @@ class _QuizAppBarState extends State<QuizAppBar> {
     return AppBar(
       backgroundColor: blackmode == true ? blackmodecolor : notblackmodecolor,
       centerTitle: false,
-      title: Text(widget.apptitle),
+      title: Text(
+        widget.apptitle,
+        style: TextStyle(fontFamily: 'MapleStory', fontWeight: FontWeight.bold),
+      ),
       leading: GestureDetector(
         child: Icon(
           Icons.arrow_back_ios,

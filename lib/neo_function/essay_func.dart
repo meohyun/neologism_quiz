@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:neologism/neo_function/quiz_func.dart';
 import 'package:neologism/pages/essay_quiz.dart';
@@ -21,16 +23,10 @@ spellingnum() {
   return nums;
 }
 
-Widget boxDecoration() {
-  return Padding(
-    padding: const EdgeInsets.fromLTRB(30.0, 30.0, 30.0, 0.0),
-    child: DecoratedBox(
-      decoration: BoxDecoration(
-        border: Border.all(
-          color: Colors.white,
-          width: 20,
-        ),
-      ),
-    ),
-  );
-}
+// essayquiz show split hint
+// showsplithint() {
+//   List split_list = sen_data[order]["answer"].toString().split('');
+//   int word_num = Random().nextInt(split_list.length);
+//   String split_hint = split_list[word_num];
+//   return split_hint;
+// }
