@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:neologism/neo_function/essay_func.dart';
 import 'package:neologism/neo_function/quiz_func.dart';
@@ -8,8 +10,11 @@ import 'package:neologism/widgets/appbar.dart';
 
 final TextEditingController textcontroller = TextEditingController();
 String entertext = "";
+String wordhint = "";
 bool typetext = true;
+bool _wordhintblocked = true;
 int answer_chance = 3;
+int word_num = 0;
 
 setinit() {
   answer = false;
@@ -23,6 +28,8 @@ setinit() {
   hintclicked = false;
   hintblocked = false;
   typetext = true;
+  wordhint = "";
+  _wordhintblocked = true;
 }
 
 class EssayQuiz extends StatefulWidget {
@@ -42,6 +49,9 @@ class _EssayQuizState extends State<EssayQuiz> {
   @override
   Widget build(BuildContext context) {
     String ans = sen_data[order]["answer"].toString();
+    List split_list = sen_data[order]["answer"].toString().split('');
+
+    String split_hint = split_list[word_num];
     return Scaffold(
         backgroundColor: blackmode == true ? blackmodecolor : notblackmodecolor,
         appBar: QuizAppBar(
@@ -122,12 +132,53 @@ class _EssayQuizState extends State<EssayQuiz> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    for (int i = 0; i < spellingnum(); i++) ...[boxDecoration()]
+                    for (int i = 0; i < spellingnum(); i++)
+                      Padding(
+                        padding:
+                            const EdgeInsets.fromLTRB(10.0, 30.0, 10.0, 0.0),
+                        child: SizedBox(
+                          width: 50,
+                          height: 50,
+                          child: DecoratedBox(
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: Colors.white,
+                                width: 25,
+                              ),
+                            ),
+                            child: Center(
+                              child: Text(
+                                i == word_num ? wordhint : "",
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 25,
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: 'MapleStory'),
+                              ),
+                            ),
+                          ),
+                        ),
+                      )
                   ],
                 ),
               )
             ]),
           ),
+          answer_chance == 1
+              ? TextButton(
+                  onPressed: () {
+                    setState(() {
+                      if (_wordhintblocked == false) {
+                        wordhint = split_hint;
+                      }
+                    });
+                  },
+                  child: Text(
+                    "글자 힌트",
+                    style: TextStyle(
+                        color: blackmode == true ? Colors.white : Colors.black),
+                  ))
+              : SizedBox(),
           Divider(
             height: 40,
             color: blackmode == true ? Colors.white : Colors.black,
@@ -148,6 +199,8 @@ class _EssayQuizState extends State<EssayQuiz> {
                     if (answer_chance == 0) {
                       typetext = false;
                       hintblocked = true;
+                    } else if (answer_chance == 1) {
+                      _wordhintblocked = false;
                     }
                   });
                 },
@@ -310,4 +363,32 @@ class _EssayQuizState extends State<EssayQuiz> {
               : SizedBox()
         ]));
   }
+}
+
+Widget boxDecoration() {
+  return Padding(
+    padding: const EdgeInsets.fromLTRB(10.0, 30.0, 10.0, 0.0),
+    child: SizedBox(
+      width: 50,
+      height: 50,
+      child: DecoratedBox(
+        child: Center(
+          child: Text(
+            wordhint,
+            style: TextStyle(
+                color: Colors.black,
+                fontSize: 25,
+                fontWeight: FontWeight.bold,
+                fontFamily: 'MapleStory'),
+          ),
+        ),
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: Colors.white,
+            width: 25,
+          ),
+        ),
+      ),
+    ),
+  );
 }
