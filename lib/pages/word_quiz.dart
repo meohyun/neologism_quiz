@@ -5,6 +5,8 @@ import 'package:neologism/datas/quizdata.dart';
 import 'package:neologism/widgets/appbar.dart';
 import 'package:neologism/widgets/Buttons.dart';
 
+bool descblocked = false;
+
 setinit() {
   answer = false;
   order = makenumber(datas.length)[0];
@@ -14,6 +16,7 @@ setinit() {
   number_answer = 0;
   hintclicked = false;
   hintblocked = false;
+  descblocked = false;
 }
 
 class NeologismQuiz extends StatefulWidget {
@@ -174,6 +177,10 @@ class _MyWidgetState extends State<NeologismQuiz> {
                             }
                             setState(() {
                               showanswer();
+                              if (descblocked == false) {
+                                showdesc(context);
+                              }
+                              descblocked = true;
                             });
                           },
                         ),

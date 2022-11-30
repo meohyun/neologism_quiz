@@ -41,7 +41,7 @@ class _SentenceGameState extends State<SentenceGame> {
         body: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
           Container(
             height: MediaQuery.of(context).size.height * 0.4,
-            padding: EdgeInsets.fromLTRB(0.0, 20.0, 15.0, 80.0),
+            padding: EdgeInsets.fromLTRB(0.0, 20.0, 15.0, 50.0),
             child: Column(
               children: [
                 Column(

@@ -4,6 +4,7 @@ import 'package:neologism/datas/sentence_data.dart';
 import 'package:neologism/pages/essay_quiz.dart';
 import 'package:neologism/pages/startpage.dart';
 import 'package:neologism/datas/quizdata.dart';
+import 'package:neologism/pages/word_quiz.dart';
 import 'package:neologism/widgets/Buttons.dart';
 
 int order = 0;
@@ -16,7 +17,6 @@ bool answershow = false;
 bool buttonclicked = false;
 bool hintclicked = false;
 bool hintblocked = false;
-bool _wordhintblocked = true;
 
 showanswer() {
   answershow = true;
@@ -33,8 +33,8 @@ nextpage() {
   textcontroller.clear();
   typetext = true;
   answer_chance = 3;
-  _wordhintblocked = true;
   wordhint = "";
+  descblocked = false;
 }
 
 endpage(context, page) {
@@ -248,6 +248,44 @@ quiz_choice(context) {
                         text: "문장 퀴즈",
                       )
                     ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      });
+}
+
+showdesc(context) {
+  showDialog(
+      context: context,
+      builder: (context) {
+        return Dialog(
+          child: Container(
+            width: MediaQuery.of(context).size.width * 0.8,
+            height: 300,
+            decoration: BoxDecoration(
+                color: blackmode == true ? Colors.black : Colors.white,
+                borderRadius: BorderRadius.circular(15.0),
+                border: Border.all(color: Colors.white, width: 1.0)),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Text(
+                  datas[order]["desc_title"],
+                  style: TextStyle(
+                      fontSize: 25.0,
+                      color: blackmode == true ? Colors.white : blackmodecolor),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Text(
+                    datas[order]["desc"],
+                    style: TextStyle(
+                        fontSize: 20.0,
+                        color:
+                            blackmode == true ? Colors.white : blackmodecolor),
                   ),
                 ),
               ],

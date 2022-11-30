@@ -283,32 +283,47 @@ class _EssayQuizState extends State<EssayQuiz> {
                             ),
                             Padding(
                                 padding: const EdgeInsets.only(top: 20.0),
-                                child: RichText(
-                                    text: TextSpan(
-                                        text: '정답은 ',
-                                        style: TextStyle(
-                                            color: blackmode == true
-                                                ? Colors.white
-                                                : Colors.black,
-                                            fontSize: 20.0,
-                                            fontWeight: FontWeight.bold,
-                                            fontFamily: 'MapleStory'),
-                                        children: <TextSpan>[
-                                      TextSpan(
-                                          text: "\"$ans" + "\"",
-                                          style: TextStyle(
-                                              color: Colors.blue,
-                                              fontFamily: 'MapleStory')),
-                                      TextSpan(
-                                          text: " 였습니다.",
+                                child: Column(
+                                  children: [
+                                    RichText(
+                                        text: TextSpan(
+                                            text: '정답은 ',
+                                            style: TextStyle(
+                                                color: blackmode == true
+                                                    ? Colors.white
+                                                    : Colors.black,
+                                                fontSize: 20.0,
+                                                fontWeight: FontWeight.bold,
+                                                fontFamily: 'MapleStory'),
+                                            children: <TextSpan>[
+                                          TextSpan(
+                                              text: "\"$ans" + "\"",
+                                              style: TextStyle(
+                                                  color: Colors.blue,
+                                                  fontFamily: 'MapleStory')),
+                                          TextSpan(
+                                              text: " 였습니다.",
+                                              style: TextStyle(
+                                                  color: blackmode == true
+                                                      ? Colors.white
+                                                      : Colors.black,
+                                                  fontSize: 20.0,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontFamily: 'MapleStory'))
+                                        ])),
+                                    Padding(
+                                      padding: const EdgeInsets.all(25),
+                                      child: Text(sen_data[order]["desc"],
                                           style: TextStyle(
                                               color: blackmode == true
                                                   ? Colors.white
                                                   : Colors.black,
                                               fontSize: 20.0,
                                               fontWeight: FontWeight.bold,
-                                              fontFamily: 'MapleStory'))
-                                    ])))
+                                              fontFamily: 'MapleStory')),
+                                    ),
+                                  ],
+                                ))
                           ],
                         )
                       : Padding(
