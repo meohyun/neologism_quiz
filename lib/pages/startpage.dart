@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:neologism/getx/blackmode.dart';
 import 'package:neologism/neo_function/quiz_func.dart';
 import 'package:neologism/widgets/Buttons.dart';
 
-bool blackmode = false;
 var blackmodecolor = Colors.black;
 var notblackmodecolor = Colors.deepPurple[100];
 
@@ -11,23 +12,23 @@ class Startpage extends StatefulWidget {
   State<Startpage> createState() => _StartpageState();
 }
 
-setinit() {
-  bool blackmode = false;
-}
-
 class _StartpageState extends State<Startpage> {
   @override
   void initState() {
     super.initState();
-    setinit();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        backgroundColor: blackmode == true ? blackmodecolor : notblackmodecolor,
+    return GetBuilder(
+      init: BlackModeController(),
+      builder: (_) => Scaffold(
+        backgroundColor: Get.find<BlackModeController>().blackmode == true
+            ? blackmodecolor
+            : notblackmodecolor,
         appBar: AppBar(
           leading: SizedBox(),
+          //leading: SizedBox(),
           // leading: Builder(
           //     builder: (context) => IconButton(
           //         onPressed: () {
@@ -50,14 +51,13 @@ class _StartpageState extends State<Startpage> {
                   fontWeight: FontWeight.w700),
             ),
           ),
-          backgroundColor:
-              blackmode == true ? blackmodecolor : notblackmodecolor,
+          backgroundColor: Get.find<BlackModeController>().blackmode == true
+              ? blackmodecolor
+              : notblackmodecolor,
           actions: [
             Padding(
                 padding: const EdgeInsets.fromLTRB(0.0, 0.0, 10.0, 0.0),
-                child: BlackModeButton(
-                  ModeChanged: (value) => setState(() => blackmode = value),
-                ))
+                child: BlackModeButton())
           ],
         ),
         //drawer: MyDrawer(),
@@ -68,7 +68,9 @@ class _StartpageState extends State<Startpage> {
               CircleAvatar(
                 backgroundImage: AssetImage('assets/odong.png'),
                 backgroundColor:
-                    blackmode == true ? blackmodecolor : notblackmodecolor,
+                    Get.find<BlackModeController>().blackmode == true
+                        ? blackmodecolor
+                        : notblackmodecolor,
                 radius: 80.0,
               ),
               SizedBox(
@@ -96,7 +98,9 @@ class _StartpageState extends State<Startpage> {
               )
             ],
           ),
-        ));
+        ),
+      ),
+    );
   }
 }
 

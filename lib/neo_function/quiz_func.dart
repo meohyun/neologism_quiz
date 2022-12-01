@@ -1,6 +1,9 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:neologism/datas/sentence_data.dart';
+import 'package:neologism/getx/blackmode.dart';
 import 'package:neologism/pages/essay_quiz.dart';
 import 'package:neologism/pages/startpage.dart';
 import 'package:neologism/datas/quizdata.dart';
@@ -43,58 +46,68 @@ endpage(context, page) {
       barrierDismissible: false,
       context: context,
       builder: (context) {
-        return Dialog(
-          child: Container(
-            width: MediaQuery.of(context).size.width * 0.7,
-            height: 300,
-            decoration: BoxDecoration(
-                color: blackmode == true ? Colors.black : notblackmodecolor,
-                borderRadius: BorderRadius.circular(10.0),
-                border: Border.all(
-                    color: Colors.white, style: BorderStyle.solid, width: 1.0)),
-            child: Padding(
-              padding: const EdgeInsets.all(30.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "$number_answer개 맞추셨습니다.",
-                    style: TextStyle(
-                        fontSize: 25.0,
-                        color: blackmode == true ? Colors.white : Colors.black),
-                  ),
-                  SizedBox(
-                    height: 30,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      TextButton(
-                          style: TextButton.styleFrom(
-                              backgroundColor: Colors.blue),
-                          onPressed: () {
-                            Navigator.pushNamed(context, '/');
-                            textcontroller.text = "";
-                          },
-                          child: Text("홈으로",
-                              style: TextStyle(color: Colors.white))),
-                      SizedBox(
-                        width: 50,
-                      ),
-                      TextButton(
-                          style: TextButton.styleFrom(
-                              backgroundColor: Colors.blue),
-                          onPressed: () {
-                            Navigator.pushNamed(context, page);
-                            textcontroller.text = "";
-                          },
-                          child: Text(
-                            "다시하기",
-                            style: TextStyle(color: Colors.white),
-                          )),
-                    ],
-                  )
-                ],
+        return GetBuilder(
+          init: BlackModeController(),
+          builder: (_) => Dialog(
+            child: Container(
+              width: MediaQuery.of(context).size.width * 0.7,
+              height: 300,
+              decoration: BoxDecoration(
+                  color: Get.find<BlackModeController>().blackmode == true
+                      ? Colors.black
+                      : notblackmodecolor,
+                  borderRadius: BorderRadius.circular(10.0),
+                  border: Border.all(
+                      color: Colors.white,
+                      style: BorderStyle.solid,
+                      width: 1.0)),
+              child: Padding(
+                padding: const EdgeInsets.all(30.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "$number_answer개 맞추셨습니다.",
+                      style: TextStyle(
+                          fontSize: 25.0,
+                          color:
+                              Get.find<BlackModeController>().blackmode == true
+                                  ? Colors.white
+                                  : Colors.black),
+                    ),
+                    SizedBox(
+                      height: 30,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        TextButton(
+                            style: TextButton.styleFrom(
+                                backgroundColor: Colors.blue),
+                            onPressed: () {
+                              Navigator.pushNamed(context, '/');
+                              textcontroller.text = "";
+                            },
+                            child: Text("홈으로",
+                                style: TextStyle(color: Colors.white))),
+                        SizedBox(
+                          width: 50,
+                        ),
+                        TextButton(
+                            style: TextButton.styleFrom(
+                                backgroundColor: Colors.blue),
+                            onPressed: () {
+                              Navigator.pushNamed(context, page);
+                              textcontroller.text = "";
+                            },
+                            child: Text(
+                              "다시하기",
+                              style: TextStyle(color: Colors.white),
+                            )),
+                      ],
+                    )
+                  ],
+                ),
               ),
             ),
           ),
@@ -107,58 +120,68 @@ quizexit(context) {
       barrierDismissible: false,
       context: context,
       builder: (context) {
-        return Dialog(
-          child: Container(
-            width: MediaQuery.of(context).size.width * 0.9,
-            height: 300,
-            decoration: BoxDecoration(
-                color: blackmode == true ? Colors.black : Colors.white,
-                borderRadius: BorderRadius.circular(10.0),
-                border: Border.all(
-                    color: Colors.white, style: BorderStyle.solid, width: 1.0)),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 10.0),
-                  child: Text(
-                    "게임에서 나가시겠습니까?",
-                    style: TextStyle(
-                        fontSize: 28.0,
-                        color: blackmode == true ? Colors.white : Colors.black),
-                  ),
-                ),
-                SizedBox(
-                  height: 50,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    TextButton(
-                        style:
-                            TextButton.styleFrom(backgroundColor: Colors.blue),
-                        onPressed: () {
-                          Navigator.pushNamed(context, '/');
-                          textcontroller.text = "";
-                        },
-                        child: Text(
-                          "나가기",
-                          style: TextStyle(color: Colors.white),
-                        )),
-                    SizedBox(
-                      width: 30,
+        return GetBuilder(
+          init: BlackModeController(),
+          builder: (_) => Dialog(
+            child: Container(
+              width: MediaQuery.of(context).size.width * 0.9,
+              height: 300,
+              decoration: BoxDecoration(
+                  color: Get.find<BlackModeController>().blackmode == true
+                      ? Colors.black
+                      : Colors.white,
+                  borderRadius: BorderRadius.circular(10.0),
+                  border: Border.all(
+                      color: Colors.white,
+                      style: BorderStyle.solid,
+                      width: 1.0)),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 10.0),
+                    child: Text(
+                      "게임에서 나가시겠습니까?",
+                      style: TextStyle(
+                          fontSize: 28.0,
+                          color:
+                              Get.find<BlackModeController>().blackmode == true
+                                  ? Colors.white
+                                  : Colors.black),
                     ),
-                    TextButton(
-                        style:
-                            TextButton.styleFrom(backgroundColor: Colors.blue),
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        child:
-                            Text("취소", style: TextStyle(color: Colors.white))),
-                  ],
-                ),
-              ],
+                  ),
+                  SizedBox(
+                    height: 50,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      TextButton(
+                          style: TextButton.styleFrom(
+                              backgroundColor: Colors.blue),
+                          onPressed: () {
+                            Navigator.pushNamed(context, '/');
+                            textcontroller.text = "";
+                          },
+                          child: Text(
+                            "나가기",
+                            style: TextStyle(color: Colors.white),
+                          )),
+                      SizedBox(
+                        width: 30,
+                      ),
+                      TextButton(
+                          style: TextButton.styleFrom(
+                              backgroundColor: Colors.blue),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: Text("취소",
+                              style: TextStyle(color: Colors.white))),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         );
@@ -181,30 +204,39 @@ showhint(context, data) {
   showDialog(
       context: context,
       builder: (context) {
-        return Dialog(
-          child: Container(
-            width: MediaQuery.of(context).size.width * 0.7,
-            height: 300,
-            decoration: BoxDecoration(
-                color: blackmode == true ? Colors.black : Colors.white,
-                borderRadius: BorderRadius.circular(15.0),
-                border: Border.all(color: Colors.white, width: 1.0)),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Text(
-                  "Hint",
-                  style: TextStyle(
-                      fontSize: 25.0,
-                      color: blackmode == true ? Colors.white : blackmodecolor),
-                ),
-                Text(
-                  data[order]["hint"],
-                  style: TextStyle(
-                      fontSize: 20.0,
-                      color: blackmode == true ? Colors.white : blackmodecolor),
-                ),
-              ],
+        return GetBuilder(
+          init: BlackModeController(),
+          builder: (_) => Dialog(
+            child: Container(
+              width: MediaQuery.of(context).size.width * 0.7,
+              height: 300,
+              decoration: BoxDecoration(
+                  color: Get.find<BlackModeController>().blackmode == true
+                      ? Colors.black
+                      : Colors.white,
+                  borderRadius: BorderRadius.circular(15.0),
+                  border: Border.all(color: Colors.white, width: 1.0)),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Text(
+                    "Hint",
+                    style: TextStyle(
+                        fontSize: 25.0,
+                        color: Get.find<BlackModeController>().blackmode == true
+                            ? Colors.white
+                            : blackmodecolor),
+                  ),
+                  Text(
+                    data[order]["hint"],
+                    style: TextStyle(
+                        fontSize: 20.0,
+                        color: Get.find<BlackModeController>().blackmode == true
+                            ? Colors.white
+                            : blackmodecolor),
+                  ),
+                ],
+              ),
             ),
           ),
         );
@@ -217,40 +249,47 @@ quiz_choice(context) {
       useRootNavigator: false,
       context: context,
       builder: (context) {
-        return Dialog(
-          child: Container(
-            width: MediaQuery.of(context).size.width * 0.7,
-            height: 300,
-            decoration: BoxDecoration(
-                color: blackmode == true ? Colors.black : Colors.white,
-                borderRadius: BorderRadius.circular(15.0),
-                border: Border.all(color: Colors.white, width: 1.0)),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  "퀴즈를 선택해주세요!",
-                  style: TextStyle(
-                      color: blackmode == true ? Colors.white : Colors.black,
-                      fontSize: 25.0),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 20.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const MainPageButton(
-                        page: '/word',
-                        text: "단어 퀴즈",
-                      ),
-                      const MainPageButton(
-                        page: '/sentence',
-                        text: "문장 퀴즈",
-                      )
-                    ],
+        return GetBuilder(
+          init: BlackModeController(),
+          builder: (_) => Dialog(
+            child: Container(
+              width: MediaQuery.of(context).size.width * 0.7,
+              height: 300,
+              decoration: BoxDecoration(
+                  color: Get.find<BlackModeController>().blackmode == true
+                      ? Colors.black
+                      : Colors.white,
+                  borderRadius: BorderRadius.circular(15.0),
+                  border: Border.all(color: Colors.white, width: 1.0)),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "퀴즈를 선택해주세요!",
+                    style: TextStyle(
+                        color: Get.find<BlackModeController>().blackmode == true
+                            ? Colors.white
+                            : Colors.black,
+                        fontSize: 25.0),
                   ),
-                ),
-              ],
+                  Padding(
+                    padding: const EdgeInsets.only(top: 20.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const MainPageButton(
+                          page: '/word',
+                          text: "단어 퀴즈",
+                        ),
+                        const MainPageButton(
+                          page: '/sentence',
+                          text: "문장 퀴즈",
+                        )
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         );
@@ -261,34 +300,43 @@ showdesc(context) {
   showDialog(
       context: context,
       builder: (context) {
-        return Dialog(
-          child: Container(
-            width: MediaQuery.of(context).size.width * 0.8,
-            height: 300,
-            decoration: BoxDecoration(
-                color: blackmode == true ? Colors.black : Colors.white,
-                borderRadius: BorderRadius.circular(15.0),
-                border: Border.all(color: Colors.white, width: 1.0)),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Text(
-                  datas[order]["desc_title"],
-                  style: TextStyle(
-                      fontSize: 25.0,
-                      color: blackmode == true ? Colors.white : blackmodecolor),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(12.0),
-                  child: Text(
-                    datas[order]["desc"],
+        return GetBuilder(
+          init: BlackModeController(),
+          builder: (_) => Dialog(
+            child: Container(
+              width: MediaQuery.of(context).size.width * 0.8,
+              height: 300,
+              decoration: BoxDecoration(
+                  color: Get.find<BlackModeController>().blackmode == true
+                      ? Colors.black
+                      : Colors.white,
+                  borderRadius: BorderRadius.circular(15.0),
+                  border: Border.all(color: Colors.white, width: 1.0)),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Text(
+                    datas[order]["desc_title"],
                     style: TextStyle(
-                        fontSize: 20.0,
-                        color:
-                            blackmode == true ? Colors.white : blackmodecolor),
+                        fontSize: 25.0,
+                        color: Get.find<BlackModeController>().blackmode == true
+                            ? Colors.white
+                            : blackmodecolor),
                   ),
-                ),
-              ],
+                  Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: Text(
+                      datas[order]["desc"],
+                      style: TextStyle(
+                          fontSize: 20.0,
+                          color:
+                              Get.find<BlackModeController>().blackmode == true
+                                  ? Colors.white
+                                  : blackmodecolor),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         );

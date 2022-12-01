@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/instance_manager.dart';
+import 'package:neologism/getx/blackmode.dart';
 import 'package:neologism/neo_function/quiz_func.dart';
 import 'package:neologism/pages/startpage.dart';
 
@@ -76,27 +78,25 @@ class _NextButtonState extends State<NextButton> {
 
 //blackmode
 class BlackModeButton extends StatefulWidget {
-  const BlackModeButton({super.key, required this.ModeChanged});
-
-  final ValueChanged<bool> ModeChanged;
+  const BlackModeButton({super.key});
 
   @override
   State<BlackModeButton> createState() => _BlackModeButtonState();
 }
 
 class _BlackModeButtonState extends State<BlackModeButton> {
+  BlackModeController _blackModeController = Get.put(BlackModeController());
   @override
   Widget build(BuildContext context) {
     return IconButton(
         onPressed: () {
-          widget.ModeChanged(blackmode);
-          setState(() {
-            blackmode = !blackmode;
-          });
+          _blackModeController.blackmodechange();
         },
         icon: Icon(
           Icons.dark_mode,
-          color: blackmode == true ? Colors.yellow : Colors.grey,
+          color: Get.find<BlackModeController>().blackmode == true
+              ? Colors.yellow
+              : Colors.grey,
         ));
   }
 }

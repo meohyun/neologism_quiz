@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:neologism/getx/blackmode.dart';
 import 'package:neologism/neo_function/dict_func.dart';
 import 'package:neologism/pages/dict_info.dart';
 import 'package:neologism/pages/startpage.dart';
@@ -26,80 +29,97 @@ class _NeologismDictState extends State<NeologismDict> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "신조어 사전",
-          style: TextStyle(
-              color: blackmode == true ? Colors.white : blackmodecolor),
-        ),
-        centerTitle: false,
-        elevation: 0.0,
-        backgroundColor: blackmode == true ? blackmodecolor : notblackmodecolor,
-        actions: [
-          IconButton(
-              onPressed: () {
-                showSearch(context: context, delegate: CustomSearchDelegate());
-              },
-              icon: Icon(Icons.search)),
-          SizedBox(
-            width: 10,
+    return GetBuilder(
+      init: BlackModeController(),
+      builder: (_) => Scaffold(
+        appBar: AppBar(
+          title: Text(
+            "신조어 사전",
+            style: TextStyle(
+                color: Get.find<BlackModeController>().blackmode == true
+                    ? Colors.white
+                    : blackmodecolor),
           ),
-          // BlackModeButton(
-          //   ModeChanged: (value) => setState(() => blackmode = value),
-          // )
-        ],
-      ),
-      backgroundColor: blackmode == true ? blackmodecolor : notblackmodecolor,
-      body: Column(
-        children: [
-          SizedBox(
-              width: MediaQuery.of(context).size.width,
-              height: 35,
-              child: CategoryButton(
-                  onChanged: (value) =>
-                      setState(() => category_filtered = value))),
-          category_filtered == "전체"
-              ? Expanded(
-                  child: Container(
-                    color:
-                        blackmode == true ? blackmodecolor : notblackmodecolor,
-                    child: ListView.builder(
-                        itemCount: datas.length,
-                        itemBuilder: ((context, index) {
-                          return Card(
-                            color: blackmode == true
-                                ? blackmodecolor
-                                : notblackmodecolor,
-                            child: ListTile(
-                              shape: RoundedRectangleBorder(
-                                side: BorderSide(color: Colors.white),
-                                borderRadius: BorderRadius.circular(15),
+          centerTitle: false,
+          elevation: 0.0,
+          backgroundColor: Get.find<BlackModeController>().blackmode == true
+              ? blackmodecolor
+              : notblackmodecolor,
+          actions: [
+            IconButton(
+                onPressed: () {
+                  showSearch(
+                      context: context, delegate: CustomSearchDelegate());
+                },
+                icon: Icon(Icons.search)),
+            SizedBox(
+              width: 10,
+            ),
+            // BlackModeButton(
+            //   ModeChanged: (value) => setState(() => blackmode = value),
+            // )
+          ],
+        ),
+        backgroundColor: Get.find<BlackModeController>().blackmode == true
+            ? blackmodecolor
+            : notblackmodecolor,
+        body: Column(
+          children: [
+            SizedBox(
+                width: MediaQuery.of(context).size.width,
+                height: 35,
+                child: CategoryButton(
+                    onChanged: (value) =>
+                        setState(() => category_filtered = value))),
+            category_filtered == "전체"
+                ? Expanded(
+                    child: Container(
+                      color: Get.find<BlackModeController>().blackmode == true
+                          ? blackmodecolor
+                          : notblackmodecolor,
+                      child: ListView.builder(
+                          itemCount: datas.length,
+                          itemBuilder: ((context, index) {
+                            return Card(
+                              color:
+                                  Get.find<BlackModeController>().blackmode ==
+                                          true
+                                      ? blackmodecolor
+                                      : notblackmodecolor,
+                              child: ListTile(
+                                shape: RoundedRectangleBorder(
+                                  side: BorderSide(color: Colors.white),
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                tileColor:
+                                    Get.find<BlackModeController>().blackmode ==
+                                            true
+                                        ? Colors.black
+                                        : Colors.white,
+                                title: Text(
+                                  datas[index]["desc_title"],
+                                  style: TextStyle(
+                                      color: Get.find<BlackModeController>()
+                                                  .blackmode ==
+                                              true
+                                          ? Colors.white
+                                          : blackmodecolor,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                onTap: () {
+                                  // 1. 인포 페이지에 index값을 전달
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) =>
+                                          DictInfo(index: index)));
+                                },
                               ),
-                              tileColor: blackmode == true
-                                  ? Colors.black
-                                  : Colors.white,
-                              title: Text(
-                                datas[index]["desc_title"],
-                                style: TextStyle(
-                                    color: blackmode == true
-                                        ? Colors.white
-                                        : blackmodecolor,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              onTap: () {
-                                // 1. 인포 페이지에 index값을 전달
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) =>
-                                        DictInfo(index: index)));
-                              },
-                            ),
-                          );
-                        })),
-                  ),
-                )
-              : CategoryFilter(),
-        ],
+                            );
+                          })),
+                    ),
+                  )
+                : CategoryFilter(),
+          ],
+        ),
       ),
     );
   }

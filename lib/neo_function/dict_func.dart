@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_state_manager/src/simple/get_state.dart';
+import 'package:neologism/getx/blackmode.dart';
 import 'package:neologism/pages/dict_info.dart';
 import 'package:neologism/pages/dict_neologism.dart';
 import 'package:neologism/pages/startpage.dart';
@@ -26,35 +29,46 @@ class CustomSearchDelegate extends SearchDelegate {
         idx_res = i;
       }
     }
-    return Container(
-        color: blackmode == true ? blackmodecolor : notblackmodecolor,
-        child: ListView.builder(
-            itemCount: matchQuery.length,
-            itemBuilder: ((context, index) {
-              var result = matchQuery[index];
-              return Card(
-                color: blackmode == true ? blackmodecolor : notblackmodecolor,
-                child: ListTile(
-                  shape: RoundedRectangleBorder(
-                    side: BorderSide(color: Colors.white),
-                    borderRadius: BorderRadius.circular(15),
+    return GetBuilder(
+      init: BlackModeController(),
+      builder: (_) => Container(
+          color: Get.find<BlackModeController>().blackmode == true
+              ? blackmodecolor
+              : notblackmodecolor,
+          child: ListView.builder(
+              itemCount: matchQuery.length,
+              itemBuilder: ((context, index) {
+                var result = matchQuery[index];
+                return Card(
+                  color: Get.find<BlackModeController>().blackmode == true
+                      ? blackmodecolor
+                      : notblackmodecolor,
+                  child: ListTile(
+                    shape: RoundedRectangleBorder(
+                      side: BorderSide(color: Colors.white),
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    tileColor: Get.find<BlackModeController>().blackmode == true
+                        ? Colors.black
+                        : Colors.white,
+                    title: Text(
+                      result,
+                      style: TextStyle(
+                          color:
+                              Get.find<BlackModeController>().blackmode == true
+                                  ? Colors.white
+                                  : blackmodecolor,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    onTap: () {
+                      // 1. 인포 페이지에 index값을 전달
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => DictInfo(index: idx_res)));
+                    },
                   ),
-                  tileColor: blackmode == true ? Colors.black : Colors.white,
-                  title: Text(
-                    result,
-                    style: TextStyle(
-                        color:
-                            blackmode == true ? Colors.white : blackmodecolor,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  onTap: () {
-                    // 1. 인포 페이지에 index값을 전달
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => DictInfo(index: idx_res)));
-                  },
-                ),
-              );
-            })));
+                );
+              }))),
+    );
   }
 
   @override
@@ -67,47 +81,58 @@ class CustomSearchDelegate extends SearchDelegate {
         matchindex.add(i);
       }
     }
-    return Column(
-      children: [
-        Expanded(
-            child: Container(
-          color: blackmode == true ? blackmodecolor : notblackmodecolor,
-          child: ListView.builder(
-              itemCount: matchQuery.length,
-              itemBuilder: ((context, index) {
-                var result = matchQuery[index];
-                return query == ''
-                    ? Container()
-                    : Card(
-                        color: blackmode == true
-                            ? blackmodecolor
-                            : notblackmodecolor,
-                        child: ListTile(
-                          shape: RoundedRectangleBorder(
-                            side: BorderSide(color: Colors.white),
-                            borderRadius: BorderRadius.circular(15),
+    return GetBuilder(
+      init: BlackModeController(),
+      builder: (_) => Column(
+        children: [
+          Expanded(
+              child: Container(
+            color: Get.find<BlackModeController>().blackmode == true
+                ? blackmodecolor
+                : notblackmodecolor,
+            child: ListView.builder(
+                itemCount: matchQuery.length,
+                itemBuilder: ((context, index) {
+                  var result = matchQuery[index];
+                  return query == ''
+                      ? Container()
+                      : Card(
+                          color:
+                              Get.find<BlackModeController>().blackmode == true
+                                  ? blackmodecolor
+                                  : notblackmodecolor,
+                          child: ListTile(
+                            shape: RoundedRectangleBorder(
+                              side: BorderSide(color: Colors.white),
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            tileColor:
+                                Get.find<BlackModeController>().blackmode ==
+                                        true
+                                    ? Colors.black
+                                    : Colors.white,
+                            title: Text(
+                              result,
+                              style: TextStyle(
+                                  color: Get.find<BlackModeController>()
+                                              .blackmode ==
+                                          true
+                                      ? Colors.white
+                                      : blackmodecolor,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            onTap: () {
+                              // 1. 인포 페이지에 index값을 전달
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) =>
+                                      DictInfo(index: matchindex[index])));
+                            },
                           ),
-                          tileColor:
-                              blackmode == true ? Colors.black : Colors.white,
-                          title: Text(
-                            result,
-                            style: TextStyle(
-                                color: blackmode == true
-                                    ? Colors.white
-                                    : blackmodecolor,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          onTap: () {
-                            // 1. 인포 페이지에 index값을 전달
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) =>
-                                    DictInfo(index: matchindex[index])));
-                          },
-                        ),
-                      );
-              })),
-        )),
-      ],
+                        );
+                })),
+          )),
+        ],
+      ),
     );
   }
 
@@ -189,37 +214,48 @@ class _CategoryFilterState extends State<CategoryFilter> {
         matchindex.add(i);
       }
     }
-    return Expanded(
-      child: Container(
-        color: blackmode == true ? blackmodecolor : notblackmodecolor,
-        child: ListView.builder(
-            itemCount: matchQuery.length,
-            itemBuilder: ((context, index) {
-              var result = matchQuery[index];
-              return Card(
-                color: blackmode == true ? blackmodecolor : notblackmodecolor,
-                child: ListTile(
-                  shape: RoundedRectangleBorder(
-                    side: BorderSide(color: Colors.white),
-                    borderRadius: BorderRadius.circular(15),
+    return GetBuilder(
+      init: BlackModeController(),
+      builder: (_) => Expanded(
+        child: Container(
+          color: Get.find<BlackModeController>().blackmode == true
+              ? blackmodecolor
+              : notblackmodecolor,
+          child: ListView.builder(
+              itemCount: matchQuery.length,
+              itemBuilder: ((context, index) {
+                var result = matchQuery[index];
+                return Card(
+                  color: Get.find<BlackModeController>().blackmode == true
+                      ? blackmodecolor
+                      : notblackmodecolor,
+                  child: ListTile(
+                    shape: RoundedRectangleBorder(
+                      side: BorderSide(color: Colors.white),
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    tileColor: Get.find<BlackModeController>().blackmode == true
+                        ? Colors.black
+                        : Colors.white,
+                    title: Text(
+                      result,
+                      style: TextStyle(
+                          color:
+                              Get.find<BlackModeController>().blackmode == true
+                                  ? Colors.white
+                                  : blackmodecolor,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    onTap: () {
+                      // 1. 인포 페이지에 index값을 전달
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) =>
+                              DictInfo(index: matchindex[index])));
+                    },
                   ),
-                  tileColor: blackmode == true ? Colors.black : Colors.white,
-                  title: Text(
-                    result,
-                    style: TextStyle(
-                        color:
-                            blackmode == true ? Colors.white : blackmodecolor,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  onTap: () {
-                    // 1. 인포 페이지에 index값을 전달
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) =>
-                            DictInfo(index: matchindex[index])));
-                  },
-                ),
-              );
-            })),
+                );
+              })),
+        ),
       ),
     );
   }

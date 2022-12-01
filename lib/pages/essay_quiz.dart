@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:neologism/getx/blackmode.dart';
 import 'package:neologism/neo_function/essay_func.dart';
 import 'package:neologism/neo_function/quiz_func.dart';
 import 'package:neologism/pages/startpage.dart';
@@ -48,314 +51,347 @@ class _EssayQuizState extends State<EssayQuiz> {
     List split_list = sen_data[order]["answer"].toString().split('');
 
     String split_hint = split_list[word_num];
-    return Scaffold(
-        backgroundColor: blackmode == true ? blackmodecolor : notblackmodecolor,
-        appBar: QuizAppBar(
-          apptitle: '문장 퀴즈',
-          blackbutton: BlackModeButton(
-              ModeChanged: (value) => setState(() => blackmode = value)),
-        ),
-        body: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
-          Container(
-            height: MediaQuery.of(context).size.height * 0.42,
-            padding: EdgeInsets.fromLTRB(0.0, 30.0, 15.0, 80.0),
-            child: Column(children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 15.0),
-                    child: Text(
-                      "$idx/10",
-                      style: TextStyle(
-                          color:
-                              blackmode == true ? Colors.white : Colors.black,
-                          fontSize: 20.0),
-                      textAlign: TextAlign.start,
-                    ),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          IconButton(
-                              onPressed: hintclicked == false &&
-                                      hintblocked == false &&
-                                      hint_num != 0
-                                  ? () {
-                                      showhint(context, sen_data);
-                                      setState(() {
-                                        hintclicked = true;
-                                        hint_num--;
-                                      });
-                                    }
-                                  : null,
-                              icon: Icon(Icons.lightbulb,
-                                  color: hintclicked == false
-                                      ? Colors.grey
-                                      : Colors.yellow)),
-                          Text("X$hint_num",
-                              style: TextStyle(
-                                  color: blackmode == true
-                                      ? Colors.white
-                                      : Colors.black,
-                                  fontSize: 22.0))
-                        ],
-                      ),
-                      Text("맞춘개수: " + "$number_answer",
-                          style: TextStyle(
-                              color: blackmode == true
-                                  ? Colors.white
-                                  : Colors.black,
-                              fontSize: 20.0))
-                    ],
-                  ),
-                ],
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(40.0, 40.0, 0.0, 0.0),
-                child: Text(
-                  sen_data[order]["question"].toString(),
-                  style: TextStyle(
-                      color: blackmode == true ? Colors.white : Colors.black,
-                      fontSize: 25.0,
-                      fontWeight: FontWeight.bold),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 10.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+    return GetBuilder(
+      init: BlackModeController(),
+      builder: (_) => Scaffold(
+          backgroundColor: Get.find<BlackModeController>().blackmode == true
+              ? blackmodecolor
+              : notblackmodecolor,
+          appBar: QuizAppBar(
+            apptitle: '문장 퀴즈',
+            blackbutton: BlackModeButton(),
+          ),
+          body: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
+            Container(
+              height: MediaQuery.of(context).size.height * 0.42,
+              padding: EdgeInsets.fromLTRB(0.0, 30.0, 15.0, 80.0),
+              child: Column(children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    for (int i = 0; i < spellingnum(); i++)
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(5.0, 30.0, 5.0, 0.0),
-                        child: SizedBox(
-                          width: 45,
-                          height: 45,
-                          child: DecoratedBox(
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color: Colors.white,
-                                width: 25,
-                              ),
-                            ),
-                            child: Center(
-                              child: Text(
-                                i == word_num ? wordhint : "",
+                    Padding(
+                      padding: const EdgeInsets.only(left: 15.0),
+                      child: Text(
+                        "$idx/10",
+                        style: TextStyle(
+                            color: Get.find<BlackModeController>().blackmode ==
+                                    true
+                                ? Colors.white
+                                : Colors.black,
+                            fontSize: 20.0),
+                        textAlign: TextAlign.start,
+                      ),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            IconButton(
+                                onPressed: hintclicked == false &&
+                                        hintblocked == false &&
+                                        hint_num != 0
+                                    ? () {
+                                        showhint(context, sen_data);
+                                        setState(() {
+                                          hintclicked = true;
+                                          hint_num--;
+                                        });
+                                      }
+                                    : null,
+                                icon: Icon(Icons.lightbulb,
+                                    color: hintclicked == false
+                                        ? Colors.grey
+                                        : Colors.yellow)),
+                            Text("X$hint_num",
                                 style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 25,
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: 'MapleStory'),
-                              ),
-                            ),
-                          ),
+                                    color: Get.find<BlackModeController>()
+                                                .blackmode ==
+                                            true
+                                        ? Colors.white
+                                        : Colors.black,
+                                    fontSize: 22.0))
+                          ],
                         ),
-                      )
+                        Text("맞춘개수: " + "$number_answer",
+                            style: TextStyle(
+                                color:
+                                    Get.find<BlackModeController>().blackmode ==
+                                            true
+                                        ? Colors.white
+                                        : Colors.black,
+                                fontSize: 20.0))
+                      ],
+                    ),
                   ],
                 ),
-              )
-            ]),
-          ),
-          Divider(
-            height: 40,
-            color: blackmode == true ? Colors.white : Colors.black,
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 25.0),
-            child: TextField(
-                enabled: typetext,
-                controller: textcontroller,
-                textCapitalization: TextCapitalization.characters,
-                onChanged: (newText) {
-                  entertext = newText;
-                },
-                onSubmitted: (entertext) {
-                  setState(() {
-                    isanswer(entertext);
-                    answershow = true;
-                    if (answer_chance == 0) {
-                      typetext = false;
-                      hintblocked = true;
-                    } else if (answer_chance == 1) {
-                      wordhint = split_hint;
-                    }
-                  });
-                },
-                style: TextStyle(
-                    color: blackmode == true ? Colors.white : Colors.black),
-                decoration: InputDecoration(
-                    hintText: "정답을 입력하세요.",
-                    hintStyle:
-                        TextStyle(fontSize: 15.0, color: Colors.grey[500]),
-                    focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.greenAccent)),
-                    enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.white)),
-                    disabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.grey)))),
-          ),
-          answershow == true
-              ? answer == true
-                  ? Column(
-                      children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(40.0, 40.0, 0.0, 0.0),
+                  child: Text(
+                    sen_data[order]["question"].toString(),
+                    style: TextStyle(
+                        color: Get.find<BlackModeController>().blackmode == true
+                            ? Colors.white
+                            : Colors.black,
+                        fontSize: 25.0,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 10.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      for (int i = 0; i < spellingnum(); i++)
                         Padding(
-                          padding: const EdgeInsets.only(top: 15.0),
+                          padding:
+                              const EdgeInsets.fromLTRB(5.0, 30.0, 5.0, 0.0),
                           child: SizedBox(
-                            width: 100,
-                            height: 40,
-                            child: TextButton(
-                                style: TextButton.styleFrom(
-                                    backgroundColor: Colors.blue[400],
-                                    shape: RoundedRectangleBorder(
-                                        side: BorderSide(
-                                            color: Colors.white, width: 1.0),
-                                        borderRadius:
-                                            BorderRadius.circular(15.0))),
-                                onPressed: () {
-                                  setState(() {
-                                    if (idx < 10) {
-                                      nextpage();
-                                      textcontroller.clear();
-                                      typetext = true;
-                                    } else {
-                                      endpage(context, '/sentence');
-                                    }
-                                  });
-                                },
-                                child: Text(
-                                  "다음",
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 20.0),
-                                )),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 30),
-                          child: Text(
-                            "정답입니다!",
-                            style: TextStyle(
-                                color: blackmode == true
-                                    ? Colors.white
-                                    : Colors.black,
-                                fontSize: 20.0,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        )
-                      ],
-                    )
-                  : answer_chance == 0
-                      ? Column(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(top: 15.0),
-                              child: SizedBox(
-                                width: 100,
-                                height: 40,
-                                child: TextButton(
-                                    style: TextButton.styleFrom(
-                                        backgroundColor: Colors.blue[400],
-                                        shape: RoundedRectangleBorder(
-                                            side: BorderSide(
-                                                color: Colors.white,
-                                                width: 1.0),
-                                            borderRadius:
-                                                BorderRadius.circular(15.0))),
-                                    onPressed: () {
-                                      setState(() {
-                                        if (idx < 10) {
-                                          nextpage();
-                                          textcontroller.clear();
-                                          typetext = true;
-                                        } else {
-                                          endpage(context, '/sentence');
-                                        }
-                                      });
-                                    },
-                                    child: Text(
-                                      "다음",
-                                      style: TextStyle(
-                                          color: Colors.white, fontSize: 20.0),
-                                    )),
+                            width: 45,
+                            height: 45,
+                            child: DecoratedBox(
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: Colors.white,
+                                  width: 25,
+                                ),
                               ),
-                            ),
-                            Padding(
-                                padding: const EdgeInsets.only(top: 20.0),
-                                child: Column(
-                                  children: [
-                                    RichText(
-                                        text: TextSpan(
-                                            text: '정답은 ',
-                                            style: TextStyle(
-                                                color: blackmode == true
-                                                    ? Colors.white
-                                                    : Colors.black,
-                                                fontSize: 20.0,
-                                                fontWeight: FontWeight.bold,
-                                                fontFamily: 'MapleStory'),
-                                            children: <TextSpan>[
-                                          TextSpan(
-                                              text: "\"$ans" + "\"",
-                                              style: TextStyle(
-                                                  color: Colors.blue,
-                                                  fontFamily: 'MapleStory')),
-                                          TextSpan(
-                                              text: " 였습니다.",
-                                              style: TextStyle(
-                                                  color: blackmode == true
-                                                      ? Colors.white
-                                                      : Colors.black,
-                                                  fontSize: 20.0,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontFamily: 'MapleStory'))
-                                        ])),
-                                    Padding(
-                                      padding: const EdgeInsets.all(25),
-                                      child: Text(sen_data[order]["desc"],
-                                          style: TextStyle(
-                                              color: blackmode == true
-                                                  ? Colors.white
-                                                  : Colors.black,
-                                              fontSize: 20.0,
-                                              fontWeight: FontWeight.bold,
-                                              fontFamily: 'MapleStory')),
-                                    ),
-                                  ],
-                                ))
-                          ],
-                        )
-                      : Padding(
-                          padding: const EdgeInsets.only(top: 20.0),
-                          child: RichText(
-                              text: TextSpan(
-                                  text: '오답입니다! 기회가 ',
+                              child: Center(
+                                child: Text(
+                                  i == word_num ? wordhint : "",
                                   style: TextStyle(
-                                      color: blackmode == true
-                                          ? Colors.white
-                                          : Colors.black,
-                                      fontSize: 20.0,
+                                      color: Colors.black,
+                                      fontSize: 25,
                                       fontWeight: FontWeight.bold,
                                       fontFamily: 'MapleStory'),
-                                  children: <TextSpan>[
-                                TextSpan(
-                                    text: "$answer_chance",
+                                ),
+                              ),
+                            ),
+                          ),
+                        )
+                    ],
+                  ),
+                )
+              ]),
+            ),
+            Divider(
+              height: 40,
+              color: Get.find<BlackModeController>().blackmode == true
+                  ? Colors.white
+                  : Colors.black,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 25.0),
+              child: TextField(
+                  enabled: typetext,
+                  controller: textcontroller,
+                  textCapitalization: TextCapitalization.characters,
+                  onChanged: (newText) {
+                    entertext = newText;
+                  },
+                  onSubmitted: (entertext) {
+                    setState(() {
+                      isanswer(entertext);
+                      answershow = true;
+                      if (answer_chance == 0) {
+                        typetext = false;
+                        hintblocked = true;
+                      } else if (answer_chance == 1) {
+                        wordhint = split_hint;
+                      }
+                    });
+                  },
+                  style: TextStyle(
+                      color: Get.find<BlackModeController>().blackmode == true
+                          ? Colors.white
+                          : Colors.black),
+                  decoration: InputDecoration(
+                      hintText: "정답을 입력하세요.",
+                      hintStyle:
+                          TextStyle(fontSize: 15.0, color: Colors.grey[500]),
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.greenAccent)),
+                      enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white)),
+                      disabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.grey)))),
+            ),
+            answershow == true
+                ? answer == true
+                    ? Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(top: 15.0),
+                            child: SizedBox(
+                              width: 100,
+                              height: 40,
+                              child: TextButton(
+                                  style: TextButton.styleFrom(
+                                      backgroundColor: Colors.blue[400],
+                                      shape: RoundedRectangleBorder(
+                                          side: BorderSide(
+                                              color: Colors.white, width: 1.0),
+                                          borderRadius:
+                                              BorderRadius.circular(15.0))),
+                                  onPressed: () {
+                                    setState(() {
+                                      if (idx < 10) {
+                                        nextpage();
+                                        textcontroller.clear();
+                                        typetext = true;
+                                      } else {
+                                        endpage(context, '/sentence');
+                                      }
+                                    });
+                                  },
+                                  child: Text(
+                                    "다음",
                                     style: TextStyle(
-                                        color: Colors.blue,
-                                        fontFamily: 'MapleStory')),
-                                TextSpan(
-                                    text: "번 남았습니다!",
+                                        color: Colors.white, fontSize: 20.0),
+                                  )),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 30),
+                            child: Text(
+                              "정답입니다!",
+                              style: TextStyle(
+                                  color: Get.find<BlackModeController>()
+                                              .blackmode ==
+                                          true
+                                      ? Colors.white
+                                      : Colors.black,
+                                  fontSize: 20.0,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          )
+                        ],
+                      )
+                    : answer_chance == 0
+                        ? Column(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(top: 15.0),
+                                child: SizedBox(
+                                  width: 100,
+                                  height: 40,
+                                  child: TextButton(
+                                      style: TextButton.styleFrom(
+                                          backgroundColor: Colors.blue[400],
+                                          shape: RoundedRectangleBorder(
+                                              side: BorderSide(
+                                                  color: Colors.white,
+                                                  width: 1.0),
+                                              borderRadius:
+                                                  BorderRadius.circular(15.0))),
+                                      onPressed: () {
+                                        setState(() {
+                                          if (idx < 10) {
+                                            nextpage();
+                                            textcontroller.clear();
+                                            typetext = true;
+                                          } else {
+                                            endpage(context, '/sentence');
+                                          }
+                                        });
+                                      },
+                                      child: Text(
+                                        "다음",
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 20.0),
+                                      )),
+                                ),
+                              ),
+                              Padding(
+                                  padding: const EdgeInsets.only(top: 20.0),
+                                  child: Column(
+                                    children: [
+                                      RichText(
+                                          text: TextSpan(
+                                              text: '정답은 ',
+                                              style: TextStyle(
+                                                  color:
+                                                      Get.find<BlackModeController>()
+                                                                  .blackmode ==
+                                                              true
+                                                          ? Colors.white
+                                                          : Colors.black,
+                                                  fontSize: 20.0,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontFamily: 'MapleStory'),
+                                              children: <TextSpan>[
+                                            TextSpan(
+                                                text: "\"$ans" + "\"",
+                                                style: TextStyle(
+                                                    color: Colors.blue,
+                                                    fontFamily: 'MapleStory')),
+                                            TextSpan(
+                                                text: " 였습니다.",
+                                                style: TextStyle(
+                                                    color:
+                                                        Get.find<BlackModeController>()
+                                                                    .blackmode ==
+                                                                true
+                                                            ? Colors.white
+                                                            : Colors.black,
+                                                    fontSize: 20.0,
+                                                    fontWeight: FontWeight.bold,
+                                                    fontFamily: 'MapleStory'))
+                                          ])),
+                                      Padding(
+                                        padding: const EdgeInsets.all(25),
+                                        child: Text(sen_data[order]["desc"],
+                                            style: TextStyle(
+                                                color:
+                                                    Get.find<BlackModeController>()
+                                                                .blackmode ==
+                                                            true
+                                                        ? Colors.white
+                                                        : Colors.black,
+                                                fontSize: 20.0,
+                                                fontWeight: FontWeight.bold,
+                                                fontFamily: 'MapleStory')),
+                                      ),
+                                    ],
+                                  ))
+                            ],
+                          )
+                        : Padding(
+                            padding: const EdgeInsets.only(top: 20.0),
+                            child: RichText(
+                                text: TextSpan(
+                                    text: '오답입니다! 기회가 ',
                                     style: TextStyle(
-                                        color: blackmode == true
+                                        color: Get.find<BlackModeController>()
+                                                    .blackmode ==
+                                                true
                                             ? Colors.white
                                             : Colors.black,
                                         fontSize: 20.0,
                                         fontWeight: FontWeight.bold,
-                                        fontFamily: 'MapleStory'))
-                              ])),
-                        )
-              : SizedBox()
-        ]));
+                                        fontFamily: 'MapleStory'),
+                                    children: <TextSpan>[
+                                  TextSpan(
+                                      text: "$answer_chance",
+                                      style: TextStyle(
+                                          color: Colors.blue,
+                                          fontFamily: 'MapleStory')),
+                                  TextSpan(
+                                      text: "번 남았습니다!",
+                                      style: TextStyle(
+                                          color: Get.find<BlackModeController>()
+                                                      .blackmode ==
+                                                  true
+                                              ? Colors.white
+                                              : Colors.black,
+                                          fontSize: 20.0,
+                                          fontWeight: FontWeight.bold,
+                                          fontFamily: 'MapleStory'))
+                                ])),
+                          )
+                : SizedBox()
+          ])),
+    );
   }
 }
