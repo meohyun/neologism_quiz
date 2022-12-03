@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:get/instance_manager.dart';
 import 'package:neologism/getx/blackmode.dart';
-import 'package:neologism/getx/nextpage.dart';
 import 'package:neologism/neo_function/quiz_func.dart';
 import 'package:neologism/pages/startpage.dart';
 
@@ -51,7 +50,6 @@ class NextButton extends StatefulWidget {
 }
 
 class _NextButtonState extends State<NextButton> {
-  NextPageController _nextPageController = Get.put(NextPageController());
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -64,10 +62,10 @@ class _NextButtonState extends State<NextButton> {
                   borderRadius: BorderRadius.circular(15.0))),
           onPressed: () {
             if (idx < 10) {
-              _nextPageController.nextpage();
-            } //else {
-            //   endpage(context, '/sentence');
-            // }
+              nextpage();
+            } else {
+              endpage(context, '/sentence');
+            }
           },
           child: Text(
             "다음",

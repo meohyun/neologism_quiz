@@ -1,10 +1,16 @@
+import 'package:firebase_core/firebase_core.dart';
 import "package:flutter/material.dart";
+import 'package:neologism/firebase_options.dart';
 import 'package:neologism/pages/dict_neologism.dart';
 import 'package:neologism/pages/essay_quiz.dart';
 import 'package:neologism/pages/startpage.dart';
 import 'package:neologism/pages/word_quiz.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(Neologism());
 }
 

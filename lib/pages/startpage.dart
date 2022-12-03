@@ -1,7 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutterfire_ui/auth.dart';
 import 'package:get/get.dart';
 import 'package:neologism/getx/blackmode.dart';
 import 'package:neologism/neo_function/quiz_func.dart';
+import 'package:neologism/neo_function/start_func.dart';
 import 'package:neologism/widgets/Buttons.dart';
 
 var blackmodecolor = Colors.black;
@@ -20,6 +23,78 @@ class _StartpageState extends State<Startpage> {
 
   @override
   Widget build(BuildContext context) {
+    return Scaffold(
+      //drawer: MyDrawer(),
+      body: Authentication(),
+    );
+  }
+}
+
+class MyDrawer extends StatelessWidget {
+  const MyDrawer({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Drawer(
+      elevation: 0.0,
+      child: ListView(
+        children: [
+          UserAccountsDrawerHeader(
+              currentAccountPicture: CircleAvatar(
+                backgroundImage: AssetImage("assets/odong.png"),
+                backgroundColor: Colors.blue,
+              ),
+              accountName: Text("daehyun"),
+              accountEmail: Text("eogus1954@naver.com")),
+          ListTile(
+            leading: Icon(Icons.settings),
+            title: Text("settings"),
+          ),
+          ListTile(
+            leading: Icon(Icons.settings),
+            title: Text("settings"),
+          ),
+          ListTile(
+            leading: Icon(Icons.settings),
+            title: Text("settings"),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class Authentication extends StatelessWidget {
+  const Authentication({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder(
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return SignInScreen(
+              providerConfigs: [
+                //이메일 인증기능
+                EmailProviderConfiguration()
+              ],
+            );
+          }
+          return ScreenPage();
+        });
+  }
+}
+
+class ScreenPage extends StatefulWidget {
+  const ScreenPage({super.key});
+
+  @override
+  State<ScreenPage> createState() => _ScreenPageState();
+}
+
+class _ScreenPageState extends State<ScreenPage> {
+  @override
+  Widget build(BuildContext context) {
     return GetBuilder(
       init: BlackModeController(),
       builder: (_) => Scaffold(
@@ -27,19 +102,16 @@ class _StartpageState extends State<Startpage> {
             ? blackmodecolor
             : notblackmodecolor,
         appBar: AppBar(
-          leading: SizedBox(),
-          //leading: SizedBox(),
-          // leading: Builder(
-          //     builder: (context) => IconButton(
-          //         onPressed: () {
-          //           Scaffold.of(context).openDrawer();
-          //         },
-          //         icon: Icon(
-          //           Icons.menu_rounded,
-          //           color: blackmode == true ? Colors.white : Colors.blue,
-          //         ))),
-          elevation: 0.0,
+          leading: IconButton(
+              onPressed: () {
+                setState(() {
+                  logout(context);
+                });
+              },
+              color: Colors.grey[600],
+              icon: Icon(Icons.logout_rounded)),
           toolbarHeight: 100.0,
+          elevation: 0.0,
           centerTitle: true,
           title: const Padding(
             padding: const EdgeInsets.only(top: 30.0),
@@ -60,7 +132,6 @@ class _StartpageState extends State<Startpage> {
                 child: BlackModeButton())
           ],
         ),
-        //drawer: MyDrawer(),
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -99,40 +170,6 @@ class _StartpageState extends State<Startpage> {
             ],
           ),
         ),
-      ),
-    );
-  }
-}
-
-class MyDrawer extends StatelessWidget {
-  const MyDrawer({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Drawer(
-      elevation: 0.0,
-      child: ListView(
-        children: [
-          UserAccountsDrawerHeader(
-              currentAccountPicture: CircleAvatar(
-                backgroundImage: AssetImage("assets/odong.png"),
-                backgroundColor: Colors.blue,
-              ),
-              accountName: Text("daehyun"),
-              accountEmail: Text("eogus1954@naver.com")),
-          ListTile(
-            leading: Icon(Icons.settings),
-            title: Text("settings"),
-          ),
-          ListTile(
-            leading: Icon(Icons.settings),
-            title: Text("settings"),
-          ),
-          ListTile(
-            leading: Icon(Icons.settings),
-            title: Text("settings"),
-          ),
-        ],
       ),
     );
   }

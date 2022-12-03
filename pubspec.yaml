@@ -41,6 +41,9 @@ dependencies:
   shared_preferences: ^2.0.15
   provider: ^6.0.4
   get:
+  firebase_core: ^2.3.0
+  firebase_auth: ^4.1.5
+  flutterfire_ui: ^0.4.3+20
 
 
 
