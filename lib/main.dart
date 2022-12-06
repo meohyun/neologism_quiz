@@ -27,7 +27,9 @@ class _NeologismState extends State<Neologism> {
     return MaterialApp(
       title: "신조어 퀴즈",
       initialRoute: '/',
-      theme: ThemeData(fontFamily: 'MapleStory'),
+      theme: ThemeData(
+        fontFamily: 'MapleStory',
+      ),
       routes: {
         '/': (context) => Startpage(),
         '/word': (context) => NeologismQuiz(),

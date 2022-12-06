@@ -44,40 +44,39 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyAPO1FN27jZso_-569q90WGrLvsQHQf3Ps',
-    appId: '1:23963364658:web:d62d93322500fd5330fb2b',
-    messagingSenderId: '23963364658',
-    projectId: 'neologism-quiz',
-    authDomain: 'neologism-quiz.firebaseapp.com',
-    storageBucket: 'neologism-quiz.appspot.com',
-    measurementId: 'G-KPRMK06BP1',
+    apiKey: 'AIzaSyC2W-eQ2AzMANpU2qSPBc42c_OPrpMtaOw',
+    appId: '1:200024650804:web:0ea47109c881300c620661',
+    messagingSenderId: '200024650804',
+    projectId: 'neologismquiz',
+    authDomain: 'neologismquiz.firebaseapp.com',
+    storageBucket: 'neologismquiz.appspot.com',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyB8bUtggRD9cbFcWt-MHIGJYTGPc21b35U',
-    appId: '1:23963364658:android:ac06534782d96cba30fb2b',
-    messagingSenderId: '23963364658',
-    projectId: 'neologism-quiz',
-    storageBucket: 'neologism-quiz.appspot.com',
+    apiKey: 'AIzaSyAFrxtDJOnV6Ci9VOLQAjqf86HnEe6JrWA',
+    appId: '1:200024650804:android:9aede4f6ab30d7ef620661',
+    messagingSenderId: '200024650804',
+    projectId: 'neologismquiz',
+    storageBucket: 'neologismquiz.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyDiYljnsUcCsDRavGfIY3HwDEsFf2h8cnY',
-    appId: '1:23963364658:ios:20fa0005dbea691330fb2b',
-    messagingSenderId: '23963364658',
-    projectId: 'neologism-quiz',
-    storageBucket: 'neologism-quiz.appspot.com',
-    iosClientId: '23963364658-ne4l3vg9hk92c995rg0pjrd4r5brvgjn.apps.googleusercontent.com',
+    apiKey: 'AIzaSyDW5O-5EjCuZvV2r19PucLfn-QV4S0i0sM',
+    appId: '1:200024650804:ios:e48f945d32f1d26b620661',
+    messagingSenderId: '200024650804',
+    projectId: 'neologismquiz',
+    storageBucket: 'neologismquiz.appspot.com',
+    iosClientId: '200024650804-uuugc0fn9khhbvssmar9ma123iie9gau.apps.googleusercontent.com',
     iosBundleId: 'com.example.flutterApplication',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyDiYljnsUcCsDRavGfIY3HwDEsFf2h8cnY',
-    appId: '1:23963364658:ios:11b31c752fc5427830fb2b',
-    messagingSenderId: '23963364658',
-    projectId: 'neologism-quiz',
-    storageBucket: 'neologism-quiz.appspot.com',
-    iosClientId: '23963364658-sa1ttchhlqr2am7fikse02lrmkkfbhsq.apps.googleusercontent.com',
+    apiKey: 'AIzaSyDW5O-5EjCuZvV2r19PucLfn-QV4S0i0sM',
+    appId: '1:200024650804:ios:d833cefe37573422620661',
+    messagingSenderId: '200024650804',
+    projectId: 'neologismquiz',
+    storageBucket: 'neologismquiz.appspot.com',
+    iosClientId: '200024650804-c77v6g1mnnndl76944fin5h0vkbtkf4b.apps.googleusercontent.com',
     iosBundleId: 'com.example.neologism',
   );
 }

@@ -1,7 +1,7 @@
 {
   "file_generated_by": "FlutterFire CLI",
   "purpose": "FirebaseAppID & ProjectID for this Firebase app in this directory",
-  "GOOGLE_APP_ID": "1:23963364658:ios:11b31c752fc5427830fb2b",
-  "FIREBASE_PROJECT_ID": "neologism-quiz",
-  "GCM_SENDER_ID": "23963364658"
+  "GOOGLE_APP_ID": "1:200024650804:ios:d833cefe37573422620661",
+  "FIREBASE_PROJECT_ID": "neologismquiz",
+  "GCM_SENDER_ID": "200024650804"
 }

@@ -3,21 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>23963364658-ne4l3vg9hk92c995rg0pjrd4r5brvgjn.apps.googleusercontent.com</string>
+	<string>200024650804-uuugc0fn9khhbvssmar9ma123iie9gau.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.23963364658-ne4l3vg9hk92c995rg0pjrd4r5brvgjn</string>
+	<string>com.googleusercontent.apps.200024650804-uuugc0fn9khhbvssmar9ma123iie9gau</string>
 	<key>API_KEY</key>
-	<string>AIzaSyDiYljnsUcCsDRavGfIY3HwDEsFf2h8cnY</string>
+	<string>AIzaSyDW5O-5EjCuZvV2r19PucLfn-QV4S0i0sM</string>
 	<key>GCM_SENDER_ID</key>
-	<string>23963364658</string>
+	<string>200024650804</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.example.flutterApplication</string>
 	<key>PROJECT_ID</key>
-	<string>neologism-quiz</string>
+	<string>neologismquiz</string>
 	<key>STORAGE_BUCKET</key>
-	<string>neologism-quiz.appspot.com</string>
+	<string>neologismquiz.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,6 +29,7 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:23963364658:ios:20fa0005dbea691330fb2b</string>
+	<string>1:200024650804:ios:e48f945d32f1d26b620661</string>
 </dict>
 </plist>
+
