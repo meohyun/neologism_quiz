@@ -8,7 +8,7 @@ const List datas = [
     "desc": "추운날에도 아메리카노를 아이스로 먹는사람을 일컫는 말",
     "example": "난 추운날씨에도 아이스를 먹는 얼죽아야.",
     "hint": "추위 + 커피",
-    "category": "전체"
+    "category": "생활"
   },
   {
     "idx": 1,

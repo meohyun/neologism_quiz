@@ -6,12 +6,15 @@ import 'package:neologism/neo_function/dict_func.dart';
 import 'package:neologism/pages/dict_info.dart';
 import 'package:neologism/pages/startpage.dart';
 import 'package:neologism/datas/quizdata.dart';
+import 'package:neologism/widgets/Buttons.dart';
 
 var category_filtered = "";
+int category_index = 0;
 bool category_selected = false;
 
 setinit() {
   category_filtered = "전체";
+  int category_index = 0;
 }
 
 class NeologismDict extends StatefulWidget {
@@ -55,9 +58,6 @@ class _NeologismDictState extends State<NeologismDict> {
             SizedBox(
               width: 10,
             ),
-            // BlackModeButton(
-            //   ModeChanged: (value) => setState(() => blackmode = value),
-            // )
           ],
         ),
         backgroundColor: Get.find<BlackModeController>().blackmode == true
@@ -67,11 +67,14 @@ class _NeologismDictState extends State<NeologismDict> {
           children: [
             SizedBox(
                 width: MediaQuery.of(context).size.width,
-                height: 35,
+                height: 40,
                 child: CategoryButton(
-                    onChanged: (value) =>
-                        setState(() => category_filtered = value))),
-            category_filtered == "전체"
+                  onChanged: (value) =>
+                      setState(() => category_filtered = value),
+                  changedindex: (value) =>
+                      setState(() => category_index = value),
+                )),
+            category_index == 0
                 ? Expanded(
                     child: Container(
                       color: Get.find<BlackModeController>().blackmode == true

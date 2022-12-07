@@ -6,6 +6,7 @@ import 'package:neologism/getx/blackmode.dart';
 import 'package:neologism/neo_function/quiz_func.dart';
 import 'package:neologism/widgets/Buttons.dart';
 import 'package:neologism/widgets/mydrawer.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 var blackmodecolor = Colors.black;
 var notblackmodecolor = Colors.deepPurple[100];
@@ -60,6 +61,20 @@ class Authentication extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 25),
+                    child: Text(
+                      "신조어 퀴즈에 오신걸 환영합니다!",
+                      style: TextStyle(fontSize: 25),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 25),
+                    child: Text(
+                      "퀴즈를 통해 신조어를 배워봐요!",
+                      style: TextStyle(fontSize: 25),
+                    ),
+                  ),
                   SizedBox(
                     height: 50,
                     width: 150,
@@ -108,73 +123,72 @@ class _ScreenPageState extends State<ScreenPage> {
     return GetBuilder(
       init: BlackModeController(),
       builder: (_) => Scaffold(
-        drawer: MyDrawer(),
-        backgroundColor: Get.find<BlackModeController>().blackmode == true
-            ? blackmodecolor
-            : notblackmodecolor,
-        appBar: AppBar(
-          iconTheme: IconThemeData(color: Colors.grey),
-          toolbarHeight: 80.0,
-          elevation: 0.0,
-          centerTitle: true,
-          title: const Padding(
-            padding: const EdgeInsets.only(top: 10.0),
-            child: Text(
-              "Neologism Quiz",
-              style: TextStyle(
-                  color: Colors.teal,
-                  fontSize: 25.0,
-                  fontWeight: FontWeight.w700),
-            ),
-          ),
+          drawer: MyDrawer(),
           backgroundColor: Get.find<BlackModeController>().blackmode == true
               ? blackmodecolor
               : notblackmodecolor,
-          actions: [
-            Padding(
-                padding: const EdgeInsets.fromLTRB(0.0, 0.0, 10.0, 0.0),
-                child: BlackModeButton())
-          ],
-        ),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              CircleAvatar(
-                backgroundImage: AssetImage('assets/odong.png'),
-                backgroundColor:
-                    Get.find<BlackModeController>().blackmode == true
-                        ? blackmodecolor
-                        : notblackmodecolor,
-                radius: 80.0,
+          appBar: AppBar(
+            iconTheme: IconThemeData(color: Colors.grey),
+            toolbarHeight: 80.0,
+            elevation: 0.0,
+            centerTitle: true,
+            title: const Padding(
+              padding: const EdgeInsets.only(top: 10.0),
+              child: Text(
+                "Neologism Quiz",
+                style: TextStyle(
+                    color: Colors.teal,
+                    fontSize: 25.0,
+                    fontWeight: FontWeight.w700),
               ),
-              SizedBox(
-                width: 100,
-                child: TextButton(
-                    style: TextButton.styleFrom(
-                      backgroundColor: Colors.blue,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        quiz_choice(context);
-                      });
-                    },
-                    child: Text(
-                      "시작하기",
-                      style: TextStyle(color: Colors.white, fontSize: 18.0),
-                    )),
-              ),
-              const MainPageButton(
-                page: '/dict',
-                text: "신조어 사전",
-              )
+            ),
+            backgroundColor: Get.find<BlackModeController>().blackmode == true
+                ? blackmodecolor
+                : notblackmodecolor,
+            actions: [
+              Padding(
+                  padding: const EdgeInsets.fromLTRB(0.0, 0.0, 10.0, 0.0),
+                  child: BlackModeButton())
             ],
           ),
-        ),
-      ),
+          body: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                CircleAvatar(
+                  backgroundImage: AssetImage('assets/odong.png'),
+                  backgroundColor:
+                      Get.find<BlackModeController>().blackmode == true
+                          ? blackmodecolor
+                          : notblackmodecolor,
+                  radius: 80.0,
+                ),
+                SizedBox(
+                  width: 100,
+                  child: TextButton(
+                      style: TextButton.styleFrom(
+                        backgroundColor: Colors.blue,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          quiz_choice(context);
+                        });
+                      },
+                      child: Text(
+                        "시작하기",
+                        style: TextStyle(color: Colors.white, fontSize: 18.0),
+                      )),
+                ),
+                const MainPageButton(
+                  page: '/dict',
+                  text: "신조어 사전",
+                )
+              ],
+            ),
+          )),
     );
   }
 }

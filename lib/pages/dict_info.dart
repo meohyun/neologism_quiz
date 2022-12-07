@@ -28,6 +28,7 @@ class _DictInfoState extends State<DictInfo> {
           title: Text(
             "신조어 사전",
             style: TextStyle(
+                fontWeight: FontWeight.bold,
                 color: Get.find<BlackModeController>().blackmode == true
                     ? Colors.white
                     : blackmodecolor),
@@ -59,63 +60,82 @@ class _DictInfoState extends State<DictInfo> {
                     ? blackmodecolor
                     : notblackmodecolor,
                 child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: SizedBox(
-                          height: 150,
-                          child: Column(
-                            children: [
-                              Text(
-                                datas[widget.index]["desc_title"],
-                                style: TextStyle(
-                                    fontSize: 28.0,
-                                    color: Get.find<BlackModeController>()
-                                                .blackmode ==
-                                            true
-                                        ? Colors.white
-                                        : blackmodecolor,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              SizedBox(
-                                height: 30,
-                              ),
-                              Text(
-                                datas[widget.index]["desc"],
-                                style: TextStyle(
-                                    color: Get.find<BlackModeController>()
-                                                .blackmode ==
-                                            true
-                                        ? Colors.white
-                                        : blackmodecolor,
-                                    fontSize: 20.0),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Divider(
-                        height: 0.0,
-                        color: Get.find<BlackModeController>().blackmode == true
-                            ? Colors.white
-                            : blackmodecolor,
-                      ),
-                      SizedBox(
-                        height: 100,
-                        child: Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: Text("예시: " + datas[widget.index]["example"],
-                              style: TextStyle(
-                                  color: Get.find<BlackModeController>()
-                                              .blackmode ==
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 300),
+                      child: Text("분류: " + datas[widget.index]["category"],
+                          style: TextStyle(
+                              fontSize: 20.0,
+                              color:
+                                  Get.find<BlackModeController>().blackmode ==
                                           true
                                       ? Colors.white
                                       : blackmodecolor,
-                                  fontSize: 18.0)),
-                        ),
-                      )
-                    ]),
+                              fontWeight: FontWeight.bold)),
+                    ),
+                    Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: SizedBox(
+                              height: 150,
+                              child: Column(
+                                children: [
+                                  Text(
+                                    datas[widget.index]["desc_title"],
+                                    style: TextStyle(
+                                        fontSize: 28.0,
+                                        color: Get.find<BlackModeController>()
+                                                    .blackmode ==
+                                                true
+                                            ? Colors.white
+                                            : blackmodecolor,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  SizedBox(
+                                    height: 30,
+                                  ),
+                                  Text(
+                                    datas[widget.index]["desc"],
+                                    style: TextStyle(
+                                        color: Get.find<BlackModeController>()
+                                                    .blackmode ==
+                                                true
+                                            ? Colors.white
+                                            : blackmodecolor,
+                                        fontSize: 20.0),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          Divider(
+                            height: 50.0,
+                            color: Get.find<BlackModeController>().blackmode ==
+                                    true
+                                ? Colors.white
+                                : blackmodecolor,
+                          ),
+                          SizedBox(
+                            height: 380,
+                            child: Padding(
+                              padding: const EdgeInsets.only(top: 30),
+                              child: Text(
+                                  "예시: " + datas[widget.index]["example"],
+                                  style: TextStyle(
+                                      color: Get.find<BlackModeController>()
+                                                  .blackmode ==
+                                              true
+                                          ? Colors.white
+                                          : blackmodecolor,
+                                      fontSize: 18.0)),
+                            ),
+                          )
+                        ]),
+                  ],
+                ),
               ),
             ),
           ],

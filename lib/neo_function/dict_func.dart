@@ -150,9 +150,11 @@ class CustomSearchDelegate extends SearchDelegate {
 
 // 카테고리 버튼
 class CategoryButton extends StatefulWidget {
-  CategoryButton({super.key, required this.onChanged});
+  CategoryButton(
+      {super.key, required this.onChanged, required this.changedindex});
 
   final ValueChanged<String> onChanged;
+  final ValueChanged<int> changedindex;
 
   @override
   State<CategoryButton> createState() => _CategorysState();
@@ -169,25 +171,34 @@ class _CategorysState extends State<CategoryButton> {
         itemBuilder: ((context, index) {
           final pressAttention = pressedAttentionIndex == index;
           return (Padding(
-            padding: const EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 5.0),
-            child: TextButton(
-              onPressed: () {
-                widget.onChanged(datas[index]["category"]);
-                setState(() {
-                  pressedAttentionIndex = index;
-                  category_selected = true;
-                });
-              },
-              child: Text(
-                datas[index]["category"],
-                style: TextStyle(color: blackmodecolor),
-              ),
-              style: TextButton.styleFrom(
-                backgroundColor:
-                    pressAttention ? Colors.amberAccent : Colors.grey[200],
-                shape: RoundedRectangleBorder(
-                    side: BorderSide(color: Colors.white),
-                    borderRadius: BorderRadius.circular(15)),
+            padding: const EdgeInsets.fromLTRB(12.0, 0.0, 0.0, 5.0),
+            child: SizedBox(
+              width: 70,
+              child: TextButton(
+                onPressed: () {
+                  widget.onChanged(datas[index]["category"]);
+                  widget.changedindex(index);
+                  setState(() {
+                    pressedAttentionIndex = index;
+                    category_selected = true;
+                  });
+                },
+                child: index != 0
+                    ? Text(
+                        datas[index]["category"],
+                        style: TextStyle(color: blackmodecolor, fontSize: 17),
+                      )
+                    : Text(
+                        "전체",
+                        style: TextStyle(color: blackmodecolor, fontSize: 17),
+                      ),
+                style: TextButton.styleFrom(
+                  backgroundColor:
+                      pressAttention ? Colors.amberAccent : Colors.grey[200],
+                  shape: RoundedRectangleBorder(
+                      side: BorderSide(color: Colors.white),
+                      borderRadius: BorderRadius.circular(15)),
+                ),
               ),
             ),
           ));
@@ -214,6 +225,7 @@ class _CategoryFilterState extends State<CategoryFilter> {
         matchindex.add(i);
       }
     }
+
     return GetBuilder(
       init: BlackModeController(),
       builder: (_) => Expanded(
