@@ -41,7 +41,7 @@ void logout(context) {
                               Navigator.pop(context);
                             },
                             child: Text(
-                              "예",
+                              "예!",
                               style: TextStyle(fontSize: 25.0),
                             )),
                         TextButton(
