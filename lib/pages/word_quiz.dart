@@ -127,7 +127,7 @@ class _MyWidgetState extends State<NeologismQuiz> {
               ),
             ),
             Divider(
-              height: 40,
+              height: 20,
               color: Get.find<BlackModeController>().blackmode == true
                   ? Colors.white
                   : Colors.black,
@@ -210,27 +210,30 @@ class _MyWidgetState extends State<NeologismQuiz> {
             ),
             answershow == true
                 ? Padding(
-                    padding: const EdgeInsets.only(bottom: 10.0),
-                    child: TextButton(
-                        style: TextButton.styleFrom(
-                            backgroundColor: Colors.blue[400],
-                            shape: RoundedRectangleBorder(
-                                side:
-                                    BorderSide(color: Colors.white, width: 1.0),
-                                borderRadius: BorderRadius.circular(15.0))),
-                        onPressed: () {
-                          if (idx < 10) {
-                            setState(() {
-                              nextpage();
-                            });
-                          } else {
-                            endpage(context, '/sentence');
-                          }
-                        },
-                        child: Text(
-                          "다음",
-                          style: TextStyle(color: Colors.white),
-                        )))
+                    padding: const EdgeInsets.only(bottom: 30.0),
+                    child: SizedBox(
+                      width: 100,
+                      child: TextButton(
+                          style: TextButton.styleFrom(
+                              backgroundColor: Colors.blue[400],
+                              shape: RoundedRectangleBorder(
+                                  side: BorderSide(
+                                      color: Colors.white, width: 1.0),
+                                  borderRadius: BorderRadius.circular(15.0))),
+                          onPressed: () {
+                            if (idx < 10) {
+                              setState(() {
+                                nextpage();
+                              });
+                            } else {
+                              endpage(context, '/sentence');
+                            }
+                          },
+                          child: Text(
+                            "다음",
+                            style: TextStyle(color: Colors.white, fontSize: 20),
+                          )),
+                    ))
                 : SizedBox()
           ],
         ),

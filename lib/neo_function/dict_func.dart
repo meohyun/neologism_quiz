@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:neologism/getx/blackmode.dart';
 import 'package:neologism/pages/dict_info.dart';
 import 'package:neologism/pages/dict_neologism.dart';

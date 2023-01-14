@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:neologism/getx/blackmode.dart';
@@ -13,6 +14,7 @@ class MyDrawer extends StatefulWidget {
 class _MyDrawerState extends State<MyDrawer> {
   @override
   Widget build(BuildContext context) {
+    final user = FirebaseAuth.instance.currentUser;
     return GetBuilder(
       init: BlackModeController(),
       builder: (_) => Drawer(
@@ -39,44 +41,45 @@ class _MyDrawerState extends State<MyDrawer> {
                   "daehyun",
                   style: TextStyle(fontSize: 20),
                 ),
-                accountEmail: Text(
-                  "eogus1954@naver.com",
+                accountEmail: 
+                Text(
+                  "d",
                   style: TextStyle(fontSize: 20),
                 )),
-            ListTile(
-              leading: Icon(
-                Icons.settings,
-                color: Get.find<BlackModeController>().blackmode == true
-                    ? Colors.white
-                    : Colors.black,
-              ),
-              title: Text(
-                "settings",
-                style: TextStyle(
-                  fontSize: 20,
-                  color: Get.find<BlackModeController>().blackmode == true
-                      ? Colors.white
-                      : Colors.black,
-                ),
-              ),
-            ),
-            ListTile(
-              leading: Icon(
-                Icons.settings,
-                color: Get.find<BlackModeController>().blackmode == true
-                    ? Colors.white
-                    : Colors.black,
-              ),
-              title: Text(
-                "settings",
-                style: TextStyle(
-                  fontSize: 20,
-                  color: Get.find<BlackModeController>().blackmode == true
-                      ? Colors.white
-                      : Colors.black,
-                ),
-              ),
-            ),
+            // ListTile(
+            //   leading: Icon(
+            //     Icons.settings,
+            //     color: Get.find<BlackModeController>().blackmode == true
+            //         ? Colors.white
+            //         : Colors.black,
+            //   ),
+            //   title: Text(
+            //     "settings",
+            //     style: TextStyle(
+            //       fontSize: 20,
+            //       color: Get.find<BlackModeController>().blackmode == true
+            //           ? Colors.white
+            //           : Colors.black,
+            //     ),
+            //   ),
+            // ),
+            // ListTile(
+            //   leading: Icon(
+            //     Icons.settings,
+            //     color: Get.find<BlackModeController>().blackmode == true
+            //         ? Colors.white
+            //         : Colors.black,
+            //   ),
+            //   title: Text(
+            //     "settings",
+            //     style: TextStyle(
+            //       fontSize: 20,
+            //       color: Get.find<BlackModeController>().blackmode == true
+            //           ? Colors.white
+            //           : Colors.black,
+            //     ),
+            //   ),
+            // ),
             ListTile(
                 leading: Icon(
                   Icons.logout_rounded,
