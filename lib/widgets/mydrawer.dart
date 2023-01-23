@@ -38,48 +38,13 @@ class _MyDrawerState extends State<MyDrawer> {
                           : Colors.deepPurple[200],
                 ),
                 accountName: Text(
-                  "daehyun",
+                  "${FirebaseAuth.instance.currentUser!.displayName}",
                   style: TextStyle(fontSize: 20),
                 ),
-                accountEmail: 
-                Text(
-                  "d",
+                accountEmail: Text(
+                  "${FirebaseAuth.instance.currentUser!.email}",
                   style: TextStyle(fontSize: 20),
                 )),
-            // ListTile(
-            //   leading: Icon(
-            //     Icons.settings,
-            //     color: Get.find<BlackModeController>().blackmode == true
-            //         ? Colors.white
-            //         : Colors.black,
-            //   ),
-            //   title: Text(
-            //     "settings",
-            //     style: TextStyle(
-            //       fontSize: 20,
-            //       color: Get.find<BlackModeController>().blackmode == true
-            //           ? Colors.white
-            //           : Colors.black,
-            //     ),
-            //   ),
-            // ),
-            // ListTile(
-            //   leading: Icon(
-            //     Icons.settings,
-            //     color: Get.find<BlackModeController>().blackmode == true
-            //         ? Colors.white
-            //         : Colors.black,
-            //   ),
-            //   title: Text(
-            //     "settings",
-            //     style: TextStyle(
-            //       fontSize: 20,
-            //       color: Get.find<BlackModeController>().blackmode == true
-            //           ? Colors.white
-            //           : Colors.black,
-            //     ),
-            //   ),
-            // ),
             ListTile(
                 leading: Icon(
                   Icons.logout_rounded,
