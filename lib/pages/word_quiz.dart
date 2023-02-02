@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:neologism/getx/blackmode.dart';
@@ -7,7 +8,10 @@ import 'package:neologism/datas/quizdata.dart';
 import 'package:neologism/widgets/appbar.dart';
 import 'package:neologism/widgets/Buttons.dart';
 
+Timer? _timer;
 bool descblocked = false;
+int time = 15;
+String a = "";
 
 setinit() {
   answer = false;
@@ -19,6 +23,7 @@ setinit() {
   hintclicked = false;
   hintblocked = false;
   descblocked = false;
+  time = 10;
 }
 
 class NeologismQuiz extends StatefulWidget {
@@ -31,6 +36,22 @@ class _MyWidgetState extends State<NeologismQuiz> {
   void initState() {
     super.initState();
     setinit();
+    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      setState(() {
+        a = time.toString();
+        time--;
+        if (time < 1) {
+          timer.cancel();
+        }
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _timer?.cancel();
   }
 
   @override
@@ -53,19 +74,28 @@ class _MyWidgetState extends State<NeologismQuiz> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 15.0),
-                        child: Text(
-                          "$idx/10",
-                          style: TextStyle(
-                              color:
-                                  Get.find<BlackModeController>().blackmode ==
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 15.0),
+                            child: Text(
+                              "$idx/10",
+                              style: TextStyle(
+                                  color: Get.find<BlackModeController>()
+                                              .blackmode ==
                                           true
                                       ? Colors.white
                                       : Colors.black,
-                              fontSize: 20.0),
-                          textAlign: TextAlign.start,
-                        ),
+                                  fontSize: 20.0),
+                              textAlign: TextAlign.start,
+                            ),
+                          ),
+                          Text(
+                            "남은시간: " + a,
+                            style: TextStyle(fontSize: 20),
+                          )
+                        ],
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -147,11 +177,13 @@ class _MyWidgetState extends State<NeologismQuiz> {
                         child: ListTile(
                           shape: RoundedRectangleBorder(
                             side: BorderSide(
-                                color:
-                                    Get.find<BlackModeController>().blackmode ==
-                                            true
-                                        ? Colors.white
-                                        : Colors.teal),
+                                color: answershow == true
+                                    ? datas[order]["options"][index] ==
+                                            datas[order]["answer"]
+                                        ? Colors.greenAccent
+                                        : Colors.red
+                                    : Colors.white,
+                                width: answershow ? 2.5 : 1),
                             borderRadius: BorderRadius.circular(15),
                           ),
                           tileColor:
@@ -226,7 +258,7 @@ class _MyWidgetState extends State<NeologismQuiz> {
                                 nextpage();
                               });
                             } else {
-                              endpage(context, '/sentence');
+                              endpage(context, '/word');
                             }
                           },
                           child: Text(

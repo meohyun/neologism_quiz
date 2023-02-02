@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:neologism/getx/blackmode.dart';
 import 'package:neologism/neo_function/login_func.dart';
+import 'package:neologism/pages/startpage.dart';
+import 'package:neologism/widgets/Buttons.dart';
 
 class MyDrawer extends StatefulWidget {
   const MyDrawer({super.key});
@@ -45,6 +47,27 @@ class _MyDrawerState extends State<MyDrawer> {
                   "${FirebaseAuth.instance.currentUser!.email}",
                   style: TextStyle(fontSize: 20),
                 )),
+            SizedBox(
+              height: 20,
+            ),
+            ListTile(
+              leading: Icon(Icons.dark_mode),
+              title: Text(
+                "다크 모드",
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Get.find<BlackModeController>().blackmode == true
+                      ? Colors.white
+                      : Colors.black,
+                ),
+              ),
+              onTap: () {
+                Get.find<BlackModeController>().blackmodechange();
+              },
+            ),
+            SizedBox(
+              height: 20,
+            ),
             ListTile(
                 leading: Icon(
                   Icons.logout_rounded,

@@ -1,8 +1,7 @@
+import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
-import 'package:neologism/datas/sentence_data.dart';
 import 'package:neologism/getx/blackmode.dart';
 import 'package:neologism/pages/essay_quiz.dart';
 import 'package:neologism/pages/startpage.dart';
@@ -10,6 +9,7 @@ import 'package:neologism/datas/quizdata.dart';
 import 'package:neologism/pages/word_quiz.dart';
 import 'package:neologism/widgets/Buttons.dart';
 
+Timer? _timer;
 int order = 0;
 int idx = 1;
 int number_answer = 0;
@@ -87,6 +87,7 @@ endpage(context, page) {
                             onPressed: () {
                               Navigator.pushNamed(context, '/');
                               textcontroller.text = "";
+                              _timer?.cancel();
                             },
                             child: Text("홈으로",
                                 style: TextStyle(color: Colors.white))),
@@ -99,6 +100,7 @@ endpage(context, page) {
                             onPressed: () {
                               Navigator.pushNamed(context, page);
                               textcontroller.text = "";
+                              _timer?.cancel();
                             },
                             child: Text(
                               "다시하기",
@@ -162,6 +164,7 @@ quizexit(context) {
                           onPressed: () {
                             Navigator.pushNamed(context, '/');
                             textcontroller.text = "";
+                            _timer?.cancel();
                           },
                           child: Text(
                             "나가기",

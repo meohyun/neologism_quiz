@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -17,6 +19,7 @@ class Startpage extends StatefulWidget {
 }
 
 class _StartpageState extends State<Startpage> {
+  Timer? _timer;
   @override
   void initState() {
     super.initState();
@@ -145,11 +148,6 @@ class _ScreenPageState extends State<ScreenPage> {
             backgroundColor: Get.find<BlackModeController>().blackmode == true
                 ? blackmodecolor
                 : notblackmodecolor,
-            actions: [
-              Padding(
-                  padding: const EdgeInsets.fromLTRB(0.0, 0.0, 10.0, 0.0),
-                  child: BlackModeButton())
-            ],
           ),
           body: Center(
             child: Column(
