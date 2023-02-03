@@ -20,8 +20,10 @@ bool answershow = false;
 bool buttonclicked = false;
 bool hintclicked = false;
 bool hintblocked = false;
+bool is_running = true;
 
 showanswer() {
+  is_running = false;
   answershow = true;
   hintblocked = true;
 }
@@ -38,6 +40,8 @@ nextpage() {
   answer_chance = 3;
   wordhint = "";
   descblocked = false;
+  time = 11;
+  is_running = true;
 }
 
 endpage(context, page) {
@@ -100,7 +104,6 @@ endpage(context, page) {
                             onPressed: () {
                               Navigator.pushNamed(context, page);
                               textcontroller.text = "";
-                              _timer?.cancel();
                             },
                             child: Text(
                               "다시하기",
@@ -164,7 +167,7 @@ quizexit(context) {
                           onPressed: () {
                             Navigator.pushNamed(context, '/');
                             textcontroller.text = "";
-                            _timer?.cancel();
+                            descblocked = true;
                           },
                           child: Text(
                             "나가기",

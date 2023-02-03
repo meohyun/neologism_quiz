@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -8,7 +7,6 @@ import 'package:neologism/getx/blackmode.dart';
 import 'package:neologism/neo_function/quiz_func.dart';
 import 'package:neologism/widgets/Buttons.dart';
 import 'package:neologism/widgets/mydrawer.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 var blackmodecolor = Colors.black;
 var notblackmodecolor = Colors.deepPurple[100];

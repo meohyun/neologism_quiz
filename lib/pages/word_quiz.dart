@@ -10,10 +10,11 @@ import 'package:neologism/widgets/Buttons.dart';
 
 Timer? _timer;
 bool descblocked = false;
-int time = 15;
-String a = "";
+int time = 10;
+String _time = "10";
 
 setinit() {
+  time = 10;
   answer = false;
   order = makenumber(datas.length)[0];
   answershow = false;
@@ -23,7 +24,7 @@ setinit() {
   hintclicked = false;
   hintblocked = false;
   descblocked = false;
-  time = 10;
+  is_running = true;
 }
 
 class NeologismQuiz extends StatefulWidget {
@@ -34,24 +35,32 @@ class NeologismQuiz extends StatefulWidget {
 class _MyWidgetState extends State<NeologismQuiz> {
   @override
   void initState() {
-    super.initState();
     setinit();
+    _timer?.cancel();
     _timer = Timer.periodic(Duration(seconds: 1), (timer) {
       setState(() {
-        a = time.toString();
-        time--;
-        if (time < 1) {
-          timer.cancel();
+        if (is_running) {
+          time--;
+        }
+        _time = time.toString();
+        if (time <= 0) {
+          setState(() {
+            showanswer();
+            if (descblocked == false) {
+              showdesc(context);
+            }
+            descblocked = true;
+          });
         }
       });
     });
+    super.initState();
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
-    super.dispose();
     _timer?.cancel();
+    super.dispose();
   }
 
   @override
@@ -87,13 +96,16 @@ class _MyWidgetState extends State<NeologismQuiz> {
                                           true
                                       ? Colors.white
                                       : Colors.black,
-                                  fontSize: 20.0),
+                                  fontSize: 25),
                               textAlign: TextAlign.start,
                             ),
                           ),
                           Text(
-                            "남은시간: " + a,
-                            style: TextStyle(fontSize: 20),
+                            "남은시간: " + _time,
+                            style: TextStyle(
+                                fontSize: 25,
+                                fontWeight: FontWeight.bold,
+                                color: time <= 3 ? Colors.red : Colors.black),
                           )
                         ],
                       ),
@@ -125,7 +137,7 @@ class _MyWidgetState extends State<NeologismQuiz> {
                                               true
                                           ? Colors.white
                                           : Colors.black,
-                                      fontSize: 22.0))
+                                      fontSize: 25))
                             ],
                           ),
                           Text("맞춘개수: " + "$number_answer",
@@ -135,7 +147,7 @@ class _MyWidgetState extends State<NeologismQuiz> {
                                           true
                                       ? Colors.white
                                       : Colors.black,
-                                  fontSize: 20.0))
+                                  fontSize: 25.0))
                         ],
                       ),
                     ],
@@ -219,7 +231,7 @@ class _MyWidgetState extends State<NeologismQuiz> {
                                             true
                                         ? Colors.white
                                         : blackmodecolor,
-                                fontSize: 18),
+                                fontSize: 20),
                           ),
                           onTap: () {
                             if (datas[order]["options"][index] ==
