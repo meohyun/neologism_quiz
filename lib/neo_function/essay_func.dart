@@ -1,3 +1,4 @@
+import 'package:neologism/datas/quizdata.dart';
 import 'package:neologism/neo_function/quiz_func.dart';
 import 'package:neologism/pages/essay_quiz.dart';
 import 'package:neologism/datas/sentence_data.dart';
@@ -21,10 +22,18 @@ spellingnum() {
   return nums;
 }
 
-// essayquiz show split hint
-// showsplithint() {
-//   List split_list = sen_data[order]["answer"].toString().split('');
-//   int word_num = Random().nextInt(split_list.length);
-//   String split_hint = split_list[word_num];
-//   return split_hint;
-// }
+essaynextpage() {
+  answer = false;
+  answershow = false;
+  order = makenumber(datas.length)[idx - 1];
+  hintclicked = false;
+  hintblocked = false;
+  idx++;
+  essay_answershow = false;
+  textcontroller.clear();
+  typetext = true;
+  answer_chance = 3;
+  wordhint = "";
+  essayTime = 15;
+  essay_running = true;
+}

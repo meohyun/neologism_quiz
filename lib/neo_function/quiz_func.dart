@@ -17,6 +17,7 @@ int hint_num = 5;
 bool answer = false;
 bool correct = false;
 bool answershow = false;
+bool essay_answershow = false;
 bool buttonclicked = false;
 bool hintclicked = false;
 bool hintblocked = false;
@@ -30,15 +31,9 @@ nextpage() {
   hintclicked = false;
   hintblocked = false;
   idx++;
-  textcontroller.clear();
-  typetext = true;
-  answer_chance = 3;
-  wordhint = "";
   descblocked = false;
   time = 10;
-  essayTime = 15;
   is_running = true;
-  essay_running = true;
 }
 
 endpage(context, page) {

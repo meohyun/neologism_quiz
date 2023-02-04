@@ -7,6 +7,7 @@ import 'package:neologism/neo_function/essay_func.dart';
 import 'package:neologism/neo_function/quiz_func.dart';
 import 'package:neologism/pages/startpage.dart';
 import 'package:neologism/datas/sentence_data.dart';
+import 'package:neologism/pages/word_quiz.dart';
 import 'package:neologism/widgets/Buttons.dart';
 import 'package:neologism/widgets/appbar.dart';
 
@@ -24,12 +25,13 @@ setinit() {
   essayTime = 15;
   answer = false;
   order = makenumber(sen_data.length)[0];
-  answershow = false;
+  essay_answershow = false;
   idx = 1;
   answer_chance = 3;
   hint_num = 5;
   number_answer = 0;
   entertext = "";
+  descblocked = true;
   hintclicked = false;
   hintblocked = false;
   typetext = true;
@@ -40,7 +42,7 @@ setinit() {
 timeout() {
   essay_running = false;
   answer_chance = 0;
-  answershow = true;
+  essay_answershow = true;
   typetext = false;
   hintblocked = true;
 }
@@ -241,7 +243,7 @@ class _EssayQuizState extends State<EssayQuiz> {
                 onSubmitted: (entertext) {
                   setState(() {
                     isanswer(entertext);
-                    answershow = true;
+                    essay_answershow = true;
                     if (answer_chance == 0) {
                       typetext = false;
                       hintblocked = true;
@@ -265,7 +267,7 @@ class _EssayQuizState extends State<EssayQuiz> {
                     disabledBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.grey)))),
           ),
-          answershow == true
+          essay_answershow == true
               ? answer == true
                   ? Column(
                       children: [
@@ -285,7 +287,7 @@ class _EssayQuizState extends State<EssayQuiz> {
                                 onPressed: () {
                                   setState(() {
                                     if (idx < 10) {
-                                      nextpage();
+                                      essaynextpage();
                                       textcontroller.clear();
                                       typetext = true;
                                     } else {
@@ -300,19 +302,36 @@ class _EssayQuizState extends State<EssayQuiz> {
                                 )),
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 30),
-                          child: Text(
-                            "정답입니다!",
-                            style: TextStyle(
-                                color:
-                                    Get.find<BlackModeController>().blackmode ==
+                        Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(top: 30),
+                              child: Text(
+                                "정답입니다!",
+                                style: TextStyle(
+                                    color: Get.find<BlackModeController>()
+                                                .blackmode ==
                                             true
                                         ? Colors.white
                                         : Colors.black,
-                                fontSize: 20.0,
-                                fontWeight: FontWeight.bold),
-                          ),
+                                    fontSize: 20.0,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(25),
+                              child: Text(sen_data[order]["desc"],
+                                  style: TextStyle(
+                                      color: Get.find<BlackModeController>()
+                                                  .blackmode ==
+                                              true
+                                          ? Colors.white
+                                          : Colors.black,
+                                      fontSize: 20.0,
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: 'MapleStory')),
+                            ),
+                          ],
                         )
                       ],
                     )
@@ -336,7 +355,7 @@ class _EssayQuizState extends State<EssayQuiz> {
                                     onPressed: () {
                                       setState(() {
                                         if (idx < 10) {
-                                          nextpage();
+                                          essaynextpage();
                                           textcontroller.clear();
                                           typetext = true;
                                         } else {

@@ -252,9 +252,7 @@ class _MyWidgetState extends State<NeologismQuiz> {
                                 answershow == false) {
                               number_answer++;
                             }
-                            setState(() {
-                              showanswer();
-                            });
+                            showanswer();
                           },
                         ),
                       ),
