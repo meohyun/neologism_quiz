@@ -4,6 +4,7 @@ import 'package:neologism/datas/sentence_data.dart';
 
 isanswer(value) {
   if (value.toString().toUpperCase() == sen_data[order]["answer"].toString()) {
+    essay_running = false;
     answer = true;
     number_answer++;
     hintblocked = true;

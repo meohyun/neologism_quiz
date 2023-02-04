@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:neologism/getx/blackmode.dart';
@@ -14,8 +16,12 @@ String wordhint = "";
 bool typetext = true;
 int answer_chance = 3;
 int word_num = 0;
+Timer? _essaytimer;
+int essayTime = 15;
+String _essayTime = "15";
 
 setinit() {
+  essayTime = 15;
   answer = false;
   order = makenumber(sen_data.length)[0];
   answershow = false;
@@ -28,6 +34,15 @@ setinit() {
   hintblocked = false;
   typetext = true;
   wordhint = "";
+  essay_running = true;
+}
+
+timeout() {
+  essay_running = false;
+  answer_chance = 0;
+  answershow = true;
+  typetext = false;
+  hintblocked = true;
 }
 
 class EssayQuiz extends StatefulWidget {
@@ -41,7 +56,25 @@ class _EssayQuizState extends State<EssayQuiz> {
   @override
   void initState() {
     super.initState();
+    _essaytimer?.cancel();
     setinit();
+    _essaytimer = Timer.periodic(Duration(seconds: 1), (timer) {
+      setState(() {
+        if (essay_running) {
+          essayTime--;
+        }
+        _essayTime = essayTime.toString();
+        if (essayTime <= 0) {
+          timeout();
+        }
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    _essaytimer?.cancel();
+    super.dispose();
   }
 
   @override
@@ -69,15 +102,34 @@ class _EssayQuizState extends State<EssayQuiz> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(left: 15.0),
-                    child: Text(
-                      "$idx/10",
-                      style: TextStyle(
-                          color:
-                              Get.find<BlackModeController>().blackmode == true
-                                  ? Colors.white
-                                  : Colors.black,
-                          fontSize: 20.0),
-                      textAlign: TextAlign.start,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "$idx/10",
+                          style: TextStyle(
+                              color:
+                                  Get.find<BlackModeController>().blackmode ==
+                                          true
+                                      ? Colors.white
+                                      : Colors.black,
+                              fontSize: 25),
+                          textAlign: TextAlign.start,
+                        ),
+                        Text(
+                          "남은시간: " + _essayTime,
+                          style: TextStyle(
+                              fontSize: 25,
+                              fontWeight: FontWeight.bold,
+                              color: essayTime <= 3
+                                  ? Colors.red
+                                  : (Get.find<BlackModeController>()
+                                              .blackmode ==
+                                          true
+                                      ? Colors.white
+                                      : Colors.black)),
+                        )
+                      ],
                     ),
                   ),
                   Row(
@@ -108,7 +160,7 @@ class _EssayQuizState extends State<EssayQuiz> {
                                           true
                                       ? Colors.white
                                       : Colors.black,
-                                  fontSize: 22.0))
+                                  fontSize: 25))
                         ],
                       ),
                       Text("맞춘개수: " + "$number_answer",
@@ -118,7 +170,7 @@ class _EssayQuizState extends State<EssayQuiz> {
                                           true
                                       ? Colors.white
                                       : Colors.black,
-                              fontSize: 20.0))
+                              fontSize: 25))
                     ],
                   ),
                 ],
@@ -136,7 +188,7 @@ class _EssayQuizState extends State<EssayQuiz> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(top: 10.0),
+                padding: const EdgeInsets.only(top: 6.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [

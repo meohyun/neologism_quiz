@@ -33,6 +33,18 @@ class NeologismQuiz extends StatefulWidget {
 }
 
 class _MyWidgetState extends State<NeologismQuiz> {
+  showanswer() {
+    is_running = false;
+    answershow = true;
+    hintblocked = true;
+    setState(() {
+      if (descblocked == false) {
+        showdesc(context);
+      }
+      descblocked = true;
+    });
+  }
+
   @override
   void initState() {
     setinit();
@@ -44,13 +56,7 @@ class _MyWidgetState extends State<NeologismQuiz> {
         }
         _time = time.toString();
         if (time <= 0) {
-          setState(() {
-            showanswer();
-            if (descblocked == false) {
-              showdesc(context);
-            }
-            descblocked = true;
-          });
+          showanswer();
         }
       });
     });
@@ -105,7 +111,13 @@ class _MyWidgetState extends State<NeologismQuiz> {
                             style: TextStyle(
                                 fontSize: 25,
                                 fontWeight: FontWeight.bold,
-                                color: time <= 3 ? Colors.red : Colors.black),
+                                color: time <= 3
+                                    ? Colors.red
+                                    : (Get.find<BlackModeController>()
+                                                .blackmode ==
+                                            true
+                                        ? Colors.white
+                                        : Colors.black)),
                           )
                         ],
                       ),
@@ -203,8 +215,9 @@ class _MyWidgetState extends State<NeologismQuiz> {
                                   ? blackmodecolor
                                   : Colors.blue[300],
                           leading: Text(
-                            (index + 1).toString() + ".",
+                            (index + 1).toString(),
                             style: TextStyle(
+                                fontSize: 20,
                                 color:
                                     Get.find<BlackModeController>().blackmode ==
                                             true
@@ -241,10 +254,6 @@ class _MyWidgetState extends State<NeologismQuiz> {
                             }
                             setState(() {
                               showanswer();
-                              if (descblocked == false) {
-                                showdesc(context);
-                              }
-                              descblocked = true;
                             });
                           },
                         ),

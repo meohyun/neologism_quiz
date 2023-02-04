@@ -21,12 +21,7 @@ bool buttonclicked = false;
 bool hintclicked = false;
 bool hintblocked = false;
 bool is_running = true;
-
-showanswer() {
-  is_running = false;
-  answershow = true;
-  hintblocked = true;
-}
+bool essay_running = true;
 
 nextpage() {
   answer = false;
@@ -40,8 +35,10 @@ nextpage() {
   answer_chance = 3;
   wordhint = "";
   descblocked = false;
-  time = 11;
+  time = 10;
+  essayTime = 15;
   is_running = true;
+  essay_running = true;
 }
 
 endpage(context, page) {
@@ -167,6 +164,8 @@ quizexit(context) {
                           onPressed: () {
                             Navigator.pushNamed(context, '/');
                             textcontroller.text = "";
+                            _timer?.cancel();
+                            is_running = false;
                             descblocked = true;
                           },
                           child: Text(
