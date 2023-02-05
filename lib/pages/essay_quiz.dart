@@ -305,19 +305,34 @@ class _EssayQuizState extends State<EssayQuiz> {
                         Column(
                           children: [
                             Padding(
-                              padding: const EdgeInsets.only(top: 30),
-                              child: Text(
-                                "정답입니다!",
-                                style: TextStyle(
-                                    color: Get.find<BlackModeController>()
-                                                .blackmode ==
-                                            true
-                                        ? Colors.white
-                                        : Colors.black,
-                                    fontSize: 20.0,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            ),
+                                padding: const EdgeInsets.only(top: 30),
+                                child: RichText(
+                                  text: TextSpan(children: [
+                                    TextSpan(
+                                      text: "\"" +
+                                          sen_data[order]["answer"] +
+                                          "\"",
+                                      style: TextStyle(
+                                          color: Colors.green[600],
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                          fontFamily: "MapleStory"),
+                                    ),
+                                    TextSpan(text: "   "),
+                                    TextSpan(
+                                      text: "정답입니다",
+                                      style: TextStyle(
+                                          color: Get.find<BlackModeController>()
+                                                      .blackmode ==
+                                                  true
+                                              ? Colors.white
+                                              : Colors.black,
+                                          fontSize: 20.0,
+                                          fontWeight: FontWeight.bold,
+                                          fontFamily: "MapleStory"),
+                                    )
+                                  ]),
+                                )),
                             Padding(
                               padding: const EdgeInsets.all(25),
                               child: Text(sen_data[order]["desc"],
