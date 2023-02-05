@@ -181,6 +181,10 @@ class _ScreenPageState extends State<ScreenPage> {
                 const MainPageButton(
                   page: '/dict',
                   text: "신조어 사전",
+                ),
+                const MainPageButton(
+                  page: '/bulletin',
+                  text: "건의 게시판",
                 )
               ],
             ),

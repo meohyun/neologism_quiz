@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import "package:flutter/material.dart";
 import 'package:neologism/firebase_options.dart';
+import 'package:neologism/pages/bulletin_board.dart';
 import 'package:neologism/pages/dict_neologism.dart';
 import 'package:neologism/pages/essay_quiz.dart';
 import 'package:neologism/pages/startpage.dart';
@@ -35,6 +36,7 @@ class _NeologismState extends State<Neologism> {
         '/word': (context) => NeologismQuiz(),
         '/dict': (context) => NeologismDict(),
         '/sentence': ((context) => EssayQuiz()),
+        '/bulletin': ((context) => Bulletin_Board())
       },
       debugShowCheckedModeBanner: false,
     );

@@ -20,7 +20,7 @@ class _MyDrawerState extends State<MyDrawer> {
     return GetBuilder(
       init: BlackModeController(),
       builder: (_) => Drawer(
-        backgroundColor: Get.find<BlackModeController>().blackmode == true
+        backgroundColor: Get.find<BlackModeController>().blackmode
             ? Colors.grey
             : Colors.deepPurple[100],
         elevation: 0.0,
@@ -28,16 +28,15 @@ class _MyDrawerState extends State<MyDrawer> {
           children: [
             UserAccountsDrawerHeader(
                 decoration: BoxDecoration(
-                    color: Get.find<BlackModeController>().blackmode == true
+                    color: Get.find<BlackModeController>().blackmode
                         ? Colors.grey[600]
                         : Colors.deepPurple[200],
                     borderRadius: BorderRadius.circular(40)),
                 currentAccountPicture: CircleAvatar(
                   backgroundImage: AssetImage("assets/odong.png"),
-                  backgroundColor:
-                      Get.find<BlackModeController>().blackmode == true
-                          ? Colors.grey[600]
-                          : Colors.deepPurple[200],
+                  backgroundColor: Get.find<BlackModeController>().blackmode
+                      ? Colors.grey[600]
+                      : Colors.deepPurple[200],
                 ),
                 accountName: Text(
                   "${FirebaseAuth.instance.currentUser!.displayName}",
@@ -51,12 +50,17 @@ class _MyDrawerState extends State<MyDrawer> {
               height: 20,
             ),
             ListTile(
-              leading: Icon(Icons.dark_mode),
+              leading: Icon(
+                Icons.dark_mode,
+                color: Get.find<BlackModeController>().blackmode
+                    ? Colors.yellow
+                    : Colors.grey,
+              ),
               title: Text(
                 "다크 모드",
                 style: TextStyle(
                   fontSize: 20,
-                  color: Get.find<BlackModeController>().blackmode == true
+                  color: Get.find<BlackModeController>().blackmode
                       ? Colors.white
                       : Colors.black,
                 ),
@@ -71,14 +75,14 @@ class _MyDrawerState extends State<MyDrawer> {
             ListTile(
                 leading: Icon(
                   Icons.logout_rounded,
-                  color: Get.find<BlackModeController>().blackmode == true
+                  color: Get.find<BlackModeController>().blackmode
                       ? Colors.white
                       : Colors.black,
                 ),
                 title: Text("로그아웃",
                     style: TextStyle(
                       fontSize: 20,
-                      color: Get.find<BlackModeController>().blackmode == true
+                      color: Get.find<BlackModeController>().blackmode
                           ? Colors.white
                           : Colors.black,
                     )),
