@@ -78,7 +78,7 @@ class _DictInfoState extends State<DictInfo> {
                           Padding(
                             padding: const EdgeInsets.all(10.0),
                             child: SizedBox(
-                              height: 150,
+                              height: 200,
                               child: Column(
                                 children: [
                                   Text(
@@ -95,15 +95,18 @@ class _DictInfoState extends State<DictInfo> {
                                   SizedBox(
                                     height: 30,
                                   ),
-                                  Text(
-                                    datas[widget.index]["desc"],
-                                    style: TextStyle(
-                                        color: Get.find<BlackModeController>()
-                                                    .blackmode ==
-                                                true
-                                            ? Colors.white
-                                            : blackmodecolor,
-                                        fontSize: 20.0),
+                                  Padding(
+                                    padding: const EdgeInsets.all(10),
+                                    child: Text(
+                                      datas[widget.index]["desc"],
+                                      style: TextStyle(
+                                          color: Get.find<BlackModeController>()
+                                                      .blackmode ==
+                                                  true
+                                              ? Colors.white
+                                              : blackmodecolor,
+                                          fontSize: 20.0),
+                                    ),
                                   ),
                                 ],
                               ),
@@ -120,15 +123,34 @@ class _DictInfoState extends State<DictInfo> {
                             height: 380,
                             child: Padding(
                               padding: const EdgeInsets.only(top: 30),
-                              child: Text(
-                                  "예시: " + datas[widget.index]["example"],
-                                  style: TextStyle(
-                                      color: Get.find<BlackModeController>()
-                                                  .blackmode ==
-                                              true
-                                          ? Colors.white
-                                          : blackmodecolor,
-                                      fontSize: 18.0)),
+                              child: Column(
+                                children: [
+                                  Text("예시",
+                                      style: TextStyle(
+                                          color: Get.find<BlackModeController>()
+                                                      .blackmode ==
+                                                  true
+                                              ? Colors.white
+                                              : blackmodecolor,
+                                          fontSize: 22,
+                                          fontWeight: FontWeight.bold)),
+                                  SizedBox(
+                                    height: 50,
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(20),
+                                    child: Text(datas[widget.index]["example"],
+                                        style: TextStyle(
+                                            color:
+                                                Get.find<BlackModeController>()
+                                                            .blackmode ==
+                                                        true
+                                                    ? Colors.white
+                                                    : blackmodecolor,
+                                            fontSize: 22)),
+                                  ),
+                                ],
+                              ),
                             ),
                           )
                         ]),

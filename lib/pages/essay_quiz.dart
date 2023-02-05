@@ -255,11 +255,11 @@ class _EssayQuizState extends State<EssayQuiz> {
                 style: TextStyle(
                     color: Get.find<BlackModeController>().blackmode == true
                         ? Colors.white
-                        : Colors.black),
+                        : Colors.black,
+                    fontSize: 20),
                 decoration: InputDecoration(
                     hintText: "정답을 입력하세요.",
-                    hintStyle:
-                        TextStyle(fontSize: 15.0, color: Colors.grey[500]),
+                    hintStyle: TextStyle(fontSize: 20, color: Colors.grey[500]),
                     focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.greenAccent)),
                     enabledBorder: OutlineInputBorder(
@@ -313,21 +313,21 @@ class _EssayQuizState extends State<EssayQuiz> {
                                           sen_data[order]["answer"] +
                                           "\"",
                                       style: TextStyle(
-                                          color: Colors.green[600],
-                                          fontSize: 20,
+                                          color: Colors.blue,
+                                          fontSize: 22,
                                           fontWeight: FontWeight.bold,
                                           fontFamily: "MapleStory"),
                                     ),
                                     TextSpan(text: "   "),
                                     TextSpan(
-                                      text: "정답입니다",
+                                      text: "정답입니다!",
                                       style: TextStyle(
                                           color: Get.find<BlackModeController>()
                                                       .blackmode ==
                                                   true
                                               ? Colors.white
                                               : Colors.black,
-                                          fontSize: 20.0,
+                                          fontSize: 22,
                                           fontWeight: FontWeight.bold,
                                           fontFamily: "MapleStory"),
                                     )
@@ -399,7 +399,7 @@ class _EssayQuizState extends State<EssayQuiz> {
                                                             true
                                                         ? Colors.white
                                                         : Colors.black,
-                                                fontSize: 20.0,
+                                                fontSize: 22,
                                                 fontWeight: FontWeight.bold,
                                                 fontFamily: 'MapleStory'),
                                             children: <TextSpan>[
@@ -417,7 +417,7 @@ class _EssayQuizState extends State<EssayQuiz> {
                                                               true
                                                           ? Colors.white
                                                           : Colors.black,
-                                                  fontSize: 20.0,
+                                                  fontSize: 22,
                                                   fontWeight: FontWeight.bold,
                                                   fontFamily: 'MapleStory'))
                                         ])),
