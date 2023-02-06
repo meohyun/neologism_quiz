@@ -31,7 +31,9 @@ class Bulletin_Board extends StatelessWidget {
                         ? blackmodecolor
                         : notblackmodecolor,
                     child: IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.pushNamed(context, '/create');
+                        },
                         icon: Icon(Icons.add,
                             color: Get.find<BlackModeController>().blackmode
                                 ? Colors.white
