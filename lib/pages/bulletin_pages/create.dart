@@ -1,14 +1,34 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/instance_manager.dart';
 import 'package:neologism/getx/blackmode.dart';
+import 'package:neologism/neo_function/bulletin_func.dart';
+import 'package:neologism/neo_function/quiz_func.dart';
+import 'package:neologism/pages/bulletin_pages/bulletin_board.dart';
+import 'package:neologism/pages/bulletin_pages/post_page.dart';
 import 'package:neologism/pages/startpage.dart';
 
 class BulletinCreate extends StatelessWidget {
-  const BulletinCreate({super.key});
+  const BulletinCreate({super.key, this.index});
+
+  final index;
 
   @override
   Widget build(BuildContext context) {
+    TextEditingController _titleController = TextEditingController();
+    TextEditingController _contentController = TextEditingController();
+
+    makepost(context) {
+      FirebaseFirestore.instance.collection('post').add({
+        "name": _titleController.text,
+        "content": _contentController.text,
+        "time": Timestamp.now()
+      });
+
+      Navigator.pushNamed(context, '/bulletin');
+    }
+
     return GetBuilder(
       init: BlackModeController(),
       builder: (_) => Scaffold(
@@ -39,6 +59,10 @@ class BulletinCreate extends StatelessWidget {
                   child: SizedBox(
                     width: MediaQuery.of(context).size.width * 0.85,
                     child: TextField(
+                      controller: _titleController,
+                      onSubmitted: (value) {
+                        _titleController.text = value;
+                      },
                       decoration: InputDecoration(
                           filled: true,
                           fillColor: Colors.grey[300],
@@ -58,6 +82,10 @@ class BulletinCreate extends StatelessWidget {
                     margin: const EdgeInsets.all(8),
                     padding: const EdgeInsets.only(bottom: 40),
                     child: TextFormField(
+                      controller: _contentController,
+                      onFieldSubmitted: (value) {
+                        _contentController.text = value;
+                      },
                       decoration: InputDecoration(
                           focusedBorder: const OutlineInputBorder(
                               borderSide:
@@ -76,7 +104,9 @@ class BulletinCreate extends StatelessWidget {
                   ),
                 ),
                 TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      makepost(context);
+                    },
                     child: Text(
                       "확인",
                       style: TextStyle(color: Colors.white),

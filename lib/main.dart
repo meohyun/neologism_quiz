@@ -40,6 +40,7 @@ class _NeologismState extends State<Neologism> {
         '/sentence': (context) => EssayQuiz(),
         '/bulletin': (context) => Bulletin_Board(),
         '/create': (context) => BulletinCreate(),
+        '/post': (context) => BulletinPost()
       },
       debugShowCheckedModeBanner: false,
     );
