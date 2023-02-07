@@ -3,7 +3,8 @@ import 'package:get/get.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:neologism/getx/blackmode.dart';
 import 'package:neologism/neo_function/dict_func.dart';
-import 'package:neologism/pages/dict_info.dart';
+import 'package:neologism/pages/dictionary_page/dict_info.dart';
+
 import 'package:neologism/pages/startpage.dart';
 import 'package:neologism/datas/quizdata.dart';
 import 'package:neologism/widgets/Buttons.dart';

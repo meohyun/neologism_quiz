@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:neologism/getx/blackmode.dart';
+import 'package:neologism/pages/bulletin_pages/post_page.dart';
 import 'package:neologism/pages/startpage.dart';
 
 class Bulletin_Board extends StatelessWidget {
@@ -82,7 +83,12 @@ class Bluettin extends StatelessWidget {
                   padding: const EdgeInsets.all(8.0),
                   child: ListTile(
                     title: Text(chatDocs[index]['name']),
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => BulletinPost(
+                                index: index,
+                              )));
+                    },
                   ),
                 );
               }));

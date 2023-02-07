@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:neologism/getx/blackmode.dart';
-import 'package:neologism/pages/dict_info.dart';
-import 'package:neologism/pages/dict_neologism.dart';
+import 'package:neologism/pages/dictionary_page/dict_info.dart';
+import 'package:neologism/pages/dictionary_page/dict_neologism.dart';
+
 import 'package:neologism/pages/startpage.dart';
 import 'package:neologism/datas/quizdata.dart';
 

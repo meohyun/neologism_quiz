@@ -1,13 +1,12 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:neologism/getx/blackmode.dart';
 import 'package:neologism/neo_function/essay_func.dart';
 import 'package:neologism/neo_function/quiz_func.dart';
+import 'package:neologism/pages/quiz_page/word_quiz.dart';
 import 'package:neologism/pages/startpage.dart';
 import 'package:neologism/datas/sentence_data.dart';
-import 'package:neologism/pages/word_quiz.dart';
 import 'package:neologism/widgets/Buttons.dart';
 import 'package:neologism/widgets/appbar.dart';
 

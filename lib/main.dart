@@ -1,12 +1,13 @@
 import 'package:firebase_core/firebase_core.dart';
 import "package:flutter/material.dart";
-import 'package:neologism/bulletin_pages/create.dart';
 import 'package:neologism/firebase_options.dart';
-import 'package:neologism/bulletin_pages/bulletin_board.dart';
-import 'package:neologism/pages/dict_neologism.dart';
-import 'package:neologism/pages/essay_quiz.dart';
+import 'package:neologism/pages/bulletin_pages/bulletin_board.dart';
+import 'package:neologism/pages/bulletin_pages/create.dart';
+import 'package:neologism/pages/bulletin_pages/post_page.dart';
+import 'package:neologism/pages/dictionary_page/dict_neologism.dart';
+import 'package:neologism/pages/quiz_page/essay_quiz.dart';
+import 'package:neologism/pages/quiz_page/word_quiz.dart';
 import 'package:neologism/pages/startpage.dart';
-import 'package:neologism/pages/word_quiz.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -38,7 +39,7 @@ class _NeologismState extends State<Neologism> {
         '/dict': (context) => NeologismDict(),
         '/sentence': (context) => EssayQuiz(),
         '/bulletin': (context) => Bulletin_Board(),
-        '/create': (context) => BulletinCreate()
+        '/create': (context) => BulletinCreate(),
       },
       debugShowCheckedModeBanner: false,
     );

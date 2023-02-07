@@ -3,10 +3,10 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:neologism/getx/blackmode.dart';
-import 'package:neologism/pages/essay_quiz.dart';
+import 'package:neologism/pages/quiz_page/essay_quiz.dart';
+import 'package:neologism/pages/quiz_page/word_quiz.dart';
 import 'package:neologism/pages/startpage.dart';
 import 'package:neologism/datas/quizdata.dart';
-import 'package:neologism/pages/word_quiz.dart';
 import 'package:neologism/widgets/Buttons.dart';
 
 Timer? _timer;
