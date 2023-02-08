@@ -52,18 +52,17 @@ class Bulletin_Board extends StatelessWidget {
                 ],
               ),
               body: Container(
-                  color: Get.find<BlackModeController>().blackmode
-                      ? blackmodecolor
-                      : notblackmodecolor,
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height,
-                  child: Bluettin()),
+                color: Get.find<BlackModeController>().blackmode
+                    ? blackmodecolor
+                    : notblackmodecolor,
+                child: Blluettin(),
+              ),
             ));
   }
 }
 
-class Bluettin extends StatelessWidget {
-  const Bluettin({super.key});
+class Blluettin extends StatelessWidget {
+  const Blluettin({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -74,70 +73,75 @@ class Bluettin extends StatelessWidget {
         builder: (context,
             AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           }
           final postDocs = snapshot.data!.docs;
-
           return ListView.builder(
               itemCount: postDocs.length,
               itemBuilder: ((context, index) {
                 final timestamp = postDocs[index]['time'];
                 DateTime dt = timestamp.toDate();
                 final d24 = DateFormat('yyyy.MM.dd HH:mm').format(dt);
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: ListTile(
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => BulletinPost(
+                            index: index,
+                            name: postDocs[index]["name"],
+                            content: postDocs[index]["content"],
+                            user: user,
+                            datetime: d24,
+                            like: postDocs[index]["like"],
+                            dislike: postDocs[index]["dislike"])));
+                  },
+                  child: Card(
                     shape: RoundedRectangleBorder(
-                      side: BorderSide(color: Colors.black, width: 1),
+                      side: BorderSide(
+                          color: Get.find<BlackModeController>().blackmode
+                              ? Colors.white
+                              : blackmodecolor,
+                          width: 1),
                       borderRadius: BorderRadius.circular(15),
                     ),
-                    tileColor: Get.find<BlackModeController>().blackmode == true
-                        ? Colors.black
-                        : Colors.white,
-                    title: Text(
-                      postDocs[index]['name'],
-                      style: TextStyle(
-                        color: Get.find<BlackModeController>().blackmode
-                            ? Colors.white
-                            : blackmodecolor,
-                      ),
-                    ),
-                    trailing: Padding(
-                      padding: const EdgeInsets.only(top: 10),
-                      child: Opacity(
-                        opacity: 0.7,
-                        child: Column(
-                          children: [
-                            Text(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                postDocs[index]["name"],
+                                style: TextStyle(
+                                    fontSize: 20,
+                                    color: Get.find<BlackModeController>()
+                                            .blackmode
+                                        ? Colors.white
+                                        : blackmodecolor),
+                              ),
+                              Text(user.toString())
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Opacity(
+                            opacity: 0.5,
+                            child: Text(
                               d24,
                               style: TextStyle(
+                                  fontSize: 18,
                                   color:
                                       Get.find<BlackModeController>().blackmode
                                           ? Colors.white
                                           : blackmodecolor),
                             ),
-                            Text(
-                              user.toString(),
-                              style: TextStyle(
-                                color: Get.find<BlackModeController>().blackmode
-                                    ? Colors.white
-                                    : blackmodecolor,
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
+                          ),
+                        )
+                      ],
                     ),
-                    onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => BulletinPost(
-                                index: index,
-                                name: postDocs[index]["name"],
-                                content: postDocs[index]["content"],
-                                user: user,
-                                datetime: d24,
-                              )));
-                    },
                   ),
                 );
               }));

@@ -23,7 +23,9 @@ class BulletinCreate extends StatelessWidget {
       FirebaseFirestore.instance.collection('post').add({
         "name": _titleController.text,
         "content": _contentController.text,
-        "time": Timestamp.now()
+        "time": Timestamp.now(),
+        "like": 0,
+        "dislike": 0,
       });
 
       Navigator.pushNamed(context, '/bulletin');
