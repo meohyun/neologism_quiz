@@ -51,11 +51,24 @@ class Bulletin_Board extends StatelessWidget {
                       ))
                 ],
               ),
-              body: Container(
-                color: Get.find<BlackModeController>().blackmode
-                    ? blackmodecolor
-                    : notblackmodecolor,
-                child: Blluettin(),
+              body: Stack(
+                children: [
+                  Positioned(
+                    child: Container(
+                      color: Get.find<BlackModeController>().blackmode
+                          ? blackmodecolor
+                          : notblackmodecolor,
+                    ),
+                  ),
+                  Positioned(
+                    child: Container(
+                      color: Colors.white30,
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.height * 0.8,
+                      child: const Blluettin(),
+                    ),
+                  ),
+                ],
               ),
             ));
   }
@@ -81,66 +94,70 @@ class Blluettin extends StatelessWidget {
               itemBuilder: ((context, index) {
                 final timestamp = postDocs[index]['time'];
                 DateTime dt = timestamp.toDate();
-                final d24 = DateFormat('yyyy.MM.dd HH:mm').format(dt);
-                return GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => BulletinPost(
-                            index: index,
-                            name: postDocs[index]["name"],
-                            content: postDocs[index]["content"],
-                            user: user,
-                            datetime: d24,
-                            like: postDocs[index]["like"],
-                            dislike: postDocs[index]["dislike"])));
-                  },
-                  child: Card(
-                    shape: RoundedRectangleBorder(
-                      side: BorderSide(
-                          color: Get.find<BlackModeController>().blackmode
-                              ? Colors.white
-                              : blackmodecolor,
-                          width: 1),
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                postDocs[index]["name"],
-                                style: TextStyle(
-                                    fontSize: 20,
-                                    color: Get.find<BlackModeController>()
-                                            .blackmode
-                                        ? Colors.white
-                                        : blackmodecolor),
+                final d24 = DateFormat('yy/MM/dd HH:mm').format(dt);
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: 1),
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => BulletinPost(
+                              index: index,
+                              name: postDocs[index]["name"],
+                              content: postDocs[index]["content"],
+                              user: user,
+                              datetime: d24,
+                              like: postDocs[index]["like"],
+                              dislike: postDocs[index]["dislike"])));
+                    },
+                    child: Container(
+                      height: 100,
+                      decoration: const BoxDecoration(
+                          border: Border(
+                        bottom: BorderSide(width: 1, color: Colors.grey),
+                      )),
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 8),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    postDocs[index]["name"],
+                                    style: TextStyle(
+                                        fontSize: 20,
+                                        color: Get.find<BlackModeController>()
+                                                .blackmode
+                                            ? Colors.white
+                                            : blackmodecolor),
+                                  ),
+                                  Text(user.toString())
+                                ],
                               ),
-                              Text(user.toString())
-                            ],
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Opacity(
-                            opacity: 0.5,
-                            child: Text(
-                              d24,
-                              style: TextStyle(
-                                  fontSize: 18,
-                                  color:
-                                      Get.find<BlackModeController>().blackmode
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Opacity(
+                                opacity: 0.5,
+                                child: Text(
+                                  d24,
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      color: Get.find<BlackModeController>()
+                                              .blackmode
                                           ? Colors.white
                                           : blackmodecolor),
-                            ),
-                          ),
-                        )
-                      ],
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
                     ),
                   ),
                 );

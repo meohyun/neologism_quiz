@@ -26,6 +26,7 @@ class BulletinCreate extends StatelessWidget {
         "time": Timestamp.now(),
         "like": 0,
         "dislike": 0,
+        "chats": []
       });
 
       Navigator.pushNamed(context, '/bulletin');

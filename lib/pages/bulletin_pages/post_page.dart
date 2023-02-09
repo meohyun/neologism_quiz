@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
@@ -8,6 +9,8 @@ import 'package:intl/intl.dart';
 import 'package:neologism/getx/blackmode.dart';
 import 'package:neologism/getx/postlike.dart';
 import 'package:neologism/pages/startpage.dart';
+
+TextEditingController chatController = TextEditingController();
 
 class BulletinPost extends StatefulWidget {
   const BulletinPost(
@@ -33,6 +36,13 @@ class BulletinPost extends StatefulWidget {
 }
 
 class _BulletinPostState extends State<BulletinPost> {
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    chatController.text = "";
+  }
+
   @override
   Widget build(BuildContext context) {
     Get.put(PostLikeController());
@@ -211,19 +221,38 @@ class _BulletinPostState extends State<BulletinPost> {
                               thickness: 1,
                               color: Colors.black,
                             ),
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.85,
-                              child: const TextField(
-                                decoration: InputDecoration(
-                                    hintText: "댓글을 남겨보세요.",
-                                    border: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            width: 2, color: Colors.grey)),
-                                    focusedBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            width: 2, color: Colors.grey))),
-                              ),
-                            )
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "댓글",
+                                  style: TextStyle(fontSize: 18),
+                                ),
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                SizedBox(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.85,
+                                  child: TextField(
+                                    controller: chatController,
+                                    decoration: const InputDecoration(
+                                        hintText: "댓글을 남겨보세요.",
+                                        border: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                width: 2, color: Colors.grey)),
+                                        focusedBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                width: 2, color: Colors.grey))),
+                                    onSubmitted: (value) {
+                                      setState(() {
+                                        chatController.text = value;
+                                      });
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
                           ],
                         ),
                       ],
