@@ -16,6 +16,11 @@ class Bulletin_Board extends StatelessWidget {
         init: BlackModeController(),
         builder: (_) => Scaffold(
               appBar: AppBar(
+                leading: IconButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/');
+                    },
+                    icon: Icon(Icons.arrow_back)),
                 backgroundColor: Get.find<BlackModeController>().blackmode
                     ? blackmodecolor
                     : notblackmodecolor,
@@ -107,7 +112,9 @@ class Blluettin extends StatelessWidget {
                               user: user,
                               datetime: d24,
                               like: postDocs[index]["like"],
-                              dislike: postDocs[index]["dislike"])));
+                              dislike: postDocs[index]["dislike"],
+                              admin: postDocs[index]["admin"],
+                              docId: postDocs[index].id)));
                     },
                     child: Container(
                       height: 100,

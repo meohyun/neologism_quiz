@@ -5,9 +5,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/instance_manager.dart';
+import 'package:get/route_manager.dart';
 import 'package:intl/intl.dart';
 import 'package:neologism/getx/blackmode.dart';
 import 'package:neologism/getx/postlike.dart';
+import 'package:neologism/neo_function/bulletin_func.dart';
+import 'package:neologism/pages/bulletin_pages/CRUD.dart';
 import 'package:neologism/pages/startpage.dart';
 
 TextEditingController chatController = TextEditingController();
@@ -21,7 +24,9 @@ class BulletinPost extends StatefulWidget {
       this.content,
       this.datetime,
       this.like,
-      this.dislike});
+      this.dislike,
+      this.admin,
+      this.docId});
 
   final index;
   final user;
@@ -30,6 +35,8 @@ class BulletinPost extends StatefulWidget {
   final datetime;
   final like;
   final dislike;
+  final admin;
+  final docId;
 
   @override
   State<BulletinPost> createState() => _BulletinPostState();
@@ -43,6 +50,13 @@ class _BulletinPostState extends State<BulletinPost> {
     chatController.text = "";
   }
 
+  Future<void> deletepost() async {
+    DocumentReference documentReference =
+        FirebaseFirestore.instance.collection('post').doc(widget.docId);
+
+    await documentReference.delete();
+  }
+
   @override
   Widget build(BuildContext context) {
     Get.put(PostLikeController());
@@ -51,6 +65,11 @@ class _BulletinPostState extends State<BulletinPost> {
       init: BlackModeController(),
       builder: (_) => Scaffold(
         appBar: AppBar(
+          leading: IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: Icon(Icons.arrow_back)),
           title: Text("건의 게시판",
               style: TextStyle(
                 color:
@@ -59,20 +78,36 @@ class _BulletinPostState extends State<BulletinPost> {
           elevation: 0.0,
           backgroundColor:
               blackcontroller.blackmode ? blackmodecolor : notblackmodecolor,
-          actions: [
-            IconButton(
-              onPressed: () {},
-              icon: Icon(CupertinoIcons.pen),
-              iconSize: 30,
-              color: blackcontroller.blackmode ? Colors.white : blackmodecolor,
-            ),
-            IconButton(
-                onPressed: () {},
-                icon: Icon(CupertinoIcons.delete,
+          actions: widget.admin == FirebaseAuth.instance.currentUser!.uid
+              ? ([
+                  IconButton(
+                    onPressed: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: ((context) {
+                        return BulletinUpdate(
+                          title: widget.name,
+                          content: widget.content,
+                        );
+                      })));
+                    },
+                    icon: Icon(CupertinoIcons.pen),
+                    iconSize: 30,
                     color: blackcontroller.blackmode
                         ? Colors.white
-                        : blackmodecolor))
-          ],
+                        : blackmodecolor,
+                  ),
+                  IconButton(
+                      onPressed: () {
+                        setState(() {
+                          deletePost(context, deletepost());
+                        });
+                      },
+                      icon: Icon(CupertinoIcons.delete,
+                          color: blackcontroller.blackmode
+                              ? Colors.white
+                              : blackmodecolor))
+                ])
+              : null,
         ),
         body: Container(
           color: blackcontroller.blackmode ? blackmodecolor : notblackmodecolor,
@@ -175,6 +210,7 @@ class _BulletinPostState extends State<BulletinPost> {
                                           onTap: () {
                                             Get.put(PostLikeController())
                                                 .like();
+                                            print(widget.docId);
                                           },
                                         ),
                                       ),
