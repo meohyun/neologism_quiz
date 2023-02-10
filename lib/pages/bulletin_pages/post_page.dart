@@ -11,9 +11,10 @@ import 'package:neologism/getx/blackmode.dart';
 import 'package:neologism/getx/postlike.dart';
 import 'package:neologism/neo_function/bulletin_func.dart';
 import 'package:neologism/pages/bulletin_pages/CRUD.dart';
+import 'package:neologism/pages/bulletin_pages/chatbox.dart';
 import 'package:neologism/pages/startpage.dart';
 
-TextEditingController chatController = TextEditingController();
+final blackcontroller = Get.find<BlackModeController>();
 
 class BulletinPost extends StatefulWidget {
   const BulletinPost(
@@ -50,17 +51,10 @@ class _BulletinPostState extends State<BulletinPost> {
     chatController.text = "";
   }
 
-  Future<void> deletepost() async {
-    DocumentReference documentReference =
-        FirebaseFirestore.instance.collection('post').doc(widget.docId);
-
-    await documentReference.delete();
-  }
-
   @override
   Widget build(BuildContext context) {
     Get.put(PostLikeController());
-    final blackcontroller = Get.find<BlackModeController>();
+
     return GetBuilder(
       init: BlackModeController(),
       builder: (_) => Scaffold(
@@ -80,32 +74,12 @@ class _BulletinPostState extends State<BulletinPost> {
               blackcontroller.blackmode ? blackmodecolor : notblackmodecolor,
           actions: widget.admin == FirebaseAuth.instance.currentUser!.uid
               ? ([
-                  IconButton(
-                    onPressed: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: ((context) {
-                        return BulletinUpdate(
-                          title: widget.name,
-                          content: widget.content,
-                        );
-                      })));
-                    },
-                    icon: Icon(CupertinoIcons.pen),
-                    iconSize: 30,
-                    color: blackcontroller.blackmode
-                        ? Colors.white
-                        : blackmodecolor,
+                  BulletinUpdateIcon(
+                    name: widget.name,
+                    content: widget.content,
+                    docId: widget.docId,
                   ),
-                  IconButton(
-                      onPressed: () {
-                        setState(() {
-                          deletePost(context, deletepost());
-                        });
-                      },
-                      icon: Icon(CupertinoIcons.delete,
-                          color: blackcontroller.blackmode
-                              ? Colors.white
-                              : blackmodecolor))
+                  const BulletinDeleteIcon()
                 ])
               : null,
         ),
@@ -257,38 +231,9 @@ class _BulletinPostState extends State<BulletinPost> {
                               thickness: 1,
                               color: Colors.black,
                             ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "댓글",
-                                  style: TextStyle(fontSize: 18),
-                                ),
-                                SizedBox(
-                                  height: 20,
-                                ),
-                                SizedBox(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.85,
-                                  child: TextField(
-                                    controller: chatController,
-                                    decoration: const InputDecoration(
-                                        hintText: "댓글을 남겨보세요.",
-                                        border: OutlineInputBorder(
-                                            borderSide: BorderSide(
-                                                width: 2, color: Colors.grey)),
-                                        focusedBorder: OutlineInputBorder(
-                                            borderSide: BorderSide(
-                                                width: 2, color: Colors.grey))),
-                                    onSubmitted: (value) {
-                                      setState(() {
-                                        chatController.text = value;
-                                      });
-                                    },
-                                  ),
-                                ),
-                              ],
-                            ),
+                            ChatContainer(
+                              docId: widget.docId,
+                            )
                           ],
                         ),
                       ],

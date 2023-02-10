@@ -1,9 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/instance_manager.dart';
 import 'package:neologism/getx/blackmode.dart';
+import 'package:neologism/neo_function/bulletin_func.dart';
 import 'package:neologism/neo_function/quiz_func.dart';
 import 'package:neologism/pages/bulletin_pages/bulletin_board.dart';
 import 'package:neologism/pages/bulletin_pages/post_page.dart';
@@ -24,80 +27,6 @@ makepost(context) {
   });
 
   Navigator.pushNamed(context, '/bulletin');
-}
-
-class BulletinCRUD extends StatelessWidget {
-  const BulletinCRUD({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: Get.find<BlackModeController>().blackmode
-          ? blackmodecolor
-          : notblackmodecolor,
-      padding: const EdgeInsets.only(top: 10),
-      child: Center(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: SizedBox(
-                width: MediaQuery.of(context).size.width * 0.85,
-                child: TextField(
-                  controller: _titleController,
-                  onSubmitted: (value) {
-                    _titleController.text = value;
-                  },
-                  decoration: InputDecoration(
-                      filled: true,
-                      fillColor: Colors.grey[300],
-                      hintText: "제목을 입력하세요!",
-                      focusedBorder: const OutlineInputBorder(
-                          borderSide: BorderSide(width: 1, color: Colors.grey)),
-                      border: const OutlineInputBorder(
-                          borderSide:
-                              BorderSide(width: 1, color: Colors.grey))),
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Container(
-                margin: const EdgeInsets.all(8),
-                padding: const EdgeInsets.only(bottom: 40),
-                child: TextFormField(
-                  controller: _contentController,
-                  onFieldSubmitted: (value) {
-                    _contentController.text = value;
-                  },
-                  decoration: InputDecoration(
-                      focusedBorder: const OutlineInputBorder(
-                          borderSide: BorderSide(width: 1, color: Colors.grey)),
-                      border: const OutlineInputBorder(
-                          borderSide: BorderSide(width: 1, color: Colors.grey)),
-                      contentPadding: const EdgeInsets.fromLTRB(20, 0, 0, 80),
-                      hintText: "내용을 입력하세요",
-                      filled: true,
-                      fillColor: Colors.grey[300]),
-                  keyboardType: TextInputType.multiline,
-                  maxLines: 15,
-                ),
-              ),
-            ),
-            TextButton(
-                onPressed: () {
-                  makepost(context);
-                },
-                child: Text(
-                  "확인",
-                  style: TextStyle(color: Colors.white),
-                ),
-                style: TextButton.styleFrom(backgroundColor: Colors.blue))
-          ],
-        ),
-      ),
-    );
-  }
 }
 
 class BulletinCreate extends StatefulWidget {
@@ -136,16 +65,86 @@ class _BulletinCreateState extends State<BulletinCreate> {
                 ? blackmodecolor
                 : notblackmodecolor,
           ),
-          body: BulletinCRUD()),
+          body: Container(
+            color: Get.find<BlackModeController>().blackmode
+                ? blackmodecolor
+                : notblackmodecolor,
+            padding: const EdgeInsets.only(top: 10),
+            child: Center(
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.85,
+                      child: TextField(
+                        controller: _titleController,
+                        onSubmitted: (value) {
+                          _titleController.text = value;
+                        },
+                        decoration: InputDecoration(
+                            filled: true,
+                            fillColor: Colors.grey[300],
+                            hintText: "제목을 입력하세요!",
+                            focusedBorder: const OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(width: 1, color: Colors.grey)),
+                            border: const OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(width: 1, color: Colors.grey))),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      margin: const EdgeInsets.all(8),
+                      padding: const EdgeInsets.only(bottom: 40),
+                      child: TextFormField(
+                        controller: _contentController,
+                        onFieldSubmitted: (value) {
+                          _contentController.text = value;
+                        },
+                        decoration: InputDecoration(
+                            focusedBorder: const OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(width: 1, color: Colors.grey)),
+                            border: const OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(width: 1, color: Colors.grey)),
+                            contentPadding:
+                                const EdgeInsets.fromLTRB(20, 0, 0, 80),
+                            hintText: "내용을 입력하세요",
+                            filled: true,
+                            fillColor: Colors.grey[300]),
+                        keyboardType: TextInputType.multiline,
+                        maxLines: 15,
+                      ),
+                    ),
+                  ),
+                  TextButton(
+                      onPressed: () {
+                        makepost(context);
+                      },
+                      child: Text(
+                        "확인",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      style: TextButton.styleFrom(backgroundColor: Colors.blue))
+                ],
+              ),
+            ),
+          )),
     );
   }
 }
 
 class BulletinUpdate extends StatefulWidget {
-  const BulletinUpdate({super.key, this.title, this.content});
+  const BulletinUpdate({super.key, this.title, this.content, this.docId});
 
   final title;
   final content;
+  final docId;
 
   @override
   State<BulletinUpdate> createState() => _BulletinUpdateState();
@@ -157,6 +156,16 @@ class _BulletinUpdateState extends State<BulletinUpdate> {
     super.initState();
     _titleController.text = widget.title;
     _contentController.text = widget.content;
+  }
+
+  Future<void> updatepost() async {
+    DocumentReference documentReference =
+        FirebaseFirestore.instance.collection('post').doc(widget.docId);
+
+    await documentReference.update(
+        {"name": _titleController.text, "content": _contentController.text});
+
+    Navigator.pushNamed(context, '/bulletin');
   }
 
   @override
@@ -178,7 +187,137 @@ class _BulletinUpdateState extends State<BulletinUpdate> {
                 ? blackmodecolor
                 : notblackmodecolor,
           ),
-          body: BulletinCRUD()),
+          body: Container(
+            color: Get.find<BlackModeController>().blackmode
+                ? blackmodecolor
+                : notblackmodecolor,
+            padding: const EdgeInsets.only(top: 10),
+            child: Center(
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.85,
+                      child: TextField(
+                        controller: _titleController,
+                        onSubmitted: (value) {
+                          _titleController.text = value;
+                        },
+                        decoration: InputDecoration(
+                            filled: true,
+                            fillColor: Colors.grey[300],
+                            hintText: "제목을 입력하세요!",
+                            focusedBorder: const OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(width: 1, color: Colors.grey)),
+                            border: const OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(width: 1, color: Colors.grey))),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      margin: const EdgeInsets.all(8),
+                      padding: const EdgeInsets.only(bottom: 40),
+                      child: TextFormField(
+                        controller: _contentController,
+                        onFieldSubmitted: (value) {
+                          _contentController.text = value;
+                        },
+                        decoration: InputDecoration(
+                            focusedBorder: const OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(width: 1, color: Colors.grey)),
+                            border: const OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(width: 1, color: Colors.grey)),
+                            contentPadding:
+                                const EdgeInsets.fromLTRB(20, 0, 0, 80),
+                            hintText: "내용을 입력하세요",
+                            filled: true,
+                            fillColor: Colors.grey[300]),
+                        keyboardType: TextInputType.multiline,
+                        maxLines: 15,
+                      ),
+                    ),
+                  ),
+                  TextButton(
+                      onPressed: () {
+                        updatepost();
+                      },
+                      child: Text(
+                        "확인",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      style: TextButton.styleFrom(backgroundColor: Colors.blue))
+                ],
+              ),
+            ),
+          )),
     );
+  }
+}
+
+class BulletinUpdateIcon extends StatefulWidget {
+  const BulletinUpdateIcon({super.key, this.name, this.content, this.docId});
+
+  final name;
+  final content;
+  final docId;
+
+  @override
+  State<BulletinUpdateIcon> createState() => _BulletinUpdateIconState();
+}
+
+class _BulletinUpdateIconState extends State<BulletinUpdateIcon> {
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      onPressed: () {
+        Navigator.push(context, MaterialPageRoute(builder: ((context) {
+          return BulletinUpdate(
+            title: widget.name,
+            content: widget.content,
+            docId: widget.docId,
+          );
+        })));
+      },
+      icon: Icon(CupertinoIcons.pen),
+      iconSize: 30,
+      color: blackcontroller.blackmode ? Colors.white : blackmodecolor,
+    );
+  }
+}
+
+class BulletinDeleteIcon extends StatefulWidget {
+  const BulletinDeleteIcon({super.key, this.docId});
+
+  final docId;
+
+  @override
+  State<BulletinDeleteIcon> createState() => _BulletinDeleteState();
+}
+
+class _BulletinDeleteState extends State<BulletinDeleteIcon> {
+  Future<void> deletepost() async {
+    DocumentReference documentReference =
+        FirebaseFirestore.instance.collection('post').doc(widget.docId);
+
+    await documentReference.delete();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+        onPressed: () {
+          setState(() {
+            deletePost(context, deletepost());
+          });
+        },
+        icon: Icon(CupertinoIcons.delete,
+            color: blackcontroller.blackmode ? Colors.white : blackmodecolor));
   }
 }
