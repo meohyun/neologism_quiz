@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 TextEditingController chatController = TextEditingController();
+final user = FirebaseAuth.instance.currentUser!.displayName;
 
 class ChatContainer extends StatefulWidget {
   const ChatContainer({super.key, this.docId});
@@ -17,7 +19,7 @@ class _ChatContainerState extends State<ChatContainer> {
   addchat() {
     final user = FirebaseAuth.instance.currentUser!.displayName;
     List<dynamic> chat = [
-      {user.toString(): chatController.text}
+      {user.toString(): chatController.text, "time": Timestamp.now()},
     ];
     FirebaseFirestore.instance
         .collection('post')
@@ -52,6 +54,7 @@ class _ChatContainerState extends State<ChatContainer> {
                 chatController.text = value;
               });
               addchat();
+              chatController.text = "";
             },
           ),
         ),
@@ -82,14 +85,58 @@ class ChatBox extends StatelessWidget {
           }
           final Docs = snapshot.data!;
           return Container(
-            height: 200,
+            height: MediaQuery.of(context).size.height *
+                (0.1 * Docs['chats'].length),
             child: ListView.builder(
+              physics: const NeverScrollableScrollPhysics(),
               itemCount: Docs['chats'].length,
               itemBuilder: (context, index) {
-                return SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.8,
-                  height: 50,
-                  child: ListTile(title: Text(Docs['chats'][index].toString())),
+                final timestamp = Docs['chats'][index]['time'];
+                DateTime dt = timestamp.toDate();
+                final mytime = DateFormat('HH:mm').format(dt);
+                return Column(
+                  children: [
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.8,
+                      height: 50,
+                      child: ListTile(
+                          title: Text(Docs['chats'][index][user].toString()),
+                          subtitle: Row(
+                            children: [
+                              Text(user.toString()),
+                              SizedBox(width: 10),
+                              Text(mytime.toString()),
+                            ],
+                          ),
+                          trailing: SizedBox(
+                            width: 60,
+                            child: Row(
+                              children: [
+                                GestureDetector(
+                                  onTap: () {
+                                    print('수정하기');
+                                  },
+                                  child: Text(
+                                    "수정",
+                                    style: TextStyle(color: Colors.blue),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                GestureDetector(
+                                    onTap: () {},
+                                    child: Text("삭제",
+                                        style: TextStyle(color: Colors.blue)))
+                              ],
+                            ),
+                          )),
+                    ),
+                    Divider(
+                      height: 30,
+                      thickness: 1.5,
+                    )
+                  ],
                 );
               },
             ),
