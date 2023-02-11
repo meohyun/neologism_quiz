@@ -313,9 +313,7 @@ class _BulletinDeleteState extends State<BulletinDeleteIcon> {
   Widget build(BuildContext context) {
     return IconButton(
         onPressed: () {
-          setState(() {
-            deletePost(context, deletepost());
-          });
+          deleteDialog(context, deletepost);
         },
         icon: Icon(CupertinoIcons.delete,
             color: blackcontroller.blackmode ? Colors.white : blackmodecolor));

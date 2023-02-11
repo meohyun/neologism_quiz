@@ -2,9 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:neologism/neo_function/bulletin_func.dart';
+import 'package:neologism/neo_function/quiz_func.dart';
 
 TextEditingController chatController = TextEditingController();
 final user = FirebaseAuth.instance.currentUser!.displayName;
+final userid = FirebaseAuth.instance.currentUser!.uid;
 
 class ChatContainer extends StatefulWidget {
   const ChatContainer({super.key, this.docId});
@@ -17,9 +20,8 @@ class ChatContainer extends StatefulWidget {
 
 class _ChatContainerState extends State<ChatContainer> {
   addchat() {
-    final user = FirebaseAuth.instance.currentUser!.displayName;
     List<dynamic> chat = [
-      {user.toString(): chatController.text, "time": Timestamp.now()},
+      {"content": chatController.text, "time": Timestamp.now(), "user": userid},
     ];
     FirebaseFirestore.instance
         .collection('post')
@@ -66,17 +68,39 @@ class _ChatContainerState extends State<ChatContainer> {
   }
 }
 
-class ChatBox extends StatelessWidget {
+class ChatBox extends StatefulWidget {
   const ChatBox({super.key, this.docid});
 
   final docid;
 
   @override
+  State<ChatBox> createState() => _ChatBoxState();
+}
+
+class _ChatBoxState extends State<ChatBox> {
+  @override
   Widget build(BuildContext context) {
+    int pressedAttentionIndex = 0;
+
+    Future<void> deletechat(docs) async {
+      List<dynamic> chat = [
+        {
+          "content": docs['chats'][pressedAttentionIndex]["content"],
+          "time": docs['chats'][pressedAttentionIndex]["time"],
+          "user": userid
+        },
+      ];
+
+      await FirebaseFirestore.instance
+          .collection("post")
+          .doc(widget.docid)
+          .update({"chats": FieldValue.arrayRemove(chat)});
+    }
+
     return StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection('post')
-            .doc(docid)
+            .doc(widget.docid)
             .snapshots(),
         builder: (context,
             AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>> snapshot) {
@@ -84,63 +108,77 @@ class ChatBox extends StatelessWidget {
             return CircularProgressIndicator();
           }
           final Docs = snapshot.data!;
-          return Container(
-            height: MediaQuery.of(context).size.height *
-                (0.1 * Docs['chats'].length),
-            child: ListView.builder(
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: Docs['chats'].length,
-              itemBuilder: (context, index) {
-                final timestamp = Docs['chats'][index]['time'];
-                DateTime dt = timestamp.toDate();
-                final mytime = DateFormat('HH:mm').format(dt);
-                return Column(
-                  children: [
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.8,
-                      height: 50,
-                      child: ListTile(
-                          title: Text(Docs['chats'][index][user].toString()),
-                          subtitle: Row(
-                            children: [
-                              Text(user.toString()),
-                              SizedBox(width: 10),
-                              Text(mytime.toString()),
-                            ],
-                          ),
-                          trailing: SizedBox(
-                            width: 60,
-                            child: Row(
+
+          if (snapshot.hasData) {
+            return Container(
+              height: MediaQuery.of(context).size.height *
+                  (0.1 * Docs['chats'].length),
+              child: ListView.builder(
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: Docs['chats'].length,
+                itemBuilder: (context, index) {
+                  final timestamp = Docs['chats'][index]['time'];
+                  DateTime dt = timestamp.toDate();
+                  final mytime = DateFormat('MM/dd HH:mm').format(dt);
+                  return Column(
+                    children: [
+                      Divider(
+                        height: 30,
+                        thickness: 1.5,
+                      ),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.8,
+                        height: 50,
+                        child: ListTile(
+                            title: Text(
+                                Docs['chats'][index]["content"].toString()),
+                            subtitle: Row(
                               children: [
-                                GestureDetector(
-                                  onTap: () {
-                                    print('수정하기');
-                                  },
-                                  child: Text(
-                                    "수정",
-                                    style: TextStyle(color: Colors.blue),
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                GestureDetector(
-                                    onTap: () {},
-                                    child: Text("삭제",
-                                        style: TextStyle(color: Colors.blue)))
+                                Text(user.toString()),
+                                SizedBox(width: 10),
+                                Text(mytime.toString()),
                               ],
                             ),
-                          )),
-                    ),
-                    Divider(
-                      height: 30,
-                      thickness: 1.5,
-                    )
-                  ],
-                );
-              },
-            ),
-          );
+                            trailing: userid == Docs['chats'][index]["user"]
+                                ? SizedBox(
+                                    width: 60,
+                                    child: Row(
+                                      children: [
+                                        GestureDetector(
+                                          onTap: () {},
+                                          child: Text(
+                                            "수정",
+                                            style:
+                                                TextStyle(color: Colors.blue),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        GestureDetector(
+                                            onTap: () {
+                                              setState(() {
+                                                pressedAttentionIndex = index;
+                                              });
+                                              deleteChatDialog(
+                                                  context, deletechat, Docs);
+                                            },
+                                            child: Text("삭제",
+                                                style: TextStyle(
+                                                    color: Colors.blue)))
+                                      ],
+                                    ),
+                                  )
+                                : null),
+                      ),
+                    ],
+                  );
+                },
+              ),
+            );
+          } else {
+            return Container();
+          }
         });
   }
 }
