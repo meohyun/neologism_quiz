@@ -111,8 +111,7 @@ class _ChatBoxState extends State<ChatBox> {
 
           if (snapshot.hasData) {
             return Container(
-              height: MediaQuery.of(context).size.height *
-                  (0.1 * Docs['chats'].length),
+              height: MediaQuery.of(context).size.height,
               child: ListView.builder(
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: Docs['chats'].length,
@@ -123,22 +122,33 @@ class _ChatBoxState extends State<ChatBox> {
                   return Column(
                     children: [
                       Divider(
-                        height: 30,
+                        height: 50,
                         thickness: 1.5,
                       ),
                       SizedBox(
                         width: MediaQuery.of(context).size.width * 0.8,
-                        height: 50,
+                        height: 80,
                         child: ListTile(
-                            title: Text(
-                                Docs['chats'][index]["content"].toString()),
-                            subtitle: Row(
+                            title: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(user.toString()),
-                                SizedBox(width: 10),
-                                Text(mytime.toString()),
+                                Row(
+                                  children: [
+                                    CircleAvatar(),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Text(user.toString()),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Text(
+                                    Docs['chats'][index]["content"].toString()),
                               ],
                             ),
+                            subtitle: Text(mytime.toString()),
                             trailing: userid == Docs['chats'][index]["user"]
                                 ? SizedBox(
                                     width: 60,

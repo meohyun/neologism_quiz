@@ -58,6 +58,8 @@ class _BulletinPostState extends State<BulletinPost> {
     return GetBuilder(
       init: BlackModeController(),
       builder: (_) => Scaffold(
+          backgroundColor:
+              blackcontroller.blackmode ? blackmodecolor : notblackmodecolor,
           appBar: AppBar(
             leading: IconButton(
                 onPressed: () {

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:neologism/getx/blackmode.dart';
 import 'package:neologism/pages/startpage.dart';
 
 void deleteDialog(context, delete) {
   showDialog(
+      barrierDismissible: false,
       context: context,
       builder: (context) {
         return GetBuilder(
@@ -64,6 +66,7 @@ void deleteDialog(context, delete) {
 
 deleteChatDialog(context, delete, docs) {
   showDialog(
+      barrierDismissible: false,
       context: context,
       builder: (context) {
         return GetBuilder(
