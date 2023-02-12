@@ -72,8 +72,8 @@ class _ChatContainerState extends State<ChatContainer> {
   }
 }
 
-class ChatModifyBox extends StatelessWidget {
-  const ChatModifyBox({super.key, this.docid, this.docs});
+class ChatUpdateBox extends StatelessWidget {
+  const ChatUpdateBox({super.key, this.docid, this.docs});
 
   final docid;
   final docs;
@@ -112,20 +112,49 @@ class ChatModifyBox extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.end,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        GestureDetector(
-          onTap: () {
-            Get.find<chatcontroller>().chatmodify();
-          },
-          child: Text(
-            "취소",
-            style: TextStyle(color: Colors.blue),
-          ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 10),
+              child: Row(
+                children: [
+                  SizedBox(
+                    width: 5,
+                  ),
+                  CircleAvatar(
+                    child: Icon(
+                      Icons.person,
+                    ),
+                    backgroundColor: Colors.white,
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Text(
+                    user!,
+                    style: TextStyle(fontSize: 16),
+                  ),
+                ],
+              ),
+            ),
+            GestureDetector(
+              onTap: () {
+                Get.find<chatcontroller>().chatmodify();
+              },
+              child: Text(
+                "취소",
+                style: TextStyle(color: Colors.blue),
+              ),
+            ),
+          ],
         ),
         SizedBox(
-          height: 5,
+          height: 10,
         ),
         SizedBox(
           width: MediaQuery.of(context).size.width * 0.85,
+          height: 50,
           child: TextField(
             onSubmitted: (value) {
               modifychatcontroller.text = value;
@@ -211,13 +240,13 @@ class _ChatBoxState extends State<ChatBox> {
                         padding: const EdgeInsets.only(bottom: 10),
                         child: SizedBox(
                             width: MediaQuery.of(context).size.width * 0.8,
-                            height: 80,
+                            height: 100,
                             child: Obx(() {
                               return Get.find<chatcontroller>()
                                           .chatmodified
                                           .value &&
                                       pressedAttentionIndex == index
-                                  ? ChatModifyBox(
+                                  ? ChatUpdateBox(
                                       docid: widget.docid,
                                       docs: Docs,
                                     )

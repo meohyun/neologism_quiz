@@ -93,29 +93,28 @@ deleteChatDialog(context, delete, docs) {
                             : blackmodecolor),
                   ),
                   Center(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        TextButton(
-                            onPressed: () {
-                              delete(docs);
-                              Navigator.pop(context);
-                            },
-                            child: Text(
-                              "예",
-                              style: TextStyle(fontSize: 25.0),
-                            )),
-                        TextButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            child: Text(
-                              "아니요",
-                              style: TextStyle(fontSize: 25.0),
-                            ))
-                      ],
-                    ),
-                  )
+                      child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      TextButton(
+                          onPressed: () {
+                            delete(docs);
+                            Navigator.pop(context);
+                          },
+                          child: Text(
+                            "예",
+                            style: TextStyle(fontSize: 25.0),
+                          )),
+                      TextButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: Text(
+                            "아니요",
+                            style: TextStyle(fontSize: 25.0),
+                          ))
+                    ],
+                  ))
                 ],
               ),
             ),
