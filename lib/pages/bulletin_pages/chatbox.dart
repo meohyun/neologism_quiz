@@ -258,6 +258,8 @@ class _ChatBoxState extends State<ChatBox> {
                                                     children: [
                                                       GestureDetector(
                                                         onTap: () {
+                                                          modifychatcontroller
+                                                              .text = "";
                                                           setState(() {
                                                             pressedAttentionIndex =
                                                                 index;
@@ -283,7 +285,6 @@ class _ChatBoxState extends State<ChatBox> {
                                                               pressedAttentionIndex =
                                                                   index;
                                                             });
-
                                                             deleteChatDialog(
                                                                 context,
                                                                 deletechat,
