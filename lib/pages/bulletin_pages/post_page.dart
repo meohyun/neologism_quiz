@@ -8,6 +8,7 @@ import 'package:get/instance_manager.dart';
 import 'package:get/route_manager.dart';
 import 'package:intl/intl.dart';
 import 'package:neologism/getx/blackmode.dart';
+import 'package:neologism/getx/chatmodify.dart';
 import 'package:neologism/getx/postlike.dart';
 import 'package:neologism/neo_function/bulletin_func.dart';
 import 'package:neologism/pages/bulletin_pages/CRUD.dart';
@@ -166,7 +167,7 @@ class _BulletinPostState extends State<BulletinPost> {
                                     children: [
                                       Padding(
                                           padding:
-                                              const EdgeInsets.only(top: 10),
+                                              const EdgeInsets.only(top: 200),
                                           child: Obx(() {
                                             return Row(
                                               mainAxisAlignment:

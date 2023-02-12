@@ -1,13 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:neologism/getx/chatmodify.dart';
 import 'package:neologism/neo_function/bulletin_func.dart';
 import 'package:neologism/neo_function/quiz_func.dart';
 
 TextEditingController chatController = TextEditingController();
+TextEditingController modifychatcontroller = TextEditingController();
 final user = FirebaseAuth.instance.currentUser!.displayName;
 final userid = FirebaseAuth.instance.currentUser!.uid;
+int pressedAttentionIndex = 0;
 
 class ChatContainer extends StatefulWidget {
   const ChatContainer({super.key, this.docId});
@@ -68,6 +72,79 @@ class _ChatContainerState extends State<ChatContainer> {
   }
 }
 
+class ChatModifyBox extends StatelessWidget {
+  const ChatModifyBox({super.key, this.docid, this.docs});
+
+  final docid;
+  final docs;
+
+  updatechat(docs) async {
+    List<dynamic> exchat = [
+      {
+        "content": docs['chats'][pressedAttentionIndex]["content"],
+        "time": docs['chats'][pressedAttentionIndex]["time"],
+        "user": userid
+      },
+    ];
+
+    await FirebaseFirestore.instance
+        .collection("post")
+        .doc(docid)
+        .update({"chats": FieldValue.arrayRemove(exchat)});
+
+    List<dynamic> chat = [
+      {
+        "content": modifychatcontroller.text,
+        "time": Timestamp.now(),
+        "user": userid
+      },
+    ];
+    await FirebaseFirestore.instance
+        .collection('post')
+        .doc(docid)
+        .update({"chats": FieldValue.arrayUnion(chat)});
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    Get.put(chatcontroller());
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.end,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        GestureDetector(
+          onTap: () {
+            Get.find<chatcontroller>().chatmodify();
+          },
+          child: Text(
+            "취소",
+            style: TextStyle(color: Colors.blue),
+          ),
+        ),
+        SizedBox(
+          height: 5,
+        ),
+        SizedBox(
+          width: MediaQuery.of(context).size.width * 0.85,
+          child: TextField(
+            onSubmitted: (value) {
+              modifychatcontroller.text = value;
+              updatechat(docs);
+              Get.find<chatcontroller>().chatmodify();
+            },
+            controller: modifychatcontroller,
+            decoration: const InputDecoration(
+                border: OutlineInputBorder(
+                    borderSide: BorderSide(width: 2, color: Colors.grey)),
+                focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(width: 2, color: Colors.grey))),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
 class ChatBox extends StatefulWidget {
   const ChatBox({super.key, this.docid});
 
@@ -79,8 +156,13 @@ class ChatBox extends StatefulWidget {
 
 class _ChatBoxState extends State<ChatBox> {
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    int pressedAttentionIndex = 0;
+    Get.put(chatcontroller());
 
     Future<void> deletechat(docs) async {
       List<dynamic> chat = [
@@ -122,64 +204,101 @@ class _ChatBoxState extends State<ChatBox> {
                   return Column(
                     children: [
                       Divider(
-                        height: 50,
+                        height: 45,
                         thickness: 1.5,
                       ),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.8,
-                        height: 80,
-                        child: ListTile(
-                            title: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  children: [
-                                    CircleAvatar(),
-                                    SizedBox(
-                                      width: 10,
-                                    ),
-                                    Text(user.toString()),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                Text(
-                                    Docs['chats'][index]["content"].toString()),
-                              ],
-                            ),
-                            subtitle: Text(mytime.toString()),
-                            trailing: userid == Docs['chats'][index]["user"]
-                                ? SizedBox(
-                                    width: 60,
-                                    child: Row(
-                                      children: [
-                                        GestureDetector(
-                                          onTap: () {},
-                                          child: Text(
-                                            "수정",
-                                            style:
-                                                TextStyle(color: Colors.blue),
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 10),
+                        child: SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.8,
+                            height: 80,
+                            child: Obx(() {
+                              return Get.find<chatcontroller>()
+                                          .chatmodified
+                                          .value &&
+                                      pressedAttentionIndex == index
+                                  ? ChatModifyBox(
+                                      docid: widget.docid,
+                                      docs: Docs,
+                                    )
+                                  : ListTile(
+                                      title: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              CircleAvatar(
+                                                child: Icon(Icons.person),
+                                                backgroundColor: Colors.white60,
+                                              ),
+                                              SizedBox(
+                                                width: 10,
+                                              ),
+                                              Text(user.toString()),
+                                            ],
                                           ),
-                                        ),
-                                        SizedBox(
-                                          width: 10,
-                                        ),
-                                        GestureDetector(
-                                            onTap: () {
-                                              setState(() {
-                                                pressedAttentionIndex = index;
-                                              });
-                                              deleteChatDialog(
-                                                  context, deletechat, Docs);
-                                            },
-                                            child: Text("삭제",
-                                                style: TextStyle(
-                                                    color: Colors.blue)))
-                                      ],
-                                    ),
-                                  )
-                                : null),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          Text(Docs['chats'][index]["content"]
+                                              .toString()),
+                                        ],
+                                      ),
+                                      subtitle: Text(mytime.toString()),
+                                      trailing: Get.find<chatcontroller>()
+                                                  .chatmodified
+                                                  .value ==
+                                              false
+                                          ? (userid ==
+                                                  Docs['chats'][index]["user"]
+                                              ? SizedBox(
+                                                  width: 60,
+                                                  child: Row(
+                                                    children: [
+                                                      GestureDetector(
+                                                        onTap: () {
+                                                          setState(() {
+                                                            pressedAttentionIndex =
+                                                                index;
+                                                          });
+
+                                                          Get.find<
+                                                                  chatcontroller>()
+                                                              .chatmodify();
+                                                        },
+                                                        child: Text(
+                                                          "수정",
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.blue),
+                                                        ),
+                                                      ),
+                                                      SizedBox(
+                                                        width: 10,
+                                                      ),
+                                                      GestureDetector(
+                                                          onTap: () {
+                                                            setState(() {
+                                                              pressedAttentionIndex =
+                                                                  index;
+                                                            });
+
+                                                            deleteChatDialog(
+                                                                context,
+                                                                deletechat,
+                                                                Docs);
+                                                          },
+                                                          child: Text("삭제",
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .blue)))
+                                                    ],
+                                                  ),
+                                                )
+                                              : null)
+                                          : null);
+                            })),
                       ),
                     ],
                   );
