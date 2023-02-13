@@ -16,19 +16,25 @@ import 'package:neologism/pages/bulletin_pages/chatbox.dart';
 import 'package:neologism/pages/startpage.dart';
 
 final blackcontroller = Get.find<BlackModeController>();
+final userid = FirebaseAuth.instance.currentUser!.uid;
+bool isLiked = false;
+bool islike = false;
+int likeCount = 0;
 
 class BulletinPost extends StatefulWidget {
-  const BulletinPost(
-      {super.key,
-      this.index,
-      this.user,
-      this.name,
-      this.content,
-      this.datetime,
-      this.like,
-      this.dislike,
-      this.admin,
-      this.docId});
+  const BulletinPost({
+    super.key,
+    this.index,
+    this.user,
+    this.name,
+    this.content,
+    this.datetime,
+    this.like,
+    this.dislike,
+    this.admin,
+    this.docId,
+    this.userlike,
+  });
 
   final index;
   final user;
@@ -39,6 +45,7 @@ class BulletinPost extends StatefulWidget {
   final dislike;
   final admin;
   final docId;
+  final userlike;
 
   @override
   State<BulletinPost> createState() => _BulletinPostState();
@@ -46,16 +53,44 @@ class BulletinPost extends StatefulWidget {
 
 class _BulletinPostState extends State<BulletinPost> {
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    setState(() {
+      likeCount = widget.like;
+      isLiked = widget.userlike;
+    });
+  }
+
+  @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
     chatController.text = "";
   }
 
+  postlike() {
+    if (!isLiked) {
+      likeCount -= 1;
+      FirebaseFirestore.instance
+          .collection('post')
+          .doc(widget.docId)
+          .update({'likes.$userid': false, 'like': likeCount});
+    } else if (isLiked) {
+      likeCount += 1;
+      FirebaseFirestore.instance
+          .collection('post')
+          .doc(widget.docId)
+          .update({'likes.$userid': true, 'like': likeCount});
+    }
+    setState(() {
+      islike = isLiked;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     Get.put(PostLikeController());
-
     return GetBuilder(
       init: BlackModeController(),
       builder: (_) => Scaffold(
@@ -168,98 +203,84 @@ class _BulletinPostState extends State<BulletinPost> {
                                       Padding(
                                           padding:
                                               const EdgeInsets.only(top: 200),
-                                          child: Obx(() {
-                                            return Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                Container(
-                                                  width: 100,
-                                                  height: 40,
-                                                  decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              10),
-                                                      color: Get.find<
-                                                                  PostLikeController>()
-                                                              .likeclicked
-                                                              .value
-                                                          ? Colors.blue[200]
-                                                          : Colors.white,
-                                                      border: Border.all(
-                                                          width: 2,
-                                                          color: Colors.black)),
-                                                  child: GestureDetector(
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                      children: [
-                                                        Icon(
-                                                            Icons.thumb_up_alt),
-                                                        Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                      .only(
-                                                                  left: 10),
-                                                          child: Text("좋아요  " +
-                                                              widget.like
-                                                                  .toString()),
-                                                        )
-                                                      ],
-                                                    ),
-                                                    onTap: () {
-                                                      Get.put(PostLikeController())
-                                                          .like();
-                                                      print(widget.docId);
-                                                    },
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Container(
+                                                width: 100,
+                                                height: 40,
+                                                decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10),
+                                                    color: isLiked
+                                                        ? Colors.blue[300]
+                                                        : Colors.white,
+                                                    border: Border.all(
+                                                        width: 2,
+                                                        color: Colors.black)),
+                                                child: GestureDetector(
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      Icon(Icons.thumb_up_alt),
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .only(left: 10),
+                                                        child: Text("좋아요  " +
+                                                            likeCount
+                                                                .toString()),
+                                                      )
+                                                    ],
+                                                  ),
+                                                  onTap: () {
+                                                    setState(() {
+                                                      isLiked = !isLiked;
+                                                    });
+
+                                                    postlike();
+                                                  },
+                                                ),
+                                              ),
+                                              const SizedBox(width: 20),
+                                              Container(
+                                                width: 100,
+                                                height: 40,
+                                                decoration: BoxDecoration(
+                                                    color: Colors.white,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10),
+                                                    border: Border.all(
+                                                        width: 2,
+                                                        color: Colors.black)),
+                                                child: GestureDetector(
+                                                  onTap: () {},
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      Icon(
+                                                          Icons.thumb_down_alt),
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .only(left: 10),
+                                                        child: Text("싫어요  " +
+                                                            widget.dislike
+                                                                .toString()),
+                                                      )
+                                                    ],
                                                   ),
                                                 ),
-                                                const SizedBox(width: 20),
-                                                Container(
-                                                  width: 100,
-                                                  height: 40,
-                                                  decoration: BoxDecoration(
-                                                      color: Get.find<
-                                                                  PostLikeController>()
-                                                              .dislikeclicked
-                                                              .value
-                                                          ? Colors.red[200]
-                                                          : Colors.white,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              10),
-                                                      border: Border.all(
-                                                          width: 2,
-                                                          color: Colors.black)),
-                                                  child: GestureDetector(
-                                                    onTap: () {
-                                                      Get.put(PostLikeController())
-                                                          .dislike();
-                                                    },
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                      children: [
-                                                        Icon(Icons
-                                                            .thumb_down_alt),
-                                                        Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                      .only(
-                                                                  left: 10),
-                                                          child: Text("싫어요  " +
-                                                              widget.dislike
-                                                                  .toString()),
-                                                        )
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            );
-                                          })),
+                                              ),
+                                            ],
+                                          )),
                                       const Divider(
                                         height: 50,
                                         thickness: 1,

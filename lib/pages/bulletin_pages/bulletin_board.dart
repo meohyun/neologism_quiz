@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -85,6 +86,7 @@ class Blluettin extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final user = FirebaseAuth.instance.currentUser!.displayName;
+    final userid = FirebaseAuth.instance.currentUser!.uid;
     final board = FirebaseFirestore.instance.collection('post');
     return StreamBuilder(
         stream: board.orderBy('time', descending: true).snapshots(),
@@ -104,17 +106,26 @@ class Blluettin extends StatelessWidget {
                   padding: const EdgeInsets.only(bottom: 1),
                   child: GestureDetector(
                     onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => BulletinPost(
-                              index: index,
-                              name: postDocs[index]["name"],
-                              content: postDocs[index]["content"],
-                              user: user,
-                              datetime: d24,
-                              like: postDocs[index]["like"],
-                              dislike: postDocs[index]["dislike"],
-                              admin: postDocs[index]["admin"],
-                              docId: postDocs[index].id)));
+                      if (postDocs[index]["likes"][userid] == null) {
+                        FirebaseFirestore.instance
+                            .collection('post')
+                            .doc(postDocs[index].id)
+                            .update({'likes.$userid': false});
+                      }
+                      if (postDocs[index]["likes"][userid] != null) {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => BulletinPost(
+                                index: index,
+                                name: postDocs[index]["name"],
+                                content: postDocs[index]["content"],
+                                user: user,
+                                datetime: d24,
+                                like: postDocs[index]["like"],
+                                dislike: postDocs[index]["dislike"],
+                                admin: postDocs[index]["admin"],
+                                docId: postDocs[index].id,
+                                userlike: postDocs[index]["likes"][userid])));
+                      }
                     },
                     child: Container(
                       height: 100,
