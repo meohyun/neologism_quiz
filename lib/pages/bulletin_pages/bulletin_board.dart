@@ -106,25 +106,32 @@ class Blluettin extends StatelessWidget {
                   padding: const EdgeInsets.only(bottom: 1),
                   child: GestureDetector(
                     onTap: () {
-                      if (postDocs[index]["likes"][userid] == null) {
+                      if (postDocs[index]["likes"][userid] == null &&
+                          postDocs[index]['dislikes'][userid] == null) {
                         FirebaseFirestore.instance
                             .collection('post')
                             .doc(postDocs[index].id)
-                            .update({'likes.$userid': false});
+                            .update({
+                          'likes.$userid': false,
+                          'dislikes.$userid': false
+                        });
                       }
                       if (postDocs[index]["likes"][userid] != null) {
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => BulletinPost(
-                                index: index,
-                                name: postDocs[index]["name"],
-                                content: postDocs[index]["content"],
-                                user: user,
-                                datetime: d24,
-                                like: postDocs[index]["like"],
-                                dislike: postDocs[index]["dislike"],
-                                admin: postDocs[index]["admin"],
-                                docId: postDocs[index].id,
-                                userlike: postDocs[index]["likes"][userid])));
+                                  index: index,
+                                  name: postDocs[index]["name"],
+                                  content: postDocs[index]["content"],
+                                  user: user,
+                                  datetime: d24,
+                                  like: postDocs[index]["like"],
+                                  dislike: postDocs[index]["dislike"],
+                                  admin: postDocs[index]["admin"],
+                                  docId: postDocs[index].id,
+                                  userlike: postDocs[index]["likes"][userid],
+                                  userdislike: postDocs[index]["dislikes"]
+                                      [userid],
+                                )));
                       }
                     },
                     child: Container(

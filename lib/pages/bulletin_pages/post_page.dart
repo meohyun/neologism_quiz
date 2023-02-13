@@ -1,16 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/instance_manager.dart';
-import 'package:get/route_manager.dart';
 import 'package:intl/intl.dart';
 import 'package:neologism/getx/blackmode.dart';
-import 'package:neologism/getx/chatmodify.dart';
-import 'package:neologism/getx/postlike.dart';
-import 'package:neologism/neo_function/bulletin_func.dart';
 import 'package:neologism/pages/bulletin_pages/CRUD.dart';
 import 'package:neologism/pages/bulletin_pages/chatbox.dart';
 import 'package:neologism/pages/startpage.dart';
@@ -18,8 +12,9 @@ import 'package:neologism/pages/startpage.dart';
 final blackcontroller = Get.find<BlackModeController>();
 final userid = FirebaseAuth.instance.currentUser!.uid;
 bool isLiked = false;
-bool islike = false;
 int likeCount = 0;
+int dislikeCount = 0;
+bool disLiked = false;
 
 class BulletinPost extends StatefulWidget {
   const BulletinPost({
@@ -34,6 +29,7 @@ class BulletinPost extends StatefulWidget {
     this.admin,
     this.docId,
     this.userlike,
+    this.userdislike,
   });
 
   final index;
@@ -46,6 +42,7 @@ class BulletinPost extends StatefulWidget {
   final admin;
   final docId;
   final userlike;
+  final userdislike;
 
   @override
   State<BulletinPost> createState() => _BulletinPostState();
@@ -59,6 +56,7 @@ class _BulletinPostState extends State<BulletinPost> {
     setState(() {
       likeCount = widget.like;
       isLiked = widget.userlike;
+      dislikeCount = widget.dislike;
     });
   }
 
@@ -78,19 +76,41 @@ class _BulletinPostState extends State<BulletinPost> {
           .update({'likes.$userid': false, 'like': likeCount});
     } else if (isLiked) {
       likeCount += 1;
-      FirebaseFirestore.instance
-          .collection('post')
-          .doc(widget.docId)
-          .update({'likes.$userid': true, 'like': likeCount});
+      if (dislikeCount != 0) {
+        dislikeCount -= 1;
+      }
+      FirebaseFirestore.instance.collection('post').doc(widget.docId).update({
+        'likes.$userid': true,
+        'like': likeCount,
+        'dislike': dislikeCount,
+        'dislikes.$userid': false
+      });
     }
-    setState(() {
-      islike = isLiked;
-    });
+  }
+
+  postdislike() {
+    if (!disLiked) {
+      dislikeCount -= 1;
+      FirebaseFirestore.instance.collection('post').doc(widget.docId).update({
+        'dislikes.$userid': false,
+        'dislike': dislikeCount,
+      });
+    } else if (disLiked) {
+      dislikeCount += 1;
+      if (likeCount != 0) {
+        likeCount -= 1;
+      }
+      FirebaseFirestore.instance.collection('post').doc(widget.docId).update({
+        'dislikes.$userid': true,
+        'dislike': dislikeCount,
+        'like': likeCount,
+        'likes.$userid': false,
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    Get.put(PostLikeController());
     return GetBuilder(
       init: BlackModeController(),
       builder: (_) => Scaffold(
@@ -240,6 +260,9 @@ class _BulletinPostState extends State<BulletinPost> {
                                                   onTap: () {
                                                     setState(() {
                                                       isLiked = !isLiked;
+                                                      if (disLiked) {
+                                                        disLiked = !disLiked;
+                                                      }
                                                     });
 
                                                     postlike();
@@ -251,7 +274,9 @@ class _BulletinPostState extends State<BulletinPost> {
                                                 width: 100,
                                                 height: 40,
                                                 decoration: BoxDecoration(
-                                                    color: Colors.white,
+                                                    color: disLiked
+                                                        ? Colors.red[300]
+                                                        : Colors.white,
                                                     borderRadius:
                                                         BorderRadius.circular(
                                                             10),
@@ -259,7 +284,15 @@ class _BulletinPostState extends State<BulletinPost> {
                                                         width: 2,
                                                         color: Colors.black)),
                                                 child: GestureDetector(
-                                                  onTap: () {},
+                                                  onTap: () {
+                                                    setState(() {
+                                                      disLiked = !disLiked;
+                                                      if (isLiked) {
+                                                        isLiked = !isLiked;
+                                                      }
+                                                    });
+                                                    postdislike();
+                                                  },
                                                   child: Row(
                                                     mainAxisAlignment:
                                                         MainAxisAlignment
@@ -272,7 +305,7 @@ class _BulletinPostState extends State<BulletinPost> {
                                                             const EdgeInsets
                                                                 .only(left: 10),
                                                         child: Text("싫어요  " +
-                                                            widget.dislike
+                                                            dislikeCount
                                                                 .toString()),
                                                       )
                                                     ],

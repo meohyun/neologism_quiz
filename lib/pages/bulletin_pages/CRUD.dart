@@ -25,7 +25,8 @@ makepost(context) {
     "like": 0,
     "dislike": 0,
     "chats": [],
-    "likes": {'$userid': false}
+    "likes": {'$userid': false},
+    'dislikes': {'$userid': false}
   });
 
   Navigator.pushNamed(context, '/bulletin');
