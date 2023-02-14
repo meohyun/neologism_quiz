@@ -15,23 +15,6 @@ import 'package:neologism/pages/startpage.dart';
 TextEditingController _titleController = TextEditingController();
 TextEditingController _contentController = TextEditingController();
 
-makepost(context) {
-  final userid = FirebaseAuth.instance.currentUser!.uid;
-  FirebaseFirestore.instance.collection('post').add({
-    "admin": FirebaseAuth.instance.currentUser?.uid,
-    "name": _titleController.text,
-    "content": _contentController.text,
-    "time": Timestamp.now(),
-    "like": 0,
-    "dislike": 0,
-    "chats": [],
-    "likes": {'$userid': false},
-    'dislikes': {'$userid': false}
-  });
-
-  Navigator.pushNamed(context, '/bulletin');
-}
-
 class BulletinCreate extends StatefulWidget {
   const BulletinCreate({super.key, this.index});
 
@@ -42,6 +25,23 @@ class BulletinCreate extends StatefulWidget {
 }
 
 class _BulletinCreateState extends State<BulletinCreate> {
+  makepost(context) {
+    final userid = FirebaseAuth.instance.currentUser!.uid;
+    FirebaseFirestore.instance.collection('post').add({
+      "admin": FirebaseAuth.instance.currentUser?.uid,
+      "name": _titleController.text,
+      "content": _contentController.text,
+      "time": Timestamp.now(),
+      "like": 0,
+      "dislike": 0,
+      "chats": [],
+      "likes": {'$userid': false},
+      'dislikes': {'$userid': false}
+    });
+
+    Navigator.pushNamed(context, '/bulletin');
+  }
+
   @override
   void initState() {
     super.initState();
