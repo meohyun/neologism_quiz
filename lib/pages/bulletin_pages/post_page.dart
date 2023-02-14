@@ -56,6 +56,7 @@ class _BulletinPostState extends State<BulletinPost> {
     setState(() {
       likeCount = widget.like;
       isLiked = widget.userlike;
+      disLiked = widget.userdislike;
       dislikeCount = widget.dislike;
     });
   }
@@ -67,14 +68,41 @@ class _BulletinPostState extends State<BulletinPost> {
     chatController.text = "";
   }
 
+  getpostlike() {
+    var collection = FirebaseFirestore.instance.collection('post');
+    collection.doc(widget.docId).snapshots().listen((docSnapshot) {
+      if (docSnapshot.exists) {
+        Map<String, dynamic> data = docSnapshot.data()!;
+
+        // You can then retrieve the value from the Map like this:
+        likeCount = data['like'];
+        dislikeCount = data['dislike'];
+      }
+    });
+  }
+
   postlike() {
-    if (!isLiked) {
-      likeCount -= 1;
-      FirebaseFirestore.instance
-          .collection('post')
-          .doc(widget.docId)
-          .update({'likes.$userid': false, 'like': likeCount});
-    } else if (isLiked) {
+    if (!isLiked && !disLiked) {
+      FirebaseFirestore.instance.collection('post').doc(widget.docId).update({
+        'likes.$userid': false,
+        'like': likeCount,
+        'dislikes.$userid': false,
+        'dislike': dislikeCount
+      });
+    }
+    if (!isLiked && disLiked) {
+      if (likeCount != 0) {
+        likeCount -= 1;
+      }
+      dislikeCount += 1;
+      FirebaseFirestore.instance.collection('post').doc(widget.docId).update({
+        'likes.$userid': false,
+        'like': likeCount,
+        'dislikes.$userid': true,
+        'dislike': dislikeCount
+      });
+    }
+    if (isLiked && !disLiked) {
       likeCount += 1;
       if (dislikeCount != 0) {
         dislikeCount -= 1;
@@ -82,29 +110,8 @@ class _BulletinPostState extends State<BulletinPost> {
       FirebaseFirestore.instance.collection('post').doc(widget.docId).update({
         'likes.$userid': true,
         'like': likeCount,
-        'dislike': dislikeCount,
-        'dislikes.$userid': false
-      });
-    }
-  }
-
-  postdislike() {
-    if (!disLiked) {
-      dislikeCount -= 1;
-      FirebaseFirestore.instance.collection('post').doc(widget.docId).update({
         'dislikes.$userid': false,
-        'dislike': dislikeCount,
-      });
-    } else if (disLiked) {
-      dislikeCount += 1;
-      if (likeCount != 0) {
-        likeCount -= 1;
-      }
-      FirebaseFirestore.instance.collection('post').doc(widget.docId).update({
-        'dislikes.$userid': true,
-        'dislike': dislikeCount,
-        'like': likeCount,
-        'likes.$userid': false,
+        'dislike': dislikeCount
       });
     }
   }
@@ -257,14 +264,14 @@ class _BulletinPostState extends State<BulletinPost> {
                                                       )
                                                     ],
                                                   ),
-                                                  onTap: () {
+                                                  onDoubleTap: () {
                                                     setState(() {
                                                       isLiked = !isLiked;
+                                                      getpostlike();
                                                       if (disLiked) {
                                                         disLiked = !disLiked;
                                                       }
                                                     });
-
                                                     postlike();
                                                   },
                                                 ),
@@ -284,14 +291,16 @@ class _BulletinPostState extends State<BulletinPost> {
                                                         width: 2,
                                                         color: Colors.black)),
                                                 child: GestureDetector(
-                                                  onTap: () {
+                                                  onDoubleTap: () {
                                                     setState(() {
                                                       disLiked = !disLiked;
+                                                      getpostlike();
                                                       if (isLiked) {
                                                         isLiked = !isLiked;
                                                       }
                                                     });
-                                                    postdislike();
+
+                                                    postlike();
                                                   },
                                                   child: Row(
                                                     mainAxisAlignment:
