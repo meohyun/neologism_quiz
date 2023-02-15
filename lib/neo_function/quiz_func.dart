@@ -190,7 +190,7 @@ quizexit(context) {
 
 makenumber(int num) {
   List<int> numberList = [];
-  Random random = new Random();
+  Random random = Random();
   while (numberList.length < 10) {
     int random_number = random.nextInt(num);
     if (!numberList.contains(random_number)) {
@@ -296,7 +296,7 @@ quiz_choice(context) {
       });
 }
 
-showdesc(context) {
+showdesc(context, bool answer) {
   showDialog(
       context: context,
       builder: (context) {
@@ -315,6 +315,25 @@ showdesc(context) {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
+                  answer == true
+                      ? Text("정답입니다!",
+                          style: TextStyle(
+                            fontSize: 25.0,
+                            color: Get.find<BlackModeController>().blackmode ==
+                                    true
+                                ? Colors.white
+                                : blackmodecolor,
+                          ))
+                      : Text(
+                          "오답입니다!",
+                          style: TextStyle(
+                              fontSize: 25.0,
+                              color:
+                                  Get.find<BlackModeController>().blackmode ==
+                                          true
+                                      ? Colors.white
+                                      : blackmodecolor),
+                        ),
                   Text(
                     datas[order]["desc_title"],
                     style: TextStyle(

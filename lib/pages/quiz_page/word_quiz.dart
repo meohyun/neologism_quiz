@@ -33,13 +33,13 @@ class NeologismQuiz extends StatefulWidget {
 }
 
 class _MyWidgetState extends State<NeologismQuiz> {
-  showanswer() {
+  showanswer(bool answer) {
     is_running = false;
     answershow = true;
     hintblocked = true;
     setState(() {
       if (descblocked == false) {
-        showdesc(context);
+        showdesc(context, answer);
       }
       descblocked = true;
     });
@@ -48,6 +48,7 @@ class _MyWidgetState extends State<NeologismQuiz> {
   @override
   void initState() {
     setinit();
+    // timer
     _timer?.cancel();
     _timer = Timer.periodic(Duration(seconds: 1), (timer) {
       setState(() {
@@ -56,7 +57,7 @@ class _MyWidgetState extends State<NeologismQuiz> {
         }
         _time = time.toString();
         if (time <= 0) {
-          showanswer();
+          showanswer(answer);
         }
       });
     });
@@ -248,11 +249,16 @@ class _MyWidgetState extends State<NeologismQuiz> {
                           ),
                           onTap: () {
                             if (datas[order]["options"][index] ==
+                                datas[order]["answer"]) {
+                              answer = true;
+                            }
+                            if (datas[order]["options"][index] ==
                                     datas[order]["answer"] &&
                                 answershow == false) {
                               number_answer++;
                             }
-                            showanswer();
+
+                            showanswer(answer);
                           },
                         ),
                       ),
