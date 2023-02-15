@@ -8,7 +8,7 @@ import 'package:neologism/neo_function/bulletin_func.dart';
 import 'package:neologism/neo_function/quiz_func.dart';
 
 TextEditingController chatController = TextEditingController();
-TextEditingController modifychatcontroller = TextEditingController();
+TextEditingController updateChatController = TextEditingController();
 final user = FirebaseAuth.instance.currentUser!.displayName;
 final userid = FirebaseAuth.instance.currentUser!.uid;
 int pressedAttentionIndex = 0;
@@ -94,7 +94,7 @@ class ChatUpdateBox extends StatelessWidget {
 
     List<dynamic> chat = [
       {
-        "content": modifychatcontroller.text,
+        "content": updateChatController.text,
         "time": Timestamp.now(),
         "user": userid
       },
@@ -157,11 +157,11 @@ class ChatUpdateBox extends StatelessWidget {
           height: 50,
           child: TextField(
             onSubmitted: (value) {
-              modifychatcontroller.text = value;
+              updateChatController.text = value;
               updatechat(docs);
               Get.find<chatcontroller>().chatmodify();
             },
-            controller: modifychatcontroller,
+            controller: updateChatController,
             decoration: const InputDecoration(
                 border: OutlineInputBorder(
                     borderSide: BorderSide(width: 2, color: Colors.grey)),
@@ -287,12 +287,15 @@ class _ChatBoxState extends State<ChatBox> {
                                                     children: [
                                                       GestureDetector(
                                                         onTap: () {
-                                                          modifychatcontroller
-                                                              .text = "";
                                                           setState(() {
                                                             pressedAttentionIndex =
                                                                 index;
                                                           });
+                                                          updateChatController
+                                                              .text = Docs[
+                                                                      'chats'][
+                                                                  pressedAttentionIndex]
+                                                              ["content"];
 
                                                           Get.find<
                                                                   chatcontroller>()
