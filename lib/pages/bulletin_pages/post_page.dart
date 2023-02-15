@@ -82,7 +82,47 @@ class _BulletinPostState extends State<BulletinPost> {
   }
 
   postlike() {
+    // only pressed like button
     if (!isLiked && !disLiked) {
+      likeCount -= 1;
+      FirebaseFirestore.instance.collection('post').doc(widget.docId).update({
+        'likes.$userid': false,
+        'like': likeCount,
+        'dislikes.$userid': false,
+        'dislike': dislikeCount
+      });
+    }
+    // when like button pressed,press dislike button
+    if (!isLiked && disLiked) {
+      if (likeCount != 0) {
+        likeCount -= 1;
+      }
+      dislikeCount += 1;
+      FirebaseFirestore.instance.collection('post').doc(widget.docId).update({
+        'likes.$userid': false,
+        'like': likeCount,
+        'dislikes.$userid': true,
+        'dislike': dislikeCount
+      });
+    }
+    // when dislike button pressed,press like button
+    if (isLiked && !disLiked) {
+      likeCount += 1;
+      if (dislikeCount != 0) {
+        dislikeCount -= 1;
+      }
+      FirebaseFirestore.instance.collection('post').doc(widget.docId).update({
+        'likes.$userid': true,
+        'like': likeCount,
+        'dislikes.$userid': false,
+        'dislike': dislikeCount
+      });
+    }
+  }
+
+  postdislike() {
+    if (!isLiked && !disLiked) {
+      dislikeCount -= 1;
       FirebaseFirestore.instance.collection('post').doc(widget.docId).update({
         'likes.$userid': false,
         'like': likeCount,
@@ -272,6 +312,7 @@ class _BulletinPostState extends State<BulletinPost> {
                                                         disLiked = !disLiked;
                                                       }
                                                     });
+
                                                     postlike();
                                                   },
                                                 ),
@@ -300,7 +341,7 @@ class _BulletinPostState extends State<BulletinPost> {
                                                       }
                                                     });
 
-                                                    postlike();
+                                                    postdislike();
                                                   },
                                                   child: Row(
                                                     mainAxisAlignment:
