@@ -255,9 +255,13 @@ class _MyWidgetState extends State<NeologismQuiz> {
                             if (datas[order]["options"][index] ==
                                     datas[order]["answer"] &&
                                 answershow == false) {
+                              rightSound();
                               number_answer++;
+                            } else if (datas[order]["options"][index] !=
+                                    datas[order]["answer"] &&
+                                answershow == false) {
+                              wrongSound();
                             }
-
                             showanswer(answer);
                           },
                         ),

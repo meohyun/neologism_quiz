@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:math';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:neologism/getx/blackmode.dart';
 import 'package:neologism/pages/quiz_page/essay_quiz.dart';
@@ -8,6 +10,7 @@ import 'package:neologism/pages/quiz_page/word_quiz.dart';
 import 'package:neologism/pages/startpage.dart';
 import 'package:neologism/datas/quizdata.dart';
 import 'package:neologism/widgets/Buttons.dart';
+import 'package:soundpool/soundpool.dart';
 
 Timer? _timer;
 int order = 0;
@@ -360,4 +363,24 @@ showdesc(context, bool answer) {
           ),
         );
       });
+}
+
+rightSound() async {
+  Soundpool pool = Soundpool.fromOptions();
+
+  int soundId =
+      await rootBundle.load("assets/correct.mp3").then((ByteData soundData) {
+    return pool.load(soundData);
+  });
+  pool.play(soundId);
+}
+
+wrongSound() async {
+  Soundpool pool = Soundpool.fromOptions();
+
+  int soundId =
+      await rootBundle.load("assets/wrong.mp3").then((ByteData soundData) {
+    return pool.load(soundData);
+  });
+  pool.play(soundId);
 }

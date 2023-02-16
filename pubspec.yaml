@@ -45,6 +45,8 @@ dependencies:
   firebase_auth: ^4.1.5
   flutterfire_ui: ^0.4.3+20
   cloud_firestore: ^4.3.1
+  audioplayers: ^3.0.1
+  soundpool: ^2.3.0
 
 
 
