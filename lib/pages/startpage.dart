@@ -1,10 +1,15 @@
 import 'dart:async';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:neologism/getx/blackmode.dart';
 import 'package:neologism/neo_function/quiz_func.dart';
+import 'package:neologism/pages/bulletin_pages/bulletin_board.dart';
+import 'package:neologism/pages/bulletin_pages/chatbox.dart';
+import 'package:neologism/pages/dictionary_page/dict_neologism.dart';
+import 'package:neologism/pages/nickname.dart';
 import 'package:neologism/widgets/Buttons.dart';
 import 'package:neologism/widgets/mydrawer.dart';
 
@@ -33,6 +38,16 @@ class _StartpageState extends State<Startpage> {
 
 class Authentication extends StatelessWidget {
   const Authentication({super.key});
+
+  initcreatename(docid) {
+    final user = FirebaseAuth.instance.currentUser!;
+    final displayname = user.displayName;
+    final userid = user.uid;
+    FirebaseFirestore.instance
+        .collection('user')
+        .doc(docid)
+        .update({'user.$userid': displayname});
+  }
 
   Future<UserCredential> signInWithGoogle() async {
     // Trigger the authentication flow
@@ -85,7 +100,9 @@ class Authentication extends StatelessWidget {
                           shape: RoundedRectangleBorder(
                               side: BorderSide(color: Colors.white, width: 0.5),
                               borderRadius: BorderRadius.circular(15.0))),
-                      onPressed: signInWithGoogle,
+                      onPressed: () {
+                        signInWithGoogle();
+                      },
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -106,14 +123,34 @@ class Authentication extends StatelessWidget {
               ),
             );
           }
-          return ScreenPage();
+          return StreamBuilder(
+              stream: FirebaseFirestore.instance.collection('user').snapshots(),
+              builder: (context,
+                  AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+                final userdocs = snapshot.data!.docs;
+                final userid = FirebaseAuth.instance.currentUser!.uid;
+                if (!snapshot.hasData) {
+                  return CreateNickname(
+                    docid: userdocs[0].id,
+                  );
+                }
+                return ScreenPage(
+                  nickname: userdocs[0]['user']['$userid'],
+                );
+              });
         });
   }
 }
 
 class ScreenPage extends StatefulWidget {
-  const ScreenPage({super.key});
+  const ScreenPage({super.key, this.nickname});
 
+  final nickname;
   @override
   State<ScreenPage> createState() => _ScreenPageState();
 }
@@ -124,7 +161,7 @@ class _ScreenPageState extends State<ScreenPage> {
     return GetBuilder(
       init: BlackModeController(),
       builder: (_) => Scaffold(
-          drawer: MyDrawer(),
+          drawer: MyDrawer(nickname: widget.nickname),
           backgroundColor: Get.find<BlackModeController>().blackmode == true
               ? blackmodecolor
               : notblackmodecolor,
@@ -178,11 +215,11 @@ class _ScreenPageState extends State<ScreenPage> {
                         style: TextStyle(color: Colors.white, fontSize: 18.0),
                       )),
                 ),
-                const MainPageButton(
+                MainPageButton(
                   page: '/dict',
                   text: "신조어 사전",
                 ),
-                const MainPageButton(
+                MainPageButton(
                   page: '/bulletin',
                   text: "건의 게시판",
                 )

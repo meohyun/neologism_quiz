@@ -7,7 +7,9 @@ import 'package:neologism/pages/startpage.dart';
 import 'package:neologism/widgets/Buttons.dart';
 
 class MyDrawer extends StatefulWidget {
-  const MyDrawer({super.key});
+  const MyDrawer({super.key, this.nickname});
+
+  final nickname;
 
   @override
   State<MyDrawer> createState() => _MyDrawerState();
@@ -16,7 +18,7 @@ class MyDrawer extends StatefulWidget {
 class _MyDrawerState extends State<MyDrawer> {
   @override
   Widget build(BuildContext context) {
-    final user = FirebaseAuth.instance.currentUser;
+    final user = FirebaseAuth.instance.currentUser!.displayName;
     return GetBuilder(
       init: BlackModeController(),
       builder: (_) => Drawer(
@@ -38,10 +40,12 @@ class _MyDrawerState extends State<MyDrawer> {
                       ? Colors.grey[600]
                       : Colors.deepPurple[200],
                 ),
-                accountName: Text(
-                  "${FirebaseAuth.instance.currentUser!.displayName}",
-                  style: TextStyle(fontSize: 20),
-                ),
+                accountName: widget.nickname == null
+                    ? Text(user.toString(), style: TextStyle(fontSize: 20))
+                    : Text(
+                        widget.nickname,
+                        style: TextStyle(fontSize: 20),
+                      ),
                 accountEmail: Text(
                   "${FirebaseAuth.instance.currentUser!.email}",
                   style: TextStyle(fontSize: 20),

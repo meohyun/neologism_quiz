@@ -134,56 +134,62 @@ class Blluettin extends StatelessWidget {
                                 )));
                       }
                     },
-                    child: Container(
-                      height: 100,
-                      decoration: const BoxDecoration(
-                          border: Border(
-                        bottom: BorderSide(width: 1, color: Colors.grey),
-                      )),
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 8),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                    child: GetBuilder(
+                        init: BlackModeController(),
+                        builder: (context) {
+                          return Container(
+                            height: 100,
+                            decoration: const BoxDecoration(
+                                border: Border(
+                              bottom: BorderSide(width: 1, color: Colors.grey),
+                            )),
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 8),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    postDocs[index]["name"],
-                                    style: TextStyle(
-                                        fontSize: 20,
-                                        color: Get.find<BlackModeController>()
-                                                .blackmode
-                                            ? Colors.white
-                                            : blackmodecolor),
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          postDocs[index]["name"],
+                                          style: TextStyle(
+                                              fontSize: 20,
+                                              color: Get.find<
+                                                          BlackModeController>()
+                                                      .blackmode
+                                                  ? Colors.white
+                                                  : blackmodecolor),
+                                        ),
+                                        Text(user.toString())
+                                      ],
+                                    ),
                                   ),
-                                  Text(user.toString())
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Opacity(
+                                      opacity: 0.5,
+                                      child: Text(
+                                        d24,
+                                        style: TextStyle(
+                                            fontSize: 18,
+                                            color:
+                                                Get.find<BlackModeController>()
+                                                        .blackmode
+                                                    ? Colors.white
+                                                    : blackmodecolor),
+                                      ),
+                                    ),
+                                  )
                                 ],
                               ),
                             ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Opacity(
-                                opacity: 0.5,
-                                child: Text(
-                                  d24,
-                                  style: TextStyle(
-                                      fontSize: 18,
-                                      color: Get.find<BlackModeController>()
-                                              .blackmode
-                                          ? Colors.white
-                                          : blackmodecolor),
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
+                          );
+                        }),
                   ),
                 );
               }));

@@ -280,11 +280,11 @@ quiz_choice(context) {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const MainPageButton(
+                        MainPageButton(
                           page: '/word',
                           text: "단어 퀴즈",
                         ),
-                        const MainPageButton(
+                        MainPageButton(
                           page: '/sentence',
                           text: "문장 퀴즈",
                         )

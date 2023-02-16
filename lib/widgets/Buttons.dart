@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/instance_manager.dart';
+import 'package:get/route_manager.dart';
 import 'package:neologism/getx/blackmode.dart';
 import 'package:neologism/neo_function/quiz_func.dart';
 
@@ -7,9 +8,9 @@ bool pagenext = true;
 
 //main button
 class MainPageButton extends StatelessWidget {
-  const MainPageButton({super.key, required this.page, this.text});
+  MainPageButton({super.key, required this.page, this.text});
 
-  final String page;
+  final page;
   final text;
 
   @override
