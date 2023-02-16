@@ -134,10 +134,10 @@ class Authentication extends StatelessWidget {
                 }
                 final userdocs = snapshot.data!.docs;
                 final userid = FirebaseAuth.instance.currentUser!.uid;
-                if (!snapshot.hasData) {
+                if (userdocs[0]['user'][userid] == null) {
                   return CreateNickname(
-                    docid: userdocs[0].id,
-                  );
+                      docid: userdocs[0].id,
+                      nickname: userdocs[0]['user']['$userid']);
                 }
                 return ScreenPage(
                   nickname: userdocs[0]['user']['$userid'],
@@ -151,6 +151,7 @@ class ScreenPage extends StatefulWidget {
   const ScreenPage({super.key, this.nickname});
 
   final nickname;
+
   @override
   State<ScreenPage> createState() => _ScreenPageState();
 }
@@ -161,7 +162,9 @@ class _ScreenPageState extends State<ScreenPage> {
     return GetBuilder(
       init: BlackModeController(),
       builder: (_) => Scaffold(
-          drawer: MyDrawer(nickname: widget.nickname),
+          drawer: MyDrawer(
+            nickname: widget.nickname,
+          ),
           backgroundColor: Get.find<BlackModeController>().blackmode == true
               ? blackmodecolor
               : notblackmodecolor,

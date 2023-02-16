@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -6,9 +7,10 @@ import 'package:neologism/neo_function/login_func.dart';
 import 'package:neologism/pages/startpage.dart';
 import 'package:neologism/widgets/Buttons.dart';
 
+String usernickname = "";
+
 class MyDrawer extends StatefulWidget {
   const MyDrawer({super.key, this.nickname});
-
   final nickname;
 
   @override
@@ -16,6 +18,11 @@ class MyDrawer extends StatefulWidget {
 }
 
 class _MyDrawerState extends State<MyDrawer> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final user = FirebaseAuth.instance.currentUser!.displayName;
