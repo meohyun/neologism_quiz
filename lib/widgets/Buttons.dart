@@ -27,7 +27,10 @@ class MainPageButton extends StatelessWidget {
               ),
             ),
             onPressed: () {
-              Navigator.pushNamed(context, page);
+              //Navigator.pushNamed(context, page);
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return page;
+              }));
             },
             child: Text(
               text,

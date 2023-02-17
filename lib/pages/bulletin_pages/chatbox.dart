@@ -14,9 +14,10 @@ final userid = FirebaseAuth.instance.currentUser!.uid;
 int pressedAttentionIndex = 0;
 
 class ChatContainer extends StatefulWidget {
-  const ChatContainer({super.key, this.docId});
+  const ChatContainer({super.key, this.docId, this.userdocid});
 
   final docId;
+  final userdocid;
 
   @override
   State<ChatContainer> createState() => _ChatContainerState();
@@ -25,7 +26,12 @@ class ChatContainer extends StatefulWidget {
 class _ChatContainerState extends State<ChatContainer> {
   addchat() {
     List<dynamic> chat = [
-      {"content": chatController.text, "time": Timestamp.now(), "user": userid},
+      {
+        "content": chatController.text,
+        "time": Timestamp.now(),
+        "user": userid,
+        "nickname": user
+      },
     ];
     FirebaseFirestore.instance
         .collection('post')
@@ -65,6 +71,7 @@ class _ChatContainerState extends State<ChatContainer> {
           ),
         ),
         ChatBox(
+          userdocid: widget.userdocid,
           docid: widget.docId,
         )
       ],
@@ -83,7 +90,8 @@ class ChatUpdateBox extends StatelessWidget {
       {
         "content": docs['chats'][pressedAttentionIndex]["content"],
         "time": docs['chats'][pressedAttentionIndex]["time"],
-        "user": userid
+        "user": userid,
+        "nickname": user,
       },
     ];
 
@@ -96,7 +104,8 @@ class ChatUpdateBox extends StatelessWidget {
       {
         "content": updateChatController.text,
         "time": Timestamp.now(),
-        "user": userid
+        "user": userid,
+        "nickname": user,
       },
     ];
     await FirebaseFirestore.instance
@@ -175,9 +184,10 @@ class ChatUpdateBox extends StatelessWidget {
 }
 
 class ChatBox extends StatefulWidget {
-  const ChatBox({super.key, this.docid});
+  const ChatBox({super.key, this.docid, this.userdocid});
 
   final docid;
+  final userdocid;
 
   @override
   State<ChatBox> createState() => _ChatBoxState();
@@ -198,7 +208,8 @@ class _ChatBoxState extends State<ChatBox> {
         {
           "content": docs['chats'][pressedAttentionIndex]["content"],
           "time": docs['chats'][pressedAttentionIndex]["time"],
-          "user": userid
+          "user": userid,
+          "nickname": user,
         },
       ];
 
@@ -264,7 +275,9 @@ class _ChatBoxState extends State<ChatBox> {
                                               SizedBox(
                                                 width: 10,
                                               ),
-                                              Text(user.toString()),
+                                              Text(Docs['chats'][index]
+                                                      ['nickname']
+                                                  .toString()),
                                             ],
                                           ),
                                           SizedBox(

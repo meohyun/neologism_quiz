@@ -28,6 +28,7 @@ class BulletinPost extends StatefulWidget {
     this.dislike,
     this.admin,
     this.docId,
+    this.userdocid,
     this.userlike,
     this.userdislike,
   });
@@ -41,6 +42,7 @@ class BulletinPost extends StatefulWidget {
   final dislike;
   final admin;
   final docId;
+  final userdocid;
   final userlike;
   final userdislike;
 
@@ -223,7 +225,7 @@ class _BulletinPostState extends State<BulletinPost> {
                                             MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text(
-                                            widget.user.toString(),
+                                            user.toString(),
                                           ),
                                           const SizedBox(
                                             width: 50,
@@ -370,6 +372,7 @@ class _BulletinPostState extends State<BulletinPost> {
                                         color: Colors.black,
                                       ),
                                       ChatContainer(
+                                        userdocid: widget.userdocid,
                                         docId: widget.docId,
                                       )
                                     ],

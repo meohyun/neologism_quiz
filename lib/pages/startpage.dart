@@ -134,12 +134,8 @@ class Authentication extends StatelessWidget {
                 }
                 final userdocs = snapshot.data!.docs;
                 final userid = FirebaseAuth.instance.currentUser!.uid;
-                if (userdocs[0]['user'][userid] == null) {
-                  return CreateNickname(
-                      docid: userdocs[0].id,
-                      nickname: userdocs[0]['user']['$userid']);
-                }
                 return ScreenPage(
+                  userdocid: userdocs[0].id,
                   nickname: userdocs[0]['user']['$userid'],
                 );
               });
@@ -148,9 +144,10 @@ class Authentication extends StatelessWidget {
 }
 
 class ScreenPage extends StatefulWidget {
-  const ScreenPage({super.key, this.nickname});
+  const ScreenPage({super.key, this.nickname, this.userdocid});
 
   final nickname;
+  final userdocid;
 
   @override
   State<ScreenPage> createState() => _ScreenPageState();
@@ -162,9 +159,7 @@ class _ScreenPageState extends State<ScreenPage> {
     return GetBuilder(
       init: BlackModeController(),
       builder: (_) => Scaffold(
-          drawer: MyDrawer(
-            nickname: widget.nickname,
-          ),
+          drawer: const MyDrawer(),
           backgroundColor: Get.find<BlackModeController>().blackmode == true
               ? blackmodecolor
               : notblackmodecolor,
@@ -219,11 +214,13 @@ class _ScreenPageState extends State<ScreenPage> {
                       )),
                 ),
                 MainPageButton(
-                  page: '/dict',
+                  page: NeologismDict(),
                   text: "신조어 사전",
                 ),
                 MainPageButton(
-                  page: '/bulletin',
+                  page: Bulletin_Board(
+                    userdocid: widget.userdocid,
+                  ),
                   text: "건의 게시판",
                 )
               ],

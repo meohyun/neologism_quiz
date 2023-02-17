@@ -7,23 +7,21 @@ import 'package:neologism/pages/startpage.dart';
 
 TextEditingController _nicknameController = TextEditingController();
 
-class CreateNickname extends StatefulWidget {
-  const CreateNickname({super.key, this.docid, this.nickname});
+class UpdateNickname extends StatefulWidget {
+  const UpdateNickname({super.key, this.docid, this.nickname});
 
   final docid;
   final nickname;
 
   @override
-  State<CreateNickname> createState() => _CreateNicknameState();
+  State<UpdateNickname> createState() => _UpdateNicknameState();
 }
 
-class _CreateNicknameState extends State<CreateNickname> {
-  nicknameCreate() {
-    final userid = FirebaseAuth.instance.currentUser!.uid;
-    FirebaseFirestore.instance
-        .collection('user')
-        .doc(widget.docid)
-        .update({'user.$userid': _nicknameController.text});
+class _UpdateNicknameState extends State<UpdateNickname> {
+  nicknameUpdate() async {
+    final _auth = FirebaseAuth.instance.currentUser!;
+    await _auth.updateDisplayName(_nicknameController.text);
+    await _auth.reload();
   }
 
   @override
@@ -45,12 +43,8 @@ class _CreateNicknameState extends State<CreateNickname> {
             child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            Text(
-              "신조어 퀴즈에 오신걸 환영합니다!",
-              style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-            ),
             const Text(
-              "닉네임을 생성해주세요!",
+              "원하는 닉네임을 입력해주세요!",
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             Padding(
@@ -58,12 +52,10 @@ class _CreateNicknameState extends State<CreateNickname> {
               child: TextField(
                   onSubmitted: (value) {
                     _nicknameController.text = value;
-                    nicknameCreate();
+                    nicknameUpdate();
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) {
-                      return ScreenPage(
-                        nickname: widget.nickname,
-                      );
+                      return const ScreenPage();
                     }));
                   },
                   controller: _nicknameController,

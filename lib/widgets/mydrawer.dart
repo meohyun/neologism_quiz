@@ -7,11 +7,8 @@ import 'package:neologism/neo_function/login_func.dart';
 import 'package:neologism/pages/startpage.dart';
 import 'package:neologism/widgets/Buttons.dart';
 
-String usernickname = "";
-
 class MyDrawer extends StatefulWidget {
-  const MyDrawer({super.key, this.nickname});
-  final nickname;
+  const MyDrawer({super.key});
 
   @override
   State<MyDrawer> createState() => _MyDrawerState();
@@ -20,6 +17,8 @@ class MyDrawer extends StatefulWidget {
 class _MyDrawerState extends State<MyDrawer> {
   @override
   void initState() {
+    final _auth = FirebaseAuth.instance.currentUser!;
+    _auth.reload();
     super.initState();
   }
 
@@ -42,21 +41,14 @@ class _MyDrawerState extends State<MyDrawer> {
                         : Colors.deepPurple[200],
                     borderRadius: BorderRadius.circular(40)),
                 currentAccountPicture: CircleAvatar(
-                  backgroundImage: AssetImage("assets/odong.png"),
-                  backgroundColor: Get.find<BlackModeController>().blackmode
-                      ? Colors.grey[600]
-                      : Colors.deepPurple[200],
-                ),
-                accountName: widget.nickname == null
-                    ? Text(user.toString(), style: TextStyle(fontSize: 20))
-                    : Text(
-                        widget.nickname,
-                        style: TextStyle(fontSize: 20),
-                      ),
-                accountEmail: Text(
-                  "${FirebaseAuth.instance.currentUser!.email}",
-                  style: TextStyle(fontSize: 20),
-                )),
+                    child: Icon(
+                      Icons.person,
+                      size: 40,
+                    ),
+                    backgroundColor: Colors.blue),
+                accountName:
+                    Text(user.toString(), style: TextStyle(fontSize: 20)),
+                accountEmail: null),
             SizedBox(
               height: 20,
             ),
@@ -101,6 +93,23 @@ class _MyDrawerState extends State<MyDrawer> {
                   setState(() {
                     logout(context);
                   });
+                }),
+            ListTile(
+                leading: Icon(
+                  Icons.update,
+                  color: Get.find<BlackModeController>().blackmode
+                      ? Colors.white
+                      : Colors.black,
+                ),
+                title: Text("닉네임 수정",
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: Get.find<BlackModeController>().blackmode
+                          ? Colors.white
+                          : Colors.black,
+                    )),
+                onTap: () {
+                  Navigator.pushNamed(context, '/nicknameupdate');
                 }),
           ],
         ),

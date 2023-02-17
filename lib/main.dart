@@ -5,6 +5,7 @@ import 'package:neologism/pages/bulletin_pages/bulletin_board.dart';
 import 'package:neologism/pages/bulletin_pages/CRUD.dart';
 import 'package:neologism/pages/bulletin_pages/post_page.dart';
 import 'package:neologism/pages/dictionary_page/dict_neologism.dart';
+import 'package:neologism/pages/nickname.dart';
 import 'package:neologism/pages/quiz_page/essay_quiz.dart';
 import 'package:neologism/pages/quiz_page/word_quiz.dart';
 import 'package:neologism/pages/startpage.dart';
@@ -40,7 +41,8 @@ class _NeologismState extends State<Neologism> {
         '/sentence': (context) => EssayQuiz(),
         '/bulletin': (context) => Bulletin_Board(),
         '/create': (context) => BulletinCreate(),
-        '/post': (context) => BulletinPost()
+        '/post': (context) => BulletinPost(),
+        '/nicknameupdate': (context) => const UpdateNickname(),
       },
       debugShowCheckedModeBanner: false,
     );

@@ -8,8 +8,12 @@ import 'package:neologism/pages/bulletin_pages/post_page.dart';
 import 'package:neologism/pages/startpage.dart';
 import 'package:intl/intl.dart';
 
+String usernickname = "";
+
 class Bulletin_Board extends StatelessWidget {
-  const Bulletin_Board({super.key});
+  const Bulletin_Board({super.key, this.userdocid});
+
+  final userdocid;
 
   @override
   Widget build(BuildContext context) {
@@ -70,8 +74,10 @@ class Bulletin_Board extends StatelessWidget {
                     child: Container(
                       color: Colors.white30,
                       width: MediaQuery.of(context).size.width,
-                      height: MediaQuery.of(context).size.height * 0.8,
-                      child: const Blluettin(),
+                      height: MediaQuery.of(context).size.height,
+                      child: Blluettin(
+                        userdocid: userdocid,
+                      ),
                     ),
                   ),
                 ],
@@ -81,7 +87,9 @@ class Bulletin_Board extends StatelessWidget {
 }
 
 class Blluettin extends StatelessWidget {
-  const Blluettin({super.key});
+  Blluettin({super.key, this.userdocid});
+
+  final userdocid;
 
   @override
   Widget build(BuildContext context) {
@@ -96,12 +104,14 @@ class Blluettin extends StatelessWidget {
             return const Center(child: CircularProgressIndicator());
           }
           final postDocs = snapshot.data!.docs;
+
           return ListView.builder(
               itemCount: postDocs.length,
               itemBuilder: ((context, index) {
                 final timestamp = postDocs[index]['time'];
                 DateTime dt = timestamp.toDate();
                 final d24 = DateFormat('yy/MM/dd HH:mm').format(dt);
+
                 return Padding(
                   padding: const EdgeInsets.only(bottom: 1),
                   child: GestureDetector(
@@ -128,6 +138,7 @@ class Blluettin extends StatelessWidget {
                                   dislike: postDocs[index]["dislike"],
                                   admin: postDocs[index]["admin"],
                                   docId: postDocs[index].id,
+                                  userdocid: userdocid,
                                   userlike: postDocs[index]["likes"][userid],
                                   userdislike: postDocs[index]["dislikes"]
                                       [userid],
