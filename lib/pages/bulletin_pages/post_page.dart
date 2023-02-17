@@ -3,13 +3,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/instance_manager.dart';
-import 'package:intl/intl.dart';
 import 'package:neologism/getx/blackmode.dart';
+import 'package:neologism/getx/chatmodify.dart';
 import 'package:neologism/pages/bulletin_pages/CRUD.dart';
 import 'package:neologism/pages/bulletin_pages/chatbox.dart';
 import 'package:neologism/pages/startpage.dart';
 
-final blackcontroller = Get.find<BlackModeController>();
 final userid = FirebaseAuth.instance.currentUser!.uid;
 bool isLiked = false;
 int likeCount = 0;
@@ -20,7 +19,6 @@ class BulletinPost extends StatefulWidget {
   const BulletinPost({
     super.key,
     this.index,
-    this.user,
     this.name,
     this.content,
     this.datetime,
@@ -34,7 +32,6 @@ class BulletinPost extends StatefulWidget {
   });
 
   final index;
-  final user;
   final name;
   final content;
   final datetime;
@@ -53,7 +50,7 @@ class BulletinPost extends StatefulWidget {
 class _BulletinPostState extends State<BulletinPost> {
   @override
   void initState() {
-    // TODO: implement initState
+    Get.put(chatcontroller());
     super.initState();
     setState(() {
       likeCount = widget.like;
@@ -61,6 +58,7 @@ class _BulletinPostState extends State<BulletinPost> {
       disLiked = widget.userdislike;
       dislikeCount = widget.dislike;
     });
+    Get.find<chatcontroller>().chatmodified.value = false;
   }
 
   @override
@@ -160,12 +158,14 @@ class _BulletinPostState extends State<BulletinPost> {
 
   @override
   Widget build(BuildContext context) {
+    final blackcontroller = Get.find<BlackModeController>();
     return GetBuilder(
       init: BlackModeController(),
       builder: (_) => Scaffold(
           backgroundColor:
               blackcontroller.blackmode ? blackmodecolor : notblackmodecolor,
           appBar: AppBar(
+            centerTitle: false,
             leading: IconButton(
                 onPressed: () {
                   Navigator.pop(context);
@@ -179,18 +179,19 @@ class _BulletinPostState extends State<BulletinPost> {
             elevation: 0.0,
             backgroundColor:
                 blackcontroller.blackmode ? blackmodecolor : notblackmodecolor,
-            actions: widget.admin == FirebaseAuth.instance.currentUser!.uid
-                ? ([
-                    BulletinUpdateIcon(
-                      name: widget.name,
-                      content: widget.content,
-                      docId: widget.docId,
-                    ),
-                    BulletinDeleteIcon(
-                      docId: widget.docId,
-                    )
-                  ])
-                : null,
+            actions:
+                widget.admin == FirebaseAuth.instance.currentUser!.displayName
+                    ? ([
+                        BulletinUpdateIcon(
+                          name: widget.name,
+                          content: widget.content,
+                          docId: widget.docId,
+                        ),
+                        BulletinDeleteIcon(
+                          docId: widget.docId,
+                        )
+                      ])
+                    : null,
           ),
           body: LayoutBuilder(builder: (context, constraint) {
             return SingleChildScrollView(
@@ -210,9 +211,14 @@ class _BulletinPostState extends State<BulletinPost> {
                                 width: MediaQuery.of(context).size.width * 0.9,
                                 height: 80,
                                 decoration: BoxDecoration(
-                                    color: Colors.grey[300],
+                                    color: blackcontroller.blackmode
+                                        ? blackmodecolor
+                                        : Colors.grey[300],
                                     border: Border.all(
-                                        width: 2, color: Colors.black),
+                                        width: 2,
+                                        color: blackcontroller.blackmode
+                                            ? Colors.grey.shade300
+                                            : blackmodecolor),
                                     borderRadius: BorderRadius.circular(10)),
                                 child: Padding(
                                   padding: const EdgeInsets.all(10),
@@ -225,23 +231,34 @@ class _BulletinPostState extends State<BulletinPost> {
                                             MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text(
-                                            user.toString(),
+                                            widget.admin.toString(),
+                                            style: TextStyle(
+                                                color: blackcontroller.blackmode
+                                                    ? Colors.white
+                                                    : blackmodecolor),
                                           ),
                                           const SizedBox(
                                             width: 50,
                                           ),
-                                          Text(widget.datetime.toString()),
+                                          Text(
+                                            widget.datetime.toString(),
+                                            style: TextStyle(
+                                                color: blackcontroller.blackmode
+                                                    ? Colors.white
+                                                    : blackmodecolor),
+                                          ),
                                         ],
                                       ),
                                       Padding(
                                         padding:
                                             const EdgeInsets.only(top: 8.0),
-                                        child: Text(
-                                          widget.name,
-                                          style: const TextStyle(
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.bold),
-                                        ),
+                                        child: Text(widget.name,
+                                            style: TextStyle(
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.bold,
+                                                color: blackcontroller.blackmode
+                                                    ? Colors.white
+                                                    : blackmodecolor)),
                                       ),
                                     ],
                                   ),
@@ -252,9 +269,14 @@ class _BulletinPostState extends State<BulletinPost> {
                             width: MediaQuery.of(context).size.width * 0.9,
                             margin: const EdgeInsets.all(8),
                             decoration: BoxDecoration(
-                                color: Colors.grey[300],
-                                border:
-                                    Border.all(width: 2, color: Colors.black),
+                                color: blackcontroller.blackmode
+                                    ? blackmodecolor
+                                    : Colors.grey[300],
+                                border: Border.all(
+                                    width: 2,
+                                    color: blackcontroller.blackmode
+                                        ? Colors.grey.shade300
+                                        : Colors.black),
                                 borderRadius: BorderRadius.circular(15)),
                             child: Padding(
                               padding: const EdgeInsets.all(20),
@@ -265,7 +287,11 @@ class _BulletinPostState extends State<BulletinPost> {
                                 children: [
                                   Text(
                                     widget.content,
-                                    style: TextStyle(fontSize: 18),
+                                    style: TextStyle(
+                                        fontSize: 18,
+                                        color: blackcontroller.blackmode
+                                            ? Colors.white
+                                            : blackmodecolor),
                                   ),
                                   Column(
                                     children: [
@@ -350,7 +376,7 @@ class _BulletinPostState extends State<BulletinPost> {
                                                         MainAxisAlignment
                                                             .center,
                                                     children: [
-                                                      Icon(
+                                                      const Icon(
                                                           Icons.thumb_down_alt),
                                                       Padding(
                                                         padding:
@@ -366,10 +392,12 @@ class _BulletinPostState extends State<BulletinPost> {
                                               ),
                                             ],
                                           )),
-                                      const Divider(
+                                      Divider(
                                         height: 50,
                                         thickness: 1,
-                                        color: Colors.black,
+                                        color: blackcontroller.blackmode
+                                            ? Colors.white
+                                            : Colors.black,
                                       ),
                                       ChatContainer(
                                         userdocid: widget.userdocid,

@@ -1,11 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:neologism/getx/blackmode.dart';
 import 'package:neologism/neo_function/login_func.dart';
-import 'package:neologism/pages/startpage.dart';
-import 'package:neologism/widgets/Buttons.dart';
 
 class MyDrawer extends StatefulWidget {
   const MyDrawer({super.key});
@@ -40,16 +37,17 @@ class _MyDrawerState extends State<MyDrawer> {
                         ? Colors.grey[600]
                         : Colors.deepPurple[200],
                     borderRadius: BorderRadius.circular(40)),
-                currentAccountPicture: CircleAvatar(
-                    child: Icon(
-                      Icons.person,
-                      size: 40,
-                    ),
-                    backgroundColor: Colors.blue),
+                currentAccountPicture: const CircleAvatar(
+                  backgroundColor: Colors.blue,
+                  child: Icon(
+                    Icons.person,
+                    size: 40,
+                  ),
+                ),
                 accountName:
-                    Text(user.toString(), style: TextStyle(fontSize: 20)),
+                    Text(user.toString(), style: const TextStyle(fontSize: 20)),
                 accountEmail: null),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             ListTile(
@@ -72,7 +70,7 @@ class _MyDrawerState extends State<MyDrawer> {
                 Get.find<BlackModeController>().blackmodechange();
               },
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             ListTile(
@@ -94,6 +92,9 @@ class _MyDrawerState extends State<MyDrawer> {
                     logout(context);
                   });
                 }),
+            const SizedBox(
+              height: 20,
+            ),
             ListTile(
                 leading: Icon(
                   Icons.update,

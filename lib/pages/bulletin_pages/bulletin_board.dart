@@ -104,14 +104,12 @@ class Blluettin extends StatelessWidget {
             return const Center(child: CircularProgressIndicator());
           }
           final postDocs = snapshot.data!.docs;
-
           return ListView.builder(
               itemCount: postDocs.length,
               itemBuilder: ((context, index) {
                 final timestamp = postDocs[index]['time'];
                 DateTime dt = timestamp.toDate();
                 final d24 = DateFormat('yy/MM/dd HH:mm').format(dt);
-
                 return Padding(
                   padding: const EdgeInsets.only(bottom: 1),
                   child: GestureDetector(
@@ -132,11 +130,11 @@ class Blluettin extends StatelessWidget {
                                   index: index,
                                   name: postDocs[index]["name"],
                                   content: postDocs[index]["content"],
-                                  user: user,
                                   datetime: d24,
                                   like: postDocs[index]["like"],
                                   dislike: postDocs[index]["dislike"],
-                                  admin: postDocs[index]["admin"],
+                                  admin: postDocs[index]["admin"]
+                                      ["usernickname"],
                                   docId: postDocs[index].id,
                                   userdocid: userdocid,
                                   userlike: postDocs[index]["likes"][userid],
@@ -176,7 +174,9 @@ class Blluettin extends StatelessWidget {
                                                   ? Colors.white
                                                   : blackmodecolor),
                                         ),
-                                        Text(user.toString())
+                                        Text(postDocs[index]["admin"]
+                                                ["usernickname"]
+                                            .toString())
                                       ],
                                     ),
                                   ),

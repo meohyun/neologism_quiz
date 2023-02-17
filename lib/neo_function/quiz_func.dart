@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:math';
-import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -281,11 +280,11 @@ quiz_choice(context) {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         MainPageButton(
-                          page: '/word',
+                          page: NeologismQuiz(),
                           text: "단어 퀴즈",
                         ),
                         MainPageButton(
-                          page: '/sentence',
+                          page: EssayQuiz(),
                           text: "문장 퀴즈",
                         )
                       ],

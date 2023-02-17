@@ -26,9 +26,10 @@ class BulletinCreate extends StatefulWidget {
 
 class _BulletinCreateState extends State<BulletinCreate> {
   makepost(context) {
-    final userid = FirebaseAuth.instance.currentUser!.uid;
+    final user = FirebaseAuth.instance.currentUser!;
+    final userid = user.uid;
     FirebaseFirestore.instance.collection('post').add({
-      "admin": FirebaseAuth.instance.currentUser?.uid,
+      "admin": {"userid": userid, "usernickname": user.displayName},
       "name": _titleController.text,
       "content": _contentController.text,
       "time": Timestamp.now(),
@@ -278,6 +279,7 @@ class BulletinUpdateIcon extends StatefulWidget {
 class _BulletinUpdateIconState extends State<BulletinUpdateIcon> {
   @override
   Widget build(BuildContext context) {
+    final blackcontroller = Get.find<BlackModeController>();
     return IconButton(
       onPressed: () {
         Navigator.push(context, MaterialPageRoute(builder: ((context) {
@@ -314,6 +316,7 @@ class _BulletinDeleteState extends State<BulletinDeleteIcon> {
 
   @override
   Widget build(BuildContext context) {
+    final blackcontroller = Get.find<BlackModeController>();
     return IconButton(
         onPressed: () {
           deleteDialog(context, deletepost);

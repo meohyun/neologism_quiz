@@ -2,16 +2,29 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:intl/intl.dart';
+import 'package:neologism/getx/blackmode.dart';
 import 'package:neologism/getx/chatmodify.dart';
 import 'package:neologism/neo_function/bulletin_func.dart';
 import 'package:neologism/neo_function/quiz_func.dart';
+import 'package:neologism/pages/startpage.dart';
 
 TextEditingController chatController = TextEditingController();
 TextEditingController updateChatController = TextEditingController();
 final user = FirebaseAuth.instance.currentUser!.displayName;
 final userid = FirebaseAuth.instance.currentUser!.uid;
 int pressedAttentionIndex = 0;
+
+class AlwaysDisabledFocusNode extends FocusNode {
+  @override
+  bool get hasFocus => false;
+}
+
+class AbledFocusNode extends FocusNode {
+  @override
+  bool get hasFocus => true;
+}
 
 class ChatContainer extends StatefulWidget {
   const ChatContainer({super.key, this.docId, this.userdocid});
@@ -41,50 +54,85 @@ class _ChatContainerState extends State<ChatContainer> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          "댓글",
-          style: TextStyle(fontSize: 18),
-        ),
-        SizedBox(
-          height: 20,
-        ),
-        SizedBox(
-          width: MediaQuery.of(context).size.width * 0.85,
-          child: TextField(
-            controller: chatController,
-            decoration: const InputDecoration(
-                hintText: "댓글을 남겨보세요.",
-                border: OutlineInputBorder(
-                    borderSide: BorderSide(width: 2, color: Colors.grey)),
-                focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(width: 2, color: Colors.grey))),
-            onSubmitted: (value) {
-              setState(() {
-                chatController.text = value;
-              });
-              addchat();
-              chatController.text = "";
-            },
+    Get.put(chatcontroller());
+    final blackmode = Get.find<BlackModeController>().blackmode;
+    return GetBuilder(
+      init: BlackModeController(),
+      builder: (_) => Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            "댓글",
+            style: TextStyle(
+                fontSize: 18, color: blackmode ? Colors.white : Colors.black),
           ),
-        ),
-        ChatBox(
-          userdocid: widget.userdocid,
-          docid: widget.docId,
-        )
-      ],
+          SizedBox(
+            height: 20,
+          ),
+          Obx(() {
+            return SizedBox(
+              width: MediaQuery.of(context).size.width * 0.85,
+              child: TextField(
+                style:
+                    TextStyle(color: blackmode ? Colors.white : Colors.black),
+                enabled: Get.find<chatcontroller>().chatmodified.value == false
+                    ? true
+                    : false,
+                controller: chatController,
+                decoration: InputDecoration(
+                    hintText:
+                        Get.find<chatcontroller>().chatmodified.value == false
+                            ? "댓글을 남겨보세요."
+                            : "",
+                    hintStyle: TextStyle(
+                        color: blackmode ? Colors.white : Colors.black),
+                    border: OutlineInputBorder(
+                        borderSide: BorderSide(
+                            width: 1,
+                            color: blackmode ? Colors.white : Colors.black)),
+                    disabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                            width: 1,
+                            color: blackmode ? Colors.white : Colors.black)),
+                    enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                            width: 1,
+                            color: blackmode ? Colors.white : Colors.black)),
+                    focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                            width: 1,
+                            color: blackmode ? Colors.white : Colors.black))),
+                onSubmitted: (value) {
+                  setState(() {
+                    chatController.text = value;
+                  });
+                  addchat();
+                  chatController.text = "";
+                },
+              ),
+            );
+          }),
+          ChatBox(
+            userdocid: widget.userdocid,
+            docid: widget.docId,
+          )
+        ],
+      ),
     );
   }
 }
 
-class ChatUpdateBox extends StatelessWidget {
+class ChatUpdateBox extends StatefulWidget {
   const ChatUpdateBox({super.key, this.docid, this.docs});
 
   final docid;
   final docs;
 
+  @override
+  State<ChatUpdateBox> createState() => _ChatUpdateBoxState();
+}
+
+class _ChatUpdateBoxState extends State<ChatUpdateBox> {
   updatechat(docs) async {
     List<dynamic> exchat = [
       {
@@ -97,7 +145,7 @@ class ChatUpdateBox extends StatelessWidget {
 
     await FirebaseFirestore.instance
         .collection("post")
-        .doc(docid)
+        .doc(widget.docid)
         .update({"chats": FieldValue.arrayRemove(exchat)});
 
     List<dynamic> chat = [
@@ -110,75 +158,90 @@ class ChatUpdateBox extends StatelessWidget {
     ];
     await FirebaseFirestore.instance
         .collection('post')
-        .doc(docid)
+        .doc(widget.docid)
         .update({"chats": FieldValue.arrayUnion(chat)});
   }
 
   @override
   Widget build(BuildContext context) {
     Get.put(chatcontroller());
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.end,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 10),
-              child: Row(
-                children: [
-                  SizedBox(
-                    width: 5,
-                  ),
-                  CircleAvatar(
-                    child: Icon(
-                      Icons.person,
+    final blackmode = Get.find<BlackModeController>().blackmode;
+    return GetBuilder(
+      init: BlackModeController(),
+      builder: (_) => Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 10),
+                child: Row(
+                  children: [
+                    const SizedBox(
+                      width: 5,
                     ),
-                    backgroundColor: Colors.white,
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Text(
-                    user!,
-                    style: TextStyle(fontSize: 16),
-                  ),
-                ],
+                    const CircleAvatar(
+                      child: Icon(
+                        Icons.person,
+                      ),
+                      backgroundColor: Colors.white,
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Text(
+                      user!,
+                      style: TextStyle(
+                          fontSize: 16,
+                          color: blackmode ? Colors.white : blackmodecolor),
+                    ),
+                  ],
+                ),
               ),
-            ),
-            GestureDetector(
-              onTap: () {
+              GestureDetector(
+                onTap: () {
+                  Get.find<chatcontroller>().chatmodify();
+                },
+                child: Text(
+                  "취소",
+                  style: TextStyle(color: Colors.blue),
+                ),
+              ),
+            ],
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          SizedBox(
+            width: MediaQuery.of(context).size.width * 0.85,
+            height: 50,
+            child: TextField(
+              style: TextStyle(color: blackmode ? Colors.white : Colors.black),
+              onSubmitted: (value) {
+                updateChatController.text = value;
+                updatechat(widget.docs);
                 Get.find<chatcontroller>().chatmodify();
               },
-              child: Text(
-                "취소",
-                style: TextStyle(color: Colors.blue),
-              ),
+              controller: updateChatController,
+              decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          width: 1,
+                          color: blackmode ? Colors.white : Colors.black)),
+                  enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          width: 1,
+                          color: blackmode ? Colors.white : Colors.black)),
+                  focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          width: 1,
+                          color: blackmode ? Colors.white : Colors.black))),
             ),
-          ],
-        ),
-        SizedBox(
-          height: 10,
-        ),
-        SizedBox(
-          width: MediaQuery.of(context).size.width * 0.85,
-          height: 50,
-          child: TextField(
-            onSubmitted: (value) {
-              updateChatController.text = value;
-              updatechat(docs);
-              Get.find<chatcontroller>().chatmodify();
-            },
-            controller: updateChatController,
-            decoration: const InputDecoration(
-                border: OutlineInputBorder(
-                    borderSide: BorderSide(width: 2, color: Colors.grey)),
-                focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(width: 2, color: Colors.grey))),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
@@ -195,14 +258,8 @@ class ChatBox extends StatefulWidget {
 
 class _ChatBoxState extends State<ChatBox> {
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     Get.put(chatcontroller());
-
     Future<void> deletechat(docs) async {
       List<dynamic> chat = [
         {
@@ -232,7 +289,9 @@ class _ChatBoxState extends State<ChatBox> {
           final Docs = snapshot.data!;
 
           if (snapshot.hasData) {
-            return Container(
+            Get.put(BlackModeController());
+            final blackmode = Get.find<BlackModeController>().blackmode;
+            return SizedBox(
               height: MediaQuery.of(context).size.height,
               child: ListView.builder(
                 physics: const NeverScrollableScrollPhysics(),
@@ -246,6 +305,7 @@ class _ChatBoxState extends State<ChatBox> {
                       Divider(
                         height: 45,
                         thickness: 1.5,
+                        color: blackmode ? Colors.white : Colors.black,
                       ),
                       Padding(
                         padding: const EdgeInsets.only(bottom: 10),
@@ -275,19 +335,36 @@ class _ChatBoxState extends State<ChatBox> {
                                               SizedBox(
                                                 width: 10,
                                               ),
-                                              Text(Docs['chats'][index]
-                                                      ['nickname']
-                                                  .toString()),
+                                              Text(
+                                                Docs['chats'][index]['nickname']
+                                                    .toString(),
+                                                style: TextStyle(
+                                                    color: blackmode
+                                                        ? Colors.white
+                                                        : blackmodecolor),
+                                              ),
                                             ],
                                           ),
                                           SizedBox(
                                             height: 10,
                                           ),
-                                          Text(Docs['chats'][index]["content"]
-                                              .toString()),
+                                          Text(
+                                            Docs['chats'][index]["content"]
+                                                .toString(),
+                                            style: TextStyle(
+                                                color: blackmode
+                                                    ? Colors.white
+                                                    : blackmodecolor),
+                                          ),
                                         ],
                                       ),
-                                      subtitle: Text(mytime.toString()),
+                                      subtitle: Text(
+                                        mytime.toString(),
+                                        style: TextStyle(
+                                            color: blackmode
+                                                ? Colors.white
+                                                : blackmodecolor),
+                                      ),
                                       trailing: Get.find<chatcontroller>()
                                                   .chatmodified
                                                   .value ==
@@ -313,6 +390,9 @@ class _ChatBoxState extends State<ChatBox> {
                                                           Get.find<
                                                                   chatcontroller>()
                                                               .chatmodify();
+                                                          print(Get.find<
+                                                                  chatcontroller>()
+                                                              .chatmodified);
                                                         },
                                                         child: Text(
                                                           "수정",
