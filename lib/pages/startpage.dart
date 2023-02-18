@@ -7,9 +7,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:neologism/getx/blackmode.dart';
 import 'package:neologism/neo_function/quiz_func.dart';
 import 'package:neologism/pages/bulletin_pages/bulletin_board.dart';
-import 'package:neologism/pages/bulletin_pages/chatbox.dart';
 import 'package:neologism/pages/dictionary_page/dict_neologism.dart';
-import 'package:neologism/pages/nickname.dart';
 import 'package:neologism/widgets/Buttons.dart';
 import 'package:neologism/widgets/mydrawer.dart';
 
@@ -38,16 +36,6 @@ class _StartpageState extends State<Startpage> {
 
 class Authentication extends StatelessWidget {
   const Authentication({super.key});
-
-  initcreatename(docid) {
-    final user = FirebaseAuth.instance.currentUser!;
-    final displayname = user.displayName;
-    final userid = user.uid;
-    FirebaseFirestore.instance
-        .collection('user')
-        .doc(docid)
-        .update({'user.$userid': displayname});
-  }
 
   Future<UserCredential> signInWithGoogle() async {
     // Trigger the authentication flow
@@ -133,21 +121,15 @@ class Authentication extends StatelessWidget {
                   );
                 }
                 final userdocs = snapshot.data!.docs;
-                final userid = FirebaseAuth.instance.currentUser!.uid;
-                return ScreenPage(
-                  userdocid: userdocs[0].id,
-                  nickname: userdocs[0]['user']['$userid'],
-                );
+
+                return ScreenPage();
               });
         });
   }
 }
 
 class ScreenPage extends StatefulWidget {
-  const ScreenPage({super.key, this.nickname, this.userdocid});
-
-  final nickname;
-  final userdocid;
+  const ScreenPage({super.key});
 
   @override
   State<ScreenPage> createState() => _ScreenPageState();
@@ -218,9 +200,7 @@ class _ScreenPageState extends State<ScreenPage> {
                   text: "신조어 사전",
                 ),
                 MainPageButton(
-                  page: Bulletin_Board(
-                    userdocid: widget.userdocid,
-                  ),
+                  page: BulletinBoard(),
                   text: "건의 게시판",
                 )
               ],

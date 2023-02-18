@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -8,10 +6,9 @@ import 'package:neologism/pages/startpage.dart';
 TextEditingController _nicknameController = TextEditingController();
 
 class UpdateNickname extends StatefulWidget {
-  const UpdateNickname({super.key, this.docid, this.nickname});
+  const UpdateNickname({super.key, this.docid});
 
   final docid;
-  final nickname;
 
   @override
   State<UpdateNickname> createState() => _UpdateNicknameState();

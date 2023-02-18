@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -8,12 +7,48 @@ import 'package:neologism/pages/bulletin_pages/post_page.dart';
 import 'package:neologism/pages/startpage.dart';
 import 'package:intl/intl.dart';
 
-String usernickname = "";
+class BulletinBoard extends StatefulWidget {
+  const BulletinBoard({super.key});
 
-class Bulletin_Board extends StatelessWidget {
-  const Bulletin_Board({super.key, this.userdocid});
+  @override
+  State<BulletinBoard> createState() => _BulletinBoardState();
+}
 
-  final userdocid;
+class _BulletinBoardState extends State<BulletinBoard> {
+  getAdminName() async {
+    final user = FirebaseAuth.instance.currentUser!;
+    final userid = user.uid;
+    final username = user.displayName;
+
+    var collection = FirebaseFirestore.instance.collection('post');
+    var querySnapshots = await collection.get();
+    // get documents id
+    for (var snapshot in querySnapshots.docs) {
+      String documentID = snapshot.id;
+
+      FirebaseFirestore.instance
+          .collection('post')
+          .doc(documentID)
+          .get()
+          .then((DocumentSnapshot doc) {
+        final datas = doc.data() as Map<String, dynamic>;
+        final adminid = datas['admin']['userid'];
+        // if adminid = current userid,update username
+        if (adminid == userid) {
+          FirebaseFirestore.instance
+              .collection('post')
+              .doc(documentID)
+              .update({"admin.usernickname": username});
+        }
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    getAdminName();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -75,9 +110,7 @@ class Bulletin_Board extends StatelessWidget {
                       color: Colors.white30,
                       width: MediaQuery.of(context).size.width,
                       height: MediaQuery.of(context).size.height,
-                      child: Blluettin(
-                        userdocid: userdocid,
-                      ),
+                      child: Blluettin(),
                     ),
                   ),
                 ],
@@ -87,9 +120,7 @@ class Bulletin_Board extends StatelessWidget {
 }
 
 class Blluettin extends StatelessWidget {
-  Blluettin({super.key, this.userdocid});
-
-  final userdocid;
+  Blluettin({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -135,8 +166,8 @@ class Blluettin extends StatelessWidget {
                                   dislike: postDocs[index]["dislike"],
                                   admin: postDocs[index]["admin"]
                                       ["usernickname"],
+                                  chats: postDocs[index]["chats"],
                                   docId: postDocs[index].id,
-                                  userdocid: userdocid,
                                   userlike: postDocs[index]["likes"][userid],
                                   userdislike: postDocs[index]["dislikes"]
                                       [userid],

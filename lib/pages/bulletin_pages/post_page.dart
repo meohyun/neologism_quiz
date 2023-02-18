@@ -25,8 +25,8 @@ class BulletinPost extends StatefulWidget {
     this.like,
     this.dislike,
     this.admin,
+    this.chats,
     this.docId,
-    this.userdocid,
     this.userlike,
     this.userdislike,
   });
@@ -38,8 +38,8 @@ class BulletinPost extends StatefulWidget {
   final like;
   final dislike;
   final admin;
+  final chats;
   final docId;
-  final userdocid;
   final userlike;
   final userdislike;
 
@@ -48,9 +48,53 @@ class BulletinPost extends StatefulWidget {
 }
 
 class _BulletinPostState extends State<BulletinPost> {
+  updateChatUser() {
+    final user = FirebaseAuth.instance.currentUser!;
+    final userid = user.uid;
+    final username = user.displayName;
+
+    FirebaseFirestore.instance
+        .collection('post')
+        .doc(widget.docId)
+        .get()
+        .then((val) {
+      final datas = val.data() as Map<String, dynamic>;
+      for (int i = 0; i < datas["chats"].length; i++) {
+        if (datas["chats"][i]["user"] == userid) {
+          List<dynamic> exchat = [
+            {
+              "content": datas["chats"][i]["content"],
+              "time": datas["chats"][i]["time"],
+              "user": datas["chats"][i]["user"],
+              "nickname": datas["chats"][i]["nickname"]
+            },
+          ];
+          FirebaseFirestore.instance
+              .collection('post')
+              .doc(widget.docId)
+              .update({"chats": FieldValue.arrayRemove(exchat)});
+
+          List<dynamic> chat = [
+            {
+              "content": datas["chats"][i]["content"],
+              "time": datas["chats"][i]["time"],
+              "user": datas["chats"][i]["user"],
+              "nickname": username
+            },
+          ];
+          FirebaseFirestore.instance
+              .collection('post')
+              .doc(widget.docId)
+              .update({"chats": FieldValue.arrayUnion(chat)});
+        }
+      }
+    });
+  }
+
   @override
   void initState() {
     Get.put(chatcontroller());
+    updateChatUser();
     super.initState();
     setState(() {
       likeCount = widget.like;
@@ -400,7 +444,6 @@ class _BulletinPostState extends State<BulletinPost> {
                                             : Colors.black,
                                       ),
                                       ChatContainer(
-                                        userdocid: widget.userdocid,
                                         docId: widget.docId,
                                       )
                                     ],

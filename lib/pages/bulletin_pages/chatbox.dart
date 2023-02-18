@@ -16,16 +16,6 @@ final user = FirebaseAuth.instance.currentUser!.displayName;
 final userid = FirebaseAuth.instance.currentUser!.uid;
 int pressedAttentionIndex = 0;
 
-class AlwaysDisabledFocusNode extends FocusNode {
-  @override
-  bool get hasFocus => false;
-}
-
-class AbledFocusNode extends FocusNode {
-  @override
-  bool get hasFocus => true;
-}
-
 class ChatContainer extends StatefulWidget {
   const ChatContainer({super.key, this.docId, this.userdocid});
 
@@ -50,6 +40,11 @@ class _ChatContainerState extends State<ChatContainer> {
         .collection('post')
         .doc(widget.docId)
         .update({"chats": FieldValue.arrayUnion(chat)});
+  }
+
+  @override
+  void initState() {
+    super.initState();
   }
 
   @override
@@ -139,7 +134,7 @@ class _ChatUpdateBoxState extends State<ChatUpdateBox> {
         "content": docs['chats'][pressedAttentionIndex]["content"],
         "time": docs['chats'][pressedAttentionIndex]["time"],
         "user": userid,
-        "nickname": user,
+        "nickname": docs['chats'][pressedAttentionIndex]["nickname"],
       },
     ];
 
@@ -153,7 +148,7 @@ class _ChatUpdateBoxState extends State<ChatUpdateBox> {
         "content": updateChatController.text,
         "time": Timestamp.now(),
         "user": userid,
-        "nickname": user,
+        "nickname": docs['chats'][pressedAttentionIndex]["nickname"],
       },
     ];
     await FirebaseFirestore.instance
@@ -258,6 +253,11 @@ class ChatBox extends StatefulWidget {
 
 class _ChatBoxState extends State<ChatBox> {
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     Get.put(chatcontroller());
     Future<void> deletechat(docs) async {
@@ -266,7 +266,7 @@ class _ChatBoxState extends State<ChatBox> {
           "content": docs['chats'][pressedAttentionIndex]["content"],
           "time": docs['chats'][pressedAttentionIndex]["time"],
           "user": userid,
-          "nickname": user,
+          "nickname": docs['chats'][pressedAttentionIndex]["nickname"],
         },
       ];
 
@@ -286,9 +286,8 @@ class _ChatBoxState extends State<ChatBox> {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return CircularProgressIndicator();
           }
-          final Docs = snapshot.data!;
-
           if (snapshot.hasData) {
+            final Docs = snapshot.data!;
             Get.put(BlackModeController());
             final blackmode = Get.find<BlackModeController>().blackmode;
             return SizedBox(
