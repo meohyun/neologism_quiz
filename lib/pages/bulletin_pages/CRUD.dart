@@ -25,6 +25,9 @@ class BulletinCreate extends StatefulWidget {
 }
 
 class _BulletinCreateState extends State<BulletinCreate> {
+  final _titleformkey = GlobalKey<FormState>();
+  final _contentformkey = GlobalKey<FormState>();
+
   makepost(context) {
     final user = FirebaseAuth.instance.currentUser!;
     final userid = user.uid;
@@ -81,21 +84,35 @@ class _BulletinCreateState extends State<BulletinCreate> {
                     padding: const EdgeInsets.all(15.0),
                     child: SizedBox(
                       width: MediaQuery.of(context).size.width * 0.85,
-                      child: TextField(
-                        controller: _titleController,
-                        onSubmitted: (value) {
-                          _titleController.text = value;
-                        },
-                        decoration: InputDecoration(
-                            filled: true,
-                            fillColor: Colors.grey[300],
-                            hintText: "제목을 입력하세요!",
-                            focusedBorder: const OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(width: 1, color: Colors.grey)),
-                            border: const OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(width: 1, color: Colors.grey))),
+                      child: Form(
+                        key: _titleformkey,
+                        child: TextFormField(
+                          controller: _titleController,
+                          onSaved: (value) {
+                            _titleController.text = value as String;
+                          },
+                          validator: (value) {
+                            if (value == null) {
+                              return "제목을 입력해주세요.";
+                            }
+                            if (value.length < 2) {
+                              return "두 글자 이상 입력해주세요.";
+                            }
+                            if (value.contains(RegExp("씨발"))) {
+                              return "비속어를 사용할 수 없습니다.";
+                            }
+                          },
+                          decoration: InputDecoration(
+                              filled: true,
+                              fillColor: Colors.grey[300],
+                              hintText: "제목을 입력하세요!",
+                              focusedBorder: const OutlineInputBorder(
+                                  borderSide:
+                                      BorderSide(width: 1, color: Colors.grey)),
+                              border: const OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      width: 1, color: Colors.grey))),
+                        ),
                       ),
                     ),
                   ),
@@ -104,31 +121,42 @@ class _BulletinCreateState extends State<BulletinCreate> {
                     child: Container(
                       margin: const EdgeInsets.all(8),
                       padding: const EdgeInsets.only(bottom: 40),
-                      child: TextFormField(
-                        controller: _contentController,
-                        onFieldSubmitted: (value) {
-                          _contentController.text = value;
-                        },
-                        decoration: InputDecoration(
-                            focusedBorder: const OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(width: 1, color: Colors.grey)),
-                            border: const OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(width: 1, color: Colors.grey)),
-                            contentPadding:
-                                const EdgeInsets.fromLTRB(20, 0, 0, 80),
-                            hintText: "내용을 입력하세요",
-                            filled: true,
-                            fillColor: Colors.grey[300]),
-                        keyboardType: TextInputType.multiline,
-                        maxLines: 15,
+                      child: Form(
+                        key: _contentformkey,
+                        child: TextFormField(
+                          controller: _contentController,
+                          onSaved: (value) {
+                            _contentController.text = value as String;
+                          },
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return "내용을 입력해주세요.";
+                            }
+                          },
+                          decoration: InputDecoration(
+                              focusedBorder: const OutlineInputBorder(
+                                  borderSide:
+                                      BorderSide(width: 1, color: Colors.grey)),
+                              border: const OutlineInputBorder(
+                                  borderSide:
+                                      BorderSide(width: 1, color: Colors.grey)),
+                              contentPadding:
+                                  const EdgeInsets.fromLTRB(20, 0, 0, 80),
+                              hintText: "내용을 입력하세요",
+                              filled: true,
+                              fillColor: Colors.grey[300]),
+                          keyboardType: TextInputType.multiline,
+                          maxLines: 15,
+                        ),
                       ),
                     ),
                   ),
                   TextButton(
                       onPressed: () {
-                        makepost(context);
+                        if (_contentformkey.currentState!.validate() &&
+                            _titleformkey.currentState!.validate()) {
+                          makepost(context);
+                        }
                       },
                       child: Text(
                         "확인",
