@@ -196,7 +196,8 @@ class Blluettin extends StatelessWidget {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
-                                          postDocs[index]["name"],
+                                          postDocs[index]["name"] +
+                                              "  [${postDocs[index]["chats"].length}]",
                                           style: TextStyle(
                                               fontSize: 20,
                                               color: Get.find<
@@ -205,26 +206,68 @@ class Blluettin extends StatelessWidget {
                                                   ? Colors.white
                                                   : blackmodecolor),
                                         ),
-                                        Text(postDocs[index]["admin"]
-                                                ["usernickname"]
-                                            .toString())
+                                        Text(
+                                            postDocs[index]["admin"]
+                                                    ["usernickname"]
+                                                .toString(),
+                                            style: TextStyle(
+                                                fontSize: 16,
+                                                color: Get.find<
+                                                            BlackModeController>()
+                                                        .blackmode
+                                                    ? Colors.white
+                                                    : blackmodecolor))
                                       ],
                                     ),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.all(8.0),
-                                    child: Opacity(
-                                      opacity: 0.5,
-                                      child: Text(
-                                        d24,
-                                        style: TextStyle(
-                                            fontSize: 18,
-                                            color:
-                                                Get.find<BlackModeController>()
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Opacity(
+                                          opacity: 0.5,
+                                          child: Text(
+                                            d24,
+                                            style: TextStyle(
+                                                fontSize: 18,
+                                                color: Get.find<
+                                                            BlackModeController>()
                                                         .blackmode
                                                     ? Colors.white
                                                     : blackmodecolor),
-                                      ),
+                                          ),
+                                        ),
+                                        Opacity(
+                                          opacity: 0.5,
+                                          child: Row(
+                                            children: [
+                                              Icon(
+                                                Icons.thumb_up,
+                                                size: 20,
+                                              ),
+                                              SizedBox(
+                                                width: 5,
+                                              ),
+                                              Text(postDocs[index]["like"]
+                                                  .toString()),
+                                              SizedBox(
+                                                width: 5,
+                                              ),
+                                              Icon(
+                                                Icons.thumb_down,
+                                                size: 20,
+                                              ),
+                                              SizedBox(
+                                                width: 5,
+                                              ),
+                                              Text(postDocs[index]["dislike"]
+                                                  .toString()),
+                                            ],
+                                          ),
+                                        )
+                                      ],
                                     ),
                                   )
                                 ],

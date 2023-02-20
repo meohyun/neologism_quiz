@@ -200,8 +200,8 @@ class _ScreenPageState extends State<ScreenPage> {
                   text: "신조어 사전",
                 ),
                 MainPageButton(
-                  page: BulletinBoard(),
-                  text: "건의 게시판",
+                  page: const BulletinBoard(),
+                  text: "게시판",
                 )
               ],
             ),

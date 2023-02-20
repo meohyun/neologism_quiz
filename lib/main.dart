@@ -2,7 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import "package:flutter/material.dart";
 import 'package:neologism/firebase_options.dart';
 import 'package:neologism/pages/bulletin_pages/bulletin_board.dart';
-import 'package:neologism/pages/bulletin_pages/CRUD.dart';
+import 'package:neologism/pages/bulletin_pages/postCRUD.dart';
 import 'package:neologism/pages/bulletin_pages/post_page.dart';
 import 'package:neologism/pages/dictionary_page/dict_neologism.dart';
 import 'package:neologism/pages/nickname.dart';

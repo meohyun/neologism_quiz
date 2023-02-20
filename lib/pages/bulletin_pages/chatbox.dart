@@ -335,7 +335,7 @@ class _ChatBoxState extends State<ChatBox> {
                       Padding(
                         padding: const EdgeInsets.only(bottom: 10),
                         child: SizedBox(
-                            width: MediaQuery.of(context).size.width * 0.8,
+                            width: MediaQuery.of(context).size.width * 0.9,
                             height: 100,
                             child: Obx(() {
                               return Get.find<chatcontroller>()
@@ -353,11 +353,14 @@ class _ChatBoxState extends State<ChatBox> {
                                         children: [
                                           Row(
                                             children: [
-                                              CircleAvatar(
-                                                child: Icon(Icons.person),
+                                              const CircleAvatar(
+                                                child: Icon(
+                                                  Icons.person,
+                                                  color: Colors.grey,
+                                                ),
                                                 backgroundColor: Colors.white60,
                                               ),
-                                              SizedBox(
+                                              const SizedBox(
                                                 width: 10,
                                               ),
                                               Text(
@@ -370,8 +373,8 @@ class _ChatBoxState extends State<ChatBox> {
                                               ),
                                             ],
                                           ),
-                                          SizedBox(
-                                            height: 10,
+                                          const SizedBox(
+                                            height: 20,
                                           ),
                                           Text(
                                             Docs['chats'][index]["content"]

@@ -5,7 +5,7 @@ import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/instance_manager.dart';
 import 'package:neologism/getx/blackmode.dart';
 import 'package:neologism/getx/chatmodify.dart';
-import 'package:neologism/pages/bulletin_pages/CRUD.dart';
+import 'package:neologism/pages/bulletin_pages/postCRUD.dart';
 import 'package:neologism/pages/bulletin_pages/chatbox.dart';
 import 'package:neologism/pages/startpage.dart';
 
@@ -215,7 +215,7 @@ class _BulletinPostState extends State<BulletinPost> {
                   Navigator.pop(context);
                 },
                 icon: Icon(Icons.arrow_back)),
-            title: Text("건의 게시판",
+            title: Text("게시판",
                 style: TextStyle(
                   color:
                       blackcontroller.blackmode ? Colors.white : blackmodecolor,

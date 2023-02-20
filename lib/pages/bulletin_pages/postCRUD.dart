@@ -95,9 +95,6 @@ class _BulletinCreateState extends State<BulletinCreate> {
                             if (value == null) {
                               return "제목을 입력해주세요.";
                             }
-                            if (value.length < 2) {
-                              return "두 글자 이상 입력해주세요.";
-                            }
                             if (value.contains(RegExp("씨발"))) {
                               return "비속어를 사용할 수 없습니다.";
                             }
