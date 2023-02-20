@@ -65,7 +65,7 @@ class _BulletinBoardState extends State<BulletinBoard> {
                     ? blackmodecolor
                     : notblackmodecolor,
                 title: Text(
-                  "건의 게시판",
+                  "게시판",
                   style: TextStyle(
                     color: Get.find<BlackModeController>().blackmode
                         ? Colors.white
@@ -179,10 +179,14 @@ class Blluettin extends StatelessWidget {
                         builder: (context) {
                           return Container(
                             height: 100,
-                            decoration: const BoxDecoration(
+                            decoration: BoxDecoration(
+                                color: Get.find<BlackModeController>().blackmode
+                                    ? blackmodecolor
+                                    : notblackmodecolor,
                                 border: Border(
-                              bottom: BorderSide(width: 1, color: Colors.grey),
-                            )),
+                                  bottom:
+                                      BorderSide(width: 1, color: Colors.grey),
+                                )),
                             child: Padding(
                               padding: const EdgeInsets.only(left: 8),
                               child: Column(
@@ -246,24 +250,48 @@ class Blluettin extends StatelessWidget {
                                               Icon(
                                                 Icons.thumb_up,
                                                 size: 20,
+                                                color: Get.find<
+                                                            BlackModeController>()
+                                                        .blackmode
+                                                    ? Colors.white
+                                                    : blackmodecolor,
                                               ),
                                               SizedBox(
                                                 width: 5,
                                               ),
-                                              Text(postDocs[index]["like"]
-                                                  .toString()),
+                                              Text(
+                                                  postDocs[index]["like"]
+                                                      .toString(),
+                                                  style: TextStyle(
+                                                      color: Get.find<
+                                                                  BlackModeController>()
+                                                              .blackmode
+                                                          ? Colors.white
+                                                          : blackmodecolor)),
                                               SizedBox(
                                                 width: 5,
                                               ),
                                               Icon(
                                                 Icons.thumb_down,
                                                 size: 20,
+                                                color: Get.find<
+                                                            BlackModeController>()
+                                                        .blackmode
+                                                    ? Colors.white
+                                                    : blackmodecolor,
                                               ),
                                               SizedBox(
                                                 width: 5,
                                               ),
-                                              Text(postDocs[index]["dislike"]
-                                                  .toString()),
+                                              Text(
+                                                  postDocs[index]["dislike"]
+                                                      .toString(),
+                                                  style: TextStyle(
+                                                      color: Get.find<
+                                                                  BlackModeController>()
+                                                              .blackmode
+                                                          ? Colors.white
+                                                          : blackmodecolor)),
                                             ],
                                           ),
                                         )

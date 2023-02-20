@@ -75,6 +75,26 @@ class _MyDrawerState extends State<MyDrawer> {
             ),
             ListTile(
                 leading: Icon(
+                  Icons.edit,
+                  color: Get.find<BlackModeController>().blackmode
+                      ? Colors.white
+                      : Colors.black,
+                ),
+                title: Text("닉네임 수정",
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: Get.find<BlackModeController>().blackmode
+                          ? Colors.white
+                          : Colors.black,
+                    )),
+                onTap: () {
+                  Navigator.pushNamed(context, '/nicknameupdate');
+                }),
+            const SizedBox(
+              height: 20,
+            ),
+            ListTile(
+                leading: Icon(
                   Icons.logout_rounded,
                   color: Get.find<BlackModeController>().blackmode
                       ? Colors.white
@@ -91,26 +111,6 @@ class _MyDrawerState extends State<MyDrawer> {
                   setState(() {
                     logout(context);
                   });
-                }),
-            const SizedBox(
-              height: 20,
-            ),
-            ListTile(
-                leading: Icon(
-                  Icons.update,
-                  color: Get.find<BlackModeController>().blackmode
-                      ? Colors.white
-                      : Colors.black,
-                ),
-                title: Text("닉네임 수정",
-                    style: TextStyle(
-                      fontSize: 20,
-                      color: Get.find<BlackModeController>().blackmode
-                          ? Colors.white
-                          : Colors.black,
-                    )),
-                onTap: () {
-                  Navigator.pushNamed(context, '/nicknameupdate');
                 }),
           ],
         ),

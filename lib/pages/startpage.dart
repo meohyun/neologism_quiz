@@ -142,11 +142,14 @@ class _ScreenPageState extends State<ScreenPage> {
       init: BlackModeController(),
       builder: (_) => Scaffold(
           drawer: const MyDrawer(),
-          backgroundColor: Get.find<BlackModeController>().blackmode == true
+          backgroundColor: Get.find<BlackModeController>().blackmode
               ? blackmodecolor
               : notblackmodecolor,
           appBar: AppBar(
-            iconTheme: IconThemeData(color: Colors.grey),
+            iconTheme: IconThemeData(
+                color: Get.find<BlackModeController>().blackmode
+                    ? Colors.white
+                    : blackmodecolor),
             toolbarHeight: 80.0,
             elevation: 0.0,
             centerTitle: true,

@@ -353,12 +353,10 @@ class _ChatBoxState extends State<ChatBox> {
                                         children: [
                                           Row(
                                             children: [
-                                              const CircleAvatar(
-                                                child: Icon(
-                                                  Icons.person,
-                                                  color: Colors.grey,
-                                                ),
-                                                backgroundColor: Colors.white60,
+                                              CircleAvatar(
+                                                child: Icon(Icons.person,
+                                                    color: Colors.white),
+                                                backgroundColor: Colors.blue,
                                               ),
                                               const SizedBox(
                                                 width: 10,
