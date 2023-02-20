@@ -194,8 +194,11 @@ class _BulletinUpdateState extends State<BulletinUpdate> {
     DocumentReference documentReference =
         FirebaseFirestore.instance.collection('post').doc(widget.docId);
 
-    await documentReference.update(
-        {"name": _titleController.text, "content": _contentController.text});
+    await documentReference.update({
+      "name": _titleController.text,
+      "content": _contentController.text,
+      'time': Timestamp.now(),
+    });
 
     Navigator.pushNamed(context, '/bulletin');
   }

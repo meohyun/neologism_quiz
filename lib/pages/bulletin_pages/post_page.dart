@@ -239,6 +239,7 @@ class _BulletinPostState extends State<BulletinPost> {
           ),
           body: LayoutBuilder(builder: (context, constraint) {
             return SingleChildScrollView(
+              physics: const ClampingScrollPhysics(),
               child: ConstrainedBox(
                 constraints: BoxConstraints(minHeight: constraint.maxHeight),
                 child: IntrinsicHeight(
@@ -253,7 +254,7 @@ class _BulletinPostState extends State<BulletinPost> {
                             padding: const EdgeInsets.all(8.0),
                             child: Container(
                                 width: MediaQuery.of(context).size.width * 0.9,
-                                height: 80,
+                                height: 70,
                                 decoration: BoxDecoration(
                                     color: blackcontroller.blackmode
                                         ? blackmodecolor
@@ -341,7 +342,7 @@ class _BulletinPostState extends State<BulletinPost> {
                                     children: [
                                       Padding(
                                           padding:
-                                              const EdgeInsets.only(top: 200),
+                                              const EdgeInsets.only(top: 40),
                                           child: Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.center,

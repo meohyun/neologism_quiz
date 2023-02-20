@@ -27,6 +27,8 @@ class ChatContainer extends StatefulWidget {
 }
 
 class _ChatContainerState extends State<ChatContainer> {
+  final _chatkey = GlobalKey<FormState>();
+
   addchat() {
     List<dynamic> chat = [
       {
@@ -43,11 +45,6 @@ class _ChatContainerState extends State<ChatContainer> {
   }
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     Get.put(chatcontroller());
     final blackmode = Get.find<BlackModeController>().blackmode;
@@ -56,18 +53,10 @@ class _ChatContainerState extends State<ChatContainer> {
       builder: (_) => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            "댓글",
-            style: TextStyle(
-                fontSize: 18, color: blackmode ? Colors.white : Colors.black),
-          ),
-          SizedBox(
-            height: 20,
-          ),
           Obx(() {
             return SizedBox(
               width: MediaQuery.of(context).size.width * 0.85,
-              child: TextField(
+              child: TextFormField(
                 style:
                     TextStyle(color: blackmode ? Colors.white : Colors.black),
                 enabled: Get.find<chatcontroller>().chatmodified.value == false
@@ -97,10 +86,8 @@ class _ChatContainerState extends State<ChatContainer> {
                         borderSide: BorderSide(
                             width: 1,
                             color: blackmode ? Colors.white : Colors.black))),
-                onSubmitted: (value) {
-                  setState(() {
-                    chatController.text = value;
-                  });
+                onFieldSubmitted: (value) {
+                  chatController.text = value;
                   addchat();
                   chatController.text = "";
                 },
@@ -128,6 +115,8 @@ class ChatUpdateBox extends StatefulWidget {
 }
 
 class _ChatUpdateBoxState extends State<ChatUpdateBox> {
+  final _updatekey = GlobalKey<FormState>();
+
   updatechat(docs) async {
     List<dynamic> exchat = [
       {
@@ -195,14 +184,34 @@ class _ChatUpdateBoxState extends State<ChatUpdateBox> {
                   ],
                 ),
               ),
-              GestureDetector(
-                onTap: () {
-                  Get.find<chatcontroller>().chatmodify();
-                },
-                child: Text(
-                  "취소",
-                  style: TextStyle(color: Colors.blue),
-                ),
+              Row(
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      if (_updatekey.currentState!.validate()) {
+                        _updatekey.currentState!.save();
+                        updatechat(widget.docs);
+                        Get.find<chatcontroller>().chatmodify();
+                      }
+                    },
+                    child: Text(
+                      "확인",
+                      style: TextStyle(color: Colors.blue),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Get.find<chatcontroller>().chatmodify();
+                    },
+                    child: Text(
+                      "취소",
+                      style: TextStyle(color: Colors.blue),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
@@ -212,27 +221,44 @@ class _ChatUpdateBoxState extends State<ChatUpdateBox> {
           SizedBox(
             width: MediaQuery.of(context).size.width * 0.85,
             height: 50,
-            child: TextField(
-              style: TextStyle(color: blackmode ? Colors.white : Colors.black),
-              onSubmitted: (value) {
-                updateChatController.text = value;
-                updatechat(widget.docs);
-                Get.find<chatcontroller>().chatmodify();
-              },
-              controller: updateChatController,
-              decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                      borderSide: BorderSide(
-                          width: 1,
-                          color: blackmode ? Colors.white : Colors.black)),
-                  enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                          width: 1,
-                          color: blackmode ? Colors.white : Colors.black)),
-                  focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                          width: 1,
-                          color: blackmode ? Colors.white : Colors.black))),
+            child: Form(
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              key: _updatekey,
+              child: TextFormField(
+                style:
+                    TextStyle(color: blackmode ? Colors.white : Colors.black),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return "댓글을 입력해주세요";
+                  }
+                },
+                // when enterkey pressed
+                onFieldSubmitted: (value) {
+                  updateChatController.text = value as String;
+                  if (_updatekey.currentState!.validate()) {
+                    updatechat(widget.docs);
+                    Get.find<chatcontroller>().chatmodify();
+                  }
+                },
+                // when submit button pressed
+                onSaved: (value) {
+                  updateChatController.text = value as String;
+                },
+                controller: updateChatController,
+                decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                        borderSide: BorderSide(
+                            width: 1,
+                            color: blackmode ? Colors.white : Colors.black)),
+                    enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                            width: 1,
+                            color: blackmode ? Colors.white : Colors.black)),
+                    focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                            width: 1,
+                            color: blackmode ? Colors.white : Colors.black))),
+              ),
             ),
           ),
         ],
@@ -284,7 +310,7 @@ class _ChatBoxState extends State<ChatBox> {
         builder: (context,
             AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return CircularProgressIndicator();
+            return const CircularProgressIndicator();
           }
           if (snapshot.hasData) {
             final Docs = snapshot.data!;
@@ -293,7 +319,7 @@ class _ChatBoxState extends State<ChatBox> {
             return SizedBox(
               height: MediaQuery.of(context).size.height,
               child: ListView.builder(
-                physics: const NeverScrollableScrollPhysics(),
+                physics: const ClampingScrollPhysics(),
                 itemCount: Docs['chats'].length,
                 itemBuilder: (context, index) {
                   final timestamp = Docs['chats'][index]['time'];
