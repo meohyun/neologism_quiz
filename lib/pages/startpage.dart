@@ -65,14 +65,14 @@ class Authentication extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Padding(
+                  const Padding(
                     padding: const EdgeInsets.symmetric(vertical: 25),
                     child: Text(
                       "신조어 퀴즈에 오신걸 환영합니다!",
                       style: TextStyle(fontSize: 25),
                     ),
                   ),
-                  Padding(
+                  const Padding(
                     padding: const EdgeInsets.symmetric(vertical: 25),
                     child: Text(
                       "퀴즈를 통해 신조어를 배워봐요!",
@@ -99,7 +99,7 @@ class Authentication extends StatelessWidget {
                             fit: BoxFit.cover,
                             height: 50,
                           ),
-                          Text(
+                          const Text(
                             "구글 로그인",
                             style: TextStyle(color: Colors.black, fontSize: 18),
                           ),
@@ -154,7 +154,7 @@ class _ScreenPageState extends State<ScreenPage> {
             elevation: 0.0,
             centerTitle: true,
             title: const Padding(
-              padding: const EdgeInsets.only(top: 10.0),
+              padding: EdgeInsets.only(top: 10.0),
               child: Text(
                 "Neologism Quiz",
                 style: TextStyle(
@@ -172,7 +172,7 @@ class _ScreenPageState extends State<ScreenPage> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 CircleAvatar(
-                  backgroundImage: AssetImage('assets/odong.png'),
+                  backgroundImage: const AssetImage('assets/odong.png'),
                   backgroundColor:
                       Get.find<BlackModeController>().blackmode == true
                           ? blackmodecolor
@@ -193,7 +193,7 @@ class _ScreenPageState extends State<ScreenPage> {
                           quiz_choice(context);
                         });
                       },
-                      child: Text(
+                      child: const Text(
                         "시작하기",
                         style: TextStyle(color: Colors.white, fontSize: 18.0),
                       )),
