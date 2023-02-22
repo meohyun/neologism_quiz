@@ -140,11 +140,7 @@ class _BulletinPostState extends State<BulletinPost> {
       });
     }
     if (isLiked) {
-      if (dislikeCount != 0 && !disLiked) {
-        likeCount += 1;
-      } else {
-        likeCount += 1;
-      }
+      likeCount += 1;
       FirebaseFirestore.instance.collection('post').doc(widget.docId).update({
         'likes.$userid': true,
         'like': likeCount,
@@ -164,14 +160,8 @@ class _BulletinPostState extends State<BulletinPost> {
         'dislike': dislikeCount
       });
     }
-
     if (disLiked) {
-      if (likeCount != 0 && !isLiked) {
-        dislikeCount += 1;
-      } else {
-        dislikeCount += 1;
-      }
-
+      dislikeCount += 1;
       FirebaseFirestore.instance.collection('post').doc(widget.docId).update({
         'likes.$userid': false,
         'like': likeCount,
@@ -366,7 +356,6 @@ class _BulletinPostState extends State<BulletinPost> {
                                                         disLiked = !disLiked;
                                                       }
                                                     });
-
                                                     postlike();
                                                   },
                                                 ),
