@@ -122,53 +122,60 @@ class _BulletinPostState extends State<BulletinPost> {
         // You can then retrieve the value from the Map like this:
         likeCount = data['like'];
         dislikeCount = data['dislike'];
-        isLiked = data['likes']['$userid'];
-        disLiked = data['dislikes']['$userid'];
       }
     });
   }
 
   postlike() {
-    //  when like button pressed,user press like button
-    if (!isLiked && !disLiked) {
+    getpostlike();
+    if (isLiked && !disLiked) {
       likeCount -= 1;
-      FirebaseFirestore.instance.collection('post').doc(widget.docId).update({
-        'likes.$userid': false,
-        'like': likeCount,
-        'dislikes.$userid': false,
-        'dislike': dislikeCount
-      });
     }
-    if (isLiked) {
+    if (!isLiked && disLiked) {
       likeCount += 1;
-      FirebaseFirestore.instance.collection('post').doc(widget.docId).update({
-        'likes.$userid': true,
-        'like': likeCount,
-        'dislikes.$userid': false,
-        'dislike': dislikeCount
-      });
+      dislikeCount -= 1;
     }
+    if (!isLiked && !disLiked) {
+      likeCount += 1;
+    }
+    setState(() {
+      isLiked = !isLiked;
+      if (disLiked == true) {
+        disLiked = !disLiked;
+      }
+    });
+    FirebaseFirestore.instance.collection('post').doc(widget.docId).update({
+      'likes.$userid': isLiked,
+      'like': likeCount,
+      'dislikes.$userid': disLiked,
+      'dislike': dislikeCount
+    });
   }
 
   postdislike() {
-    if (!isLiked && !disLiked) {
+    getpostlike();
+    if (!isLiked && disLiked) {
       dislikeCount -= 1;
-      FirebaseFirestore.instance.collection('post').doc(widget.docId).update({
-        'likes.$userid': false,
-        'like': likeCount,
-        'dislikes.$userid': false,
-        'dislike': dislikeCount
-      });
     }
-    if (disLiked) {
+    if (isLiked && !disLiked) {
       dislikeCount += 1;
-      FirebaseFirestore.instance.collection('post').doc(widget.docId).update({
-        'likes.$userid': false,
-        'like': likeCount,
-        'dislikes.$userid': true,
-        'dislike': dislikeCount
-      });
+      likeCount -= 1;
     }
+    if (!isLiked && !disLiked) {
+      dislikeCount += 1;
+    }
+    setState(() {
+      disLiked = !disLiked;
+      if (isLiked == true) {
+        isLiked = !isLiked;
+      }
+    });
+    FirebaseFirestore.instance.collection('post').doc(widget.docId).update({
+      'likes.$userid': isLiked,
+      'like': likeCount,
+      'dislikes.$userid': disLiked,
+      'dislike': dislikeCount
+    });
   }
 
   @override
@@ -319,47 +326,39 @@ class _BulletinPostState extends State<BulletinPost> {
                                                 MainAxisAlignment.center,
                                             children: [
                                               Container(
-                                                width: 100,
-                                                height: 40,
-                                                decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            10),
-                                                    color: isLiked
-                                                        ? Colors.blue[300]
-                                                        : Colors.white,
-                                                    border: Border.all(
-                                                        width: 2,
-                                                        color: Colors.black)),
-                                                child: GestureDetector(
-                                                  child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    children: [
-                                                      Icon(Icons.thumb_up_alt),
-                                                      Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .only(left: 10),
-                                                        child: Text("좋아요  " +
-                                                            likeCount
-                                                                .toString()),
-                                                      )
-                                                    ],
-                                                  ),
-                                                  onDoubleTap: () {
-                                                    setState(() {
-                                                      getpostlike();
-                                                      isLiked = !isLiked;
-                                                      if (disLiked) {
-                                                        disLiked = !disLiked;
-                                                      }
-                                                    });
-                                                    postlike();
-                                                  },
-                                                ),
-                                              ),
+                                                  width: 100,
+                                                  height: 40,
+                                                  decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10),
+                                                      color: isLiked
+                                                          ? Colors.blue[300]
+                                                          : Colors.white,
+                                                      border: Border.all(
+                                                          width: 2,
+                                                          color: Colors.black)),
+                                                  child: GestureDetector(
+                                                    onDoubleTap: postlike,
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        Icon(
+                                                            Icons.thumb_up_alt),
+                                                        Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .only(
+                                                                  left: 10),
+                                                          child: Text("좋아요  " +
+                                                              likeCount
+                                                                  .toString()),
+                                                        )
+                                                      ],
+                                                    ),
+                                                  )),
                                               const SizedBox(width: 20),
                                               Container(
                                                 width: 100,
@@ -375,16 +374,7 @@ class _BulletinPostState extends State<BulletinPost> {
                                                         width: 2,
                                                         color: Colors.black)),
                                                 child: GestureDetector(
-                                                  onDoubleTap: () {
-                                                    setState(() {
-                                                      getpostlike();
-                                                      disLiked = !disLiked;
-                                                      if (isLiked) {
-                                                        isLiked = !isLiked;
-                                                      }
-                                                    });
-                                                    postdislike();
-                                                  },
+                                                  onDoubleTap: postdislike,
                                                   child: Row(
                                                     mainAxisAlignment:
                                                         MainAxisAlignment
