@@ -287,7 +287,7 @@ class _MyWidgetState extends State<NeologismQuiz> {
                                 nextpage();
                               });
                             } else {
-                              endpage(context, '/word');
+                              endpage(context, '/word', "wordquiz");
                             }
                           },
                           child: Text(

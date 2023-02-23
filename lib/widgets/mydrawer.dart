@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:neologism/getx/blackmode.dart';
 import 'package:neologism/neo_function/login_func.dart';
+import 'package:neologism/pages/user_page/profile.dart';
 
 class MyDrawer extends StatefulWidget {
   const MyDrawer({super.key});
@@ -75,12 +76,12 @@ class _MyDrawerState extends State<MyDrawer> {
             ),
             ListTile(
                 leading: Icon(
-                  Icons.edit,
+                  Icons.person,
                   color: Get.find<BlackModeController>().blackmode
                       ? Colors.white
                       : Colors.black,
                 ),
-                title: Text("닉네임 수정",
+                title: Text("내 정보",
                     style: TextStyle(
                       fontSize: 20,
                       color: Get.find<BlackModeController>().blackmode
@@ -88,7 +89,9 @@ class _MyDrawerState extends State<MyDrawer> {
                           : Colors.black,
                     )),
                 onTap: () {
-                  Navigator.pushNamed(context, '/nicknameupdate');
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return const UserProfile();
+                  }));
                 }),
             const SizedBox(
               height: 20,

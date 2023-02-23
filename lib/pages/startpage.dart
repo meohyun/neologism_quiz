@@ -111,19 +111,7 @@ class Authentication extends StatelessWidget {
               ),
             );
           }
-          return StreamBuilder(
-              stream: FirebaseFirestore.instance.collection('user').snapshots(),
-              builder: (context,
-                  AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
-                final userdocs = snapshot.data!.docs;
-
-                return ScreenPage();
-              });
+          return const ScreenPage();
         });
   }
 }
@@ -136,6 +124,13 @@ class ScreenPage extends StatefulWidget {
 }
 
 class _ScreenPageState extends State<ScreenPage> {
+  @override
+  void initState() {
+    final _auth = FirebaseAuth.instance.currentUser!;
+    _auth.reload();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return GetBuilder(

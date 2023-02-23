@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'dart:math';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -38,7 +40,27 @@ nextpage() {
   is_running = true;
 }
 
-endpage(context, page) {
+quizresult(String quiztype) {
+  final user = FirebaseAuth.instance.currentUser!;
+  final userid = user.uid;
+  final username = user.displayName;
+
+  List result = [
+    {
+      "user": username,
+      "result": number_answer,
+      "type": quiztype,
+      "time": Timestamp.now()
+    }
+  ];
+  FirebaseFirestore.instance
+      .collection('user')
+      .doc('userdatabase')
+      .update({'$userid.result': FieldValue.arrayUnion(result)});
+}
+
+endpage(context, page, String quiztype) {
+  quizresult(quiztype);
   showDialog(
       useRootNavigator: false,
       barrierDismissible: false,

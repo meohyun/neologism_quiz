@@ -290,7 +290,8 @@ class _EssayQuizState extends State<EssayQuiz> {
                                       textcontroller.clear();
                                       typetext = true;
                                     } else {
-                                      endpage(context, '/sentence');
+                                      endpage(
+                                          context, '/sentence', 'sentencequiz');
                                     }
                                   });
                                 },
@@ -373,7 +374,8 @@ class _EssayQuizState extends State<EssayQuiz> {
                                           textcontroller.clear();
                                           typetext = true;
                                         } else {
-                                          endpage(context, '/sentence');
+                                          endpage(context, '/sentence',
+                                              'sentencequiz');
                                         }
                                       });
                                     },
