@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/instance_manager.dart';
 import 'package:neologism/getx/blackmode.dart';
+import 'package:neologism/pages/bulletin_pages/chatbox.dart';
 import 'package:neologism/pages/startpage.dart';
 import 'package:neologism/pages/user_page/profile.dart';
 
@@ -32,6 +33,7 @@ class _UpdateNicknameState extends State<UpdateNickname> {
   Widget build(BuildContext context) {
     final _formkey = GlobalKey<FormState>();
     final blackmode = Get.find<BlackModeController>().blackmode;
+    final userid = FirebaseAuth.instance.currentUser!.uid;
     return GetBuilder(
       init: BlackModeController(),
       builder: (_) => Scaffold(
@@ -198,7 +200,9 @@ class _UpdateNicknameState extends State<UpdateNickname> {
                                 Navigator.push(context,
                                     MaterialPageRoute(builder: (context) {
                                   return UserProfile(
-                                      name: _nicknameController.text);
+                                    name: _nicknameController.text,
+                                    userid: userid,
+                                  );
                                 }));
                               }
                             },

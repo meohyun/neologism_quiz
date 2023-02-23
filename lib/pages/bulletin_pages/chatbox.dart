@@ -9,6 +9,7 @@ import 'package:neologism/getx/chatmodify.dart';
 import 'package:neologism/neo_function/bulletin_func.dart';
 import 'package:neologism/neo_function/quiz_func.dart';
 import 'package:neologism/pages/startpage.dart';
+import 'package:neologism/pages/user_page/profile.dart';
 
 TextEditingController chatController = TextEditingController();
 TextEditingController updateChatController = TextEditingController();
@@ -17,10 +18,9 @@ final userid = FirebaseAuth.instance.currentUser!.uid;
 int pressedAttentionIndex = 0;
 
 class ChatContainer extends StatefulWidget {
-  const ChatContainer({super.key, this.docId, this.userdocid});
+  const ChatContainer({super.key, this.docId});
 
   final docId;
-  final userdocid;
 
   @override
   State<ChatContainer> createState() => _ChatContainerState();
@@ -95,7 +95,6 @@ class _ChatContainerState extends State<ChatContainer> {
             );
           }),
           ChatBox(
-            userdocid: widget.userdocid,
             docid: widget.docId,
           )
         ],
@@ -268,10 +267,9 @@ class _ChatUpdateBoxState extends State<ChatUpdateBox> {
 }
 
 class ChatBox extends StatefulWidget {
-  const ChatBox({super.key, this.docid, this.userdocid});
+  const ChatBox({super.key, this.docid});
 
   final docid;
-  final userdocid;
 
   @override
   State<ChatBox> createState() => _ChatBoxState();
@@ -361,13 +359,28 @@ class _ChatBoxState extends State<ChatBox> {
                                               const SizedBox(
                                                 width: 10,
                                               ),
-                                              Text(
-                                                Docs['chats'][index]['nickname']
-                                                    .toString(),
-                                                style: TextStyle(
-                                                    color: blackmode
-                                                        ? Colors.white
-                                                        : blackmodecolor),
+                                              GestureDetector(
+                                                onTap: () {
+                                                  Navigator.push(context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) {
+                                                    return UserProfile(
+                                                      name: Docs['chats'][index]
+                                                          ['nickname'],
+                                                      userid: Docs['chats']
+                                                          [index]['user'],
+                                                    );
+                                                  }));
+                                                },
+                                                child: Text(
+                                                  Docs['chats'][index]
+                                                          ['nickname']
+                                                      .toString(),
+                                                  style: TextStyle(
+                                                      color: blackmode
+                                                          ? Colors.white
+                                                          : blackmodecolor),
+                                                ),
                                               ),
                                             ],
                                           ),

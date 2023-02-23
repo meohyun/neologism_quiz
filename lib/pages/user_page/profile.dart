@@ -9,9 +9,10 @@ import 'package:intl/intl.dart';
 import 'package:neologism/pages/user_page/nickname.dart';
 
 class UserProfile extends StatefulWidget {
-  const UserProfile({super.key, this.name});
+  const UserProfile({super.key, this.name, this.userid});
 
   final name;
+  final userid;
   @override
   State<UserProfile> createState() => _UserProfileState();
 }
@@ -27,7 +28,7 @@ class _UserProfileState extends State<UserProfile> {
   @override
   Widget build(BuildContext context) {
     final blackmode = Get.find<BlackModeController>().blackmode;
-    final userid = FirebaseAuth.instance.currentUser!.uid;
+    final useruid = FirebaseAuth.instance.currentUser!.uid;
     final username = FirebaseAuth.instance.currentUser!.displayName;
     return GetBuilder(
       init: BlackModeController(),
@@ -41,24 +42,26 @@ class _UserProfileState extends State<UserProfile> {
                 },
                 icon: Icon(Icons.arrow_back)),
             title: Text(
-              "내 정보",
+              "유저 정보",
               style: TextStyle(
                   color: blackmode ? Colors.white : Colors.black,
                   fontWeight: FontWeight.bold),
             ),
             actions: [
-              IconButton(
-                  onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) {
-                      return UpdateNickname();
-                    }));
-                  },
-                  icon: Icon(
-                    Icons.edit,
-                    color: blackmode ? Colors.white : blackmodecolor,
-                    size: 25,
-                  ))
+              widget.userid == useruid
+                  ? IconButton(
+                      onPressed: () {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) {
+                          return UpdateNickname();
+                        }));
+                      },
+                      icon: Icon(
+                        Icons.edit,
+                        color: blackmode ? Colors.white : blackmodecolor,
+                        size: 25,
+                      ))
+                  : const SizedBox()
             ],
             backgroundColor: blackmode ? blackmodecolor : notblackmodecolor,
             elevation: 0.0,
@@ -127,50 +130,60 @@ class _UserProfileState extends State<UserProfile> {
                       builder: (context,
                           AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>>
                               snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return const CircularProgressIndicator();
+                        if (!snapshot.hasData) {
+                          return Container(
+                            child: Center(
+                              child: Text(
+                                "게임기록이 없습니다.",
+                                style: TextStyle(
+                                    fontSize: 25, fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                          );
+                        } else {
+                          final userdocs =
+                              snapshot.data![widget.userid]['result'];
+                          return ListView.builder(
+                              itemCount: userdocs.length,
+                              itemBuilder: (context, index) {
+                                final timestamp = userdocs[index]['time'];
+                                DateTime dt = timestamp.toDate();
+                                final mytime =
+                                    DateFormat('MM.dd HH:mm').format(dt);
+                                return ListTile(
+                                  title: Text(
+                                    "맞춘개수 : " + "${userdocs[index]['result']}",
+                                    style: TextStyle(
+                                        fontSize: 20,
+                                        color: blackmode
+                                            ? Colors.white
+                                            : blackmodecolor),
+                                  ),
+                                  subtitle:
+                                      userdocs[index]['type'] == "WordQuiz"
+                                          ? Text("단어퀴즈",
+                                              style: TextStyle(
+                                                  color: blackmode
+                                                      ? Colors.white
+                                                      : blackmodecolor))
+                                          : Text("문장퀴즈",
+                                              style: TextStyle(
+                                                  color: blackmode
+                                                      ? Colors.white
+                                                      : blackmodecolor)),
+                                  trailing: Padding(
+                                    padding: const EdgeInsets.only(top: 10),
+                                    child: Opacity(
+                                        opacity: 0.6,
+                                        child: Text(mytime.toString(),
+                                            style: TextStyle(
+                                                color: blackmode
+                                                    ? Colors.white
+                                                    : blackmodecolor))),
+                                  ),
+                                );
+                              });
                         }
-                        final userdocs = snapshot.data?[userid]['result'];
-                        return ListView.builder(
-                            itemCount: userdocs.length,
-                            itemBuilder: (context, index) {
-                              final timestamp = userdocs[index]['time'];
-                              DateTime dt = timestamp.toDate();
-                              final mytime =
-                                  DateFormat('MM.dd HH:mm').format(dt);
-                              return ListTile(
-                                title: Text(
-                                  "맞춘개수 : " + "${userdocs[index]['result']}",
-                                  style: TextStyle(
-                                      fontSize: 20,
-                                      color: blackmode
-                                          ? Colors.white
-                                          : blackmodecolor),
-                                ),
-                                subtitle: userdocs[index]['type'] == "WordQuiz"
-                                    ? Text("단어퀴즈",
-                                        style: TextStyle(
-                                            color: blackmode
-                                                ? Colors.white
-                                                : blackmodecolor))
-                                    : Text("문장퀴즈",
-                                        style: TextStyle(
-                                            color: blackmode
-                                                ? Colors.white
-                                                : blackmodecolor)),
-                                trailing: Padding(
-                                  padding: const EdgeInsets.only(top: 10),
-                                  child: Opacity(
-                                      opacity: 0.6,
-                                      child: Text(mytime.toString(),
-                                          style: TextStyle(
-                                              color: blackmode
-                                                  ? Colors.white
-                                                  : blackmodecolor))),
-                                ),
-                              );
-                            });
                       },
                     ),
                   ),

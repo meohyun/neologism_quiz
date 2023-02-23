@@ -23,6 +23,7 @@ class _MyDrawerState extends State<MyDrawer> {
   @override
   Widget build(BuildContext context) {
     final user = FirebaseAuth.instance.currentUser!.displayName;
+    final userid = FirebaseAuth.instance.currentUser!.uid;
     return GetBuilder(
       init: BlackModeController(),
       builder: (_) => Drawer(
@@ -90,7 +91,9 @@ class _MyDrawerState extends State<MyDrawer> {
                     )),
                 onTap: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return const UserProfile();
+                    return UserProfile(
+                      userid: userid,
+                    );
                   }));
                 }),
             const SizedBox(
