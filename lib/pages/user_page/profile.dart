@@ -8,11 +8,14 @@ import 'package:neologism/pages/startpage.dart';
 import 'package:intl/intl.dart';
 import 'package:neologism/pages/user_page/nickname.dart';
 
+final useruid = FirebaseAuth.instance.currentUser!.uid;
+
 class UserProfile extends StatefulWidget {
   const UserProfile({super.key, this.name, this.userid});
 
   final name;
   final userid;
+
   @override
   State<UserProfile> createState() => _UserProfileState();
 }
@@ -27,8 +30,8 @@ class _UserProfileState extends State<UserProfile> {
 
   @override
   Widget build(BuildContext context) {
-    final blackmode = Get.find<BlackModeController>().blackmode;
     final useruid = FirebaseAuth.instance.currentUser!.uid;
+    final blackmode = Get.find<BlackModeController>().blackmode;
     final username = FirebaseAuth.instance.currentUser!.displayName;
     return GetBuilder(
       init: BlackModeController(),
@@ -122,27 +125,15 @@ class _UserProfileState extends State<UserProfile> {
                   padding: const EdgeInsets.all(8.0),
                   child: Container(
                     height: MediaQuery.of(context).size.height * 0.6,
-                    child: StreamBuilder(
-                      stream: FirebaseFirestore.instance
-                          .collection('user')
-                          .doc('userdatabase')
-                          .snapshots(),
-                      builder: (context,
-                          AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>>
-                              snapshot) {
-                        if (!snapshot.hasData) {
-                          return Container(
-                            child: Center(
-                              child: Text(
-                                "게임기록이 없습니다.",
-                                style: TextStyle(
-                                    fontSize: 25, fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                          );
-                        } else {
+                    child: StreamBuilder<DocumentSnapshot<Map>>(
+                        stream: FirebaseFirestore.instance
+                            .collection('user')
+                            .doc('userdatabase')
+                            .snapshots(),
+                        builder: (context,
+                            AsyncSnapshot<DocumentSnapshot<Map>> snapshot) {
                           final userdocs =
-                              snapshot.data![widget.userid]['result'];
+                              snapshot.data?[widget.userid]['result'];
                           return ListView.builder(
                               itemCount: userdocs.length,
                               itemBuilder: (context, index) {
@@ -183,9 +174,7 @@ class _UserProfileState extends State<UserProfile> {
                                   ),
                                 );
                               });
-                        }
-                      },
-                    ),
+                        }),
                   ),
                 ),
               ],

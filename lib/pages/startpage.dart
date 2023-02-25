@@ -124,8 +124,27 @@ class ScreenPage extends StatefulWidget {
 }
 
 class _ScreenPageState extends State<ScreenPage> {
+  final useruid = FirebaseAuth.instance.currentUser!.uid;
+  makeuserprofile() async {
+    await FirebaseFirestore.instance
+        .collection('user')
+        .doc('userdatabase')
+        .get()
+        .then((value) {
+      final userprofile = value.data();
+
+      if (userprofile![useruid] == null) {
+        FirebaseFirestore.instance
+            .collection('user')
+            .doc('userdatabase')
+            .update({'$useruid.result': []});
+      }
+    });
+  }
+
   @override
   void initState() {
+    makeuserprofile();
     final _auth = FirebaseAuth.instance.currentUser!;
     _auth.reload();
     super.initState();
