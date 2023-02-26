@@ -71,6 +71,7 @@ class _UpdateNicknameState extends State<UpdateNickname> {
           elevation: 0.0,
         ),
         body: Container(
+          height: MediaQuery.of(context).size.height,
           color: blackmode ? blackmodecolor : notblackmodecolor,
           child: Center(
               child: Column(

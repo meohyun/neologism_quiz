@@ -93,6 +93,7 @@ class _EssayQuizState extends State<EssayQuiz> {
           apptitle: '문장 퀴즈',
           blackbutton: BlackModeButton(),
         ),
+        resizeToAvoidBottomInset : false,
         body: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
           Container(
             height: MediaQuery.of(context).size.height * 0.42,
