@@ -79,6 +79,7 @@ flutter:
     - assets/odong.png
     - assets/odong2.gif
     - assets/user_image.png
+    - assets/user_image2.png
     - assets/correct.mp3
     - assets/wrong.mp3
 

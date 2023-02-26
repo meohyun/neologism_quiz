@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -84,6 +85,23 @@ class _UpdateNicknameState extends State<UpdateNickname> {
                 },
                 child: Obx(
                   () => CircleAvatar(
+                    child: Stack(
+                      children: [
+                        Align(
+                          alignment: Alignment.bottomRight,
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(20, 20, 0, 0),
+                            child: CircleAvatar(
+                                radius: 14,
+                                backgroundColor: Colors.white,
+                                child: Icon(
+                                  CupertinoIcons.add,
+                                  size: 20,
+                                )),
+                          ),
+                        )
+                      ],
+                    ),
                     backgroundImage: profileimagecontroller
                                 .isProfilePath.value ==
                             true
