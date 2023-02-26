@@ -23,16 +23,6 @@ class UserProfile extends StatefulWidget {
 }
 
 class _UserProfileState extends State<UserProfile> {
-  getusername() {
-    FirebaseFirestore.instance
-        .collection('user')
-        .doc('userdatabase')
-        .get()
-        .then((value) {
-      final datas = value.data();
-    });
-  }
-
   @override
   void initState() {
     final _auth = FirebaseAuth.instance.currentUser!;
@@ -70,9 +60,7 @@ class _UserProfileState extends State<UserProfile> {
                       onPressed: () {
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context) {
-                          return UpdateNickname(
-                            username: widget.name,
-                          );
+                          return const UpdateNickname();
                         }));
                       },
                       icon: Icon(

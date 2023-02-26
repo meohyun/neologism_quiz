@@ -13,16 +13,27 @@ ImagePicker imagePicker = ImagePicker();
 TextEditingController _nicknameController = TextEditingController();
 
 class UpdateNickname extends StatefulWidget {
-  const UpdateNickname({super.key, this.username});
-
-  final username;
+  const UpdateNickname({super.key});
 
   @override
   State<UpdateNickname> createState() => _UpdateNicknameState();
 }
 
 class _UpdateNicknameState extends State<UpdateNickname> {
-  nicknameUpdate() {
+  getnickname() async {
+    final useruid = FirebaseAuth.instance.currentUser!.uid;
+
+    await FirebaseFirestore.instance
+        .collection('user')
+        .doc('userdatabase')
+        .get()
+        .then((value) {
+      final datas = value.data();
+      _nicknameController.text = datas![useruid]['user'];
+    });
+  }
+
+  nicknameUpdate() async {
     final user = FirebaseAuth.instance.currentUser!;
     user.updateDisplayName(_nicknameController.text);
     user.reload();
@@ -30,12 +41,12 @@ class _UpdateNicknameState extends State<UpdateNickname> {
     FirebaseFirestore.instance
         .collection('user')
         .doc('userdatabase')
-        .update({'${user.uid}.user': user.displayName});
+        .update({'${user.uid}.user': _nicknameController.text});
   }
 
   @override
   void initState() {
-    _nicknameController.text = widget.username.toString();
+    getnickname();
     super.initState();
   }
 
@@ -102,7 +113,9 @@ class _UpdateNicknameState extends State<UpdateNickname> {
                             style: TextStyle(
                                 color: blackmode ? Colors.white : Colors.black),
                             onSaved: (value) {
-                              _nicknameController.text = value as String;
+                              setState(() {
+                                _nicknameController.text = value as String;
+                              });
                             },
                             validator: (value) {
                               if (value == null) {
