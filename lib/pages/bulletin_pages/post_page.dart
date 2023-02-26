@@ -5,9 +5,11 @@ import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/instance_manager.dart';
 import 'package:neologism/getx/blackmode.dart';
 import 'package:neologism/getx/chatmodify.dart';
+import 'package:neologism/getx/profileimage.dart';
 import 'package:neologism/pages/bulletin_pages/postCRUD.dart';
 import 'package:neologism/pages/bulletin_pages/chatbox.dart';
 import 'package:neologism/pages/startpage.dart';
+import 'package:neologism/pages/user_page/profile.dart';
 
 final userid = FirebaseAuth.instance.currentUser!.uid;
 bool isLiked = false;
@@ -180,6 +182,7 @@ class _BulletinPostState extends State<BulletinPost> {
 
   @override
   Widget build(BuildContext context) {
+    Get.put(ProfileImageController());
     final blackcontroller = Get.find<BlackModeController>();
     return GetBuilder(
       init: BlackModeController(),

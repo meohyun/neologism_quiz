@@ -137,7 +137,9 @@ class _ScreenPageState extends State<ScreenPage> {
         FirebaseFirestore.instance
             .collection('user')
             .doc('userdatabase')
-            .update({'$useruid.result': []});
+            .update({
+          '$useruid.result': [],
+        });
       }
     });
   }

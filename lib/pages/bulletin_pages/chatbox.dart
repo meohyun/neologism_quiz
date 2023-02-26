@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +7,7 @@ import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:intl/intl.dart';
 import 'package:neologism/getx/blackmode.dart';
 import 'package:neologism/getx/chatmodify.dart';
+import 'package:neologism/getx/profileimage.dart';
 import 'package:neologism/neo_function/bulletin_func.dart';
 import 'package:neologism/neo_function/quiz_func.dart';
 import 'package:neologism/pages/startpage.dart';
@@ -351,10 +353,22 @@ class _ChatBoxState extends State<ChatBox> {
                                         children: [
                                           Row(
                                             children: [
-                                              CircleAvatar(
-                                                child: Icon(Icons.person,
-                                                    color: Colors.white),
-                                                backgroundColor: Colors.blue,
+                                              Obx(
+                                                () => CircleAvatar(
+                                                  backgroundImage:
+                                                      profileimagecontroller
+                                                                  .isProfilePath
+                                                                  .value ==
+                                                              true
+                                                          ? FileImage(File(
+                                                                  profileimagecontroller
+                                                                      .profilePath
+                                                                      .value))
+                                                              as ImageProvider
+                                                          : const AssetImage(
+                                                              "assets/user_image.png",
+                                                            ),
+                                                ),
                                               ),
                                               const SizedBox(
                                                 width: 10,

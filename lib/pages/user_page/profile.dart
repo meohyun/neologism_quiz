@@ -1,17 +1,19 @@
+import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
-import 'package:get/instance_manager.dart';
+import 'package:get/get.dart';
 import 'package:neologism/getx/blackmode.dart';
+import 'package:neologism/getx/profileimage.dart';
 import 'package:neologism/pages/startpage.dart';
 import 'package:intl/intl.dart';
 import 'package:neologism/pages/user_page/nickname.dart';
 
-final useruid = FirebaseAuth.instance.currentUser!.uid;
+ProfileImageController profileimagecontroller =
+    Get.find<ProfileImageController>();
 
 class UserProfile extends StatefulWidget {
-  const UserProfile({super.key, this.name, this.userid});
+  UserProfile({super.key, this.name, this.userid});
 
   final name;
   final userid;
@@ -21,6 +23,16 @@ class UserProfile extends StatefulWidget {
 }
 
 class _UserProfileState extends State<UserProfile> {
+  getusername() {
+    FirebaseFirestore.instance
+        .collection('user')
+        .doc('userdatabase')
+        .get()
+        .then((value) {
+      final datas = value.data();
+    });
+  }
+
   @override
   void initState() {
     final _auth = FirebaseAuth.instance.currentUser!;
@@ -30,9 +42,11 @@ class _UserProfileState extends State<UserProfile> {
 
   @override
   Widget build(BuildContext context) {
+    Get.put(ProfileImageController());
     final useruid = FirebaseAuth.instance.currentUser!.uid;
     final blackmode = Get.find<BlackModeController>().blackmode;
     final username = FirebaseAuth.instance.currentUser!.displayName;
+
     return GetBuilder(
       init: BlackModeController(),
       builder: (_) => Scaffold(
@@ -43,7 +57,7 @@ class _UserProfileState extends State<UserProfile> {
                     return const ScreenPage();
                   }));
                 },
-                icon: Icon(Icons.arrow_back)),
+                icon: const Icon(Icons.arrow_back)),
             title: Text(
               "유저 정보",
               style: TextStyle(
@@ -56,7 +70,9 @@ class _UserProfileState extends State<UserProfile> {
                       onPressed: () {
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context) {
-                          return UpdateNickname();
+                          return UpdateNickname(
+                            username: widget.name,
+                          );
                         }));
                       },
                       icon: Icon(
@@ -76,11 +92,18 @@ class _UserProfileState extends State<UserProfile> {
                 const SizedBox(
                   height: 10,
                 ),
-                const CircleAvatar(
-                  radius: 35,
-                  child: Icon(
-                    Icons.person,
-                    size: 35,
+                Obx(
+                  () => CircleAvatar(
+                    backgroundImage: profileimagecontroller
+                                .isProfilePath.value ==
+                            true
+                        ? FileImage(
+                                File(profileimagecontroller.profilePath.value))
+                            as ImageProvider
+                        : const AssetImage(
+                            "assets/user_image.png",
+                          ),
+                    radius: 35,
                   ),
                 ),
                 const SizedBox(
@@ -132,8 +155,12 @@ class _UserProfileState extends State<UserProfile> {
                             .snapshots(),
                         builder: (context,
                             AsyncSnapshot<DocumentSnapshot<Map>> snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return const CircularProgressIndicator();
+                          }
                           final userdocs =
-                              snapshot.data?[widget.userid]['result'];
+                              snapshot.data![widget.userid]['result'];
                           return ListView.builder(
                               itemCount: userdocs.length,
                               itemBuilder: (context, index) {

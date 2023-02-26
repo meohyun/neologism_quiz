@@ -1,7 +1,9 @@
+import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:neologism/getx/blackmode.dart';
+import 'package:neologism/getx/profileimage.dart';
 import 'package:neologism/neo_function/login_func.dart';
 import 'package:neologism/pages/user_page/profile.dart';
 
@@ -22,6 +24,7 @@ class _MyDrawerState extends State<MyDrawer> {
 
   @override
   Widget build(BuildContext context) {
+    Get.put(ProfileImageController());
     final user = FirebaseAuth.instance.currentUser!.displayName;
     final userid = FirebaseAuth.instance.currentUser!.uid;
     return GetBuilder(
@@ -39,11 +42,18 @@ class _MyDrawerState extends State<MyDrawer> {
                         ? Colors.grey[600]
                         : Colors.deepPurple[200],
                     borderRadius: BorderRadius.circular(40)),
-                currentAccountPicture: const CircleAvatar(
-                  backgroundColor: Colors.blue,
-                  child: Icon(
-                    Icons.person,
-                    size: 40,
+                currentAccountPicture: Obx(
+                  () => CircleAvatar(
+                    backgroundImage: profileimagecontroller
+                                .isProfilePath.value ==
+                            true
+                        ? FileImage(
+                                File(profileimagecontroller.profilePath.value))
+                            as ImageProvider
+                        : AssetImage(
+                            "assets/user_image.png",
+                          ),
+                    radius: 35,
                   ),
                 ),
                 accountName:

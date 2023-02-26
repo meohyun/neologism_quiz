@@ -47,6 +47,7 @@ dependencies:
   cloud_firestore: ^4.3.1
   audioplayers: ^3.0.1
   soundpool: ^2.3.0
+  image_picker: ^0.8.6+3
 
 
 
@@ -77,6 +78,9 @@ flutter:
     - assets/icon.png
     - assets/odong.png
     - assets/odong2.gif
+    - assets/user_image.png
+    - assets/correct.mp3
+    - assets/wrong.mp3
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

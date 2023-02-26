@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import "package:flutter/material.dart";
+import 'package:get/route_manager.dart';
 import 'package:neologism/firebase_options.dart';
 import 'package:neologism/pages/bulletin_pages/bulletin_board.dart';
 import 'package:neologism/pages/bulletin_pages/postCRUD.dart';
@@ -28,7 +29,7 @@ class Neologism extends StatefulWidget {
 class _NeologismState extends State<Neologism> {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       title: "신조어 퀴즈",
       initialRoute: '/',
       theme: ThemeData(
