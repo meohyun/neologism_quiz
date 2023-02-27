@@ -51,7 +51,7 @@ class _MyDrawerState extends State<MyDrawer> {
                                 File(profileimagecontroller.profilePath.value))
                             as ImageProvider
                         : AssetImage(
-                            "assets/user_image.png",
+                            "assets/userimage3.png",
                           ),
                     radius: 35,
                   ),

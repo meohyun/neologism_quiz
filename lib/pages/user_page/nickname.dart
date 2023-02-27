@@ -90,6 +90,15 @@ class _UpdateNicknameState extends State<UpdateNickname> {
                   },
                   child: Obx(
                     () => CircleAvatar(
+                      backgroundImage:
+                          profileimagecontroller.isProfilePath.value == true
+                              ? FileImage(File(
+                                      profileimagecontroller.profilePath.value))
+                                  as ImageProvider
+                              : const AssetImage(
+                                  "assets/userimage3.png",
+                                ),
+                      radius: 35,
                       child: Stack(
                         children: [
                           Align(
@@ -98,7 +107,7 @@ class _UpdateNicknameState extends State<UpdateNickname> {
                               padding: const EdgeInsets.fromLTRB(20, 20, 0, 0),
                               child: CircleAvatar(
                                   radius: 14,
-                                  backgroundColor: Colors.white,
+                                  backgroundColor: Colors.grey[300],
                                   child: Icon(
                                     CupertinoIcons.add,
                                     size: 20,
@@ -107,15 +116,6 @@ class _UpdateNicknameState extends State<UpdateNickname> {
                           )
                         ],
                       ),
-                      backgroundImage:
-                          profileimagecontroller.isProfilePath.value == true
-                              ? FileImage(File(
-                                      profileimagecontroller.profilePath.value))
-                                  as ImageProvider
-                              : const AssetImage(
-                                  "assets/user_image.png",
-                                ),
-                      radius: 35,
                     ),
                   ),
                 ),

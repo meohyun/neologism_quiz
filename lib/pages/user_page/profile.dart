@@ -89,7 +89,7 @@ class _UserProfileState extends State<UserProfile> {
                                 File(profileimagecontroller.profilePath.value))
                             as ImageProvider
                         : const AssetImage(
-                            "assets/user_image.png",
+                            "assets/userimage3.png",
                           ),
                     radius: 35,
                   ),

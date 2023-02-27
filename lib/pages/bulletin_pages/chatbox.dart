@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:neologism/getx/blackmode.dart';
 import 'package:neologism/getx/chatmodify.dart';
+import 'package:neologism/getx/profileimage.dart';
 import 'package:neologism/neo_function/bulletin_func.dart';
 import 'package:neologism/pages/startpage.dart';
 import 'package:neologism/pages/user_page/profile.dart';
@@ -145,6 +146,7 @@ class _ChatUpdateBoxState extends State<ChatUpdateBox> {
   @override
   Widget build(BuildContext context) {
     Get.put(chatcontroller());
+    Get.put(ProfileImageController());
     final blackmode = Get.find<BlackModeController>().blackmode;
     return GetBuilder(
       init: BlackModeController(),
@@ -162,17 +164,22 @@ class _ChatUpdateBoxState extends State<ChatUpdateBox> {
                     const SizedBox(
                       width: 5,
                     ),
-                    const CircleAvatar(
-                      child: Icon(
-                        Icons.person,
+                    Obx(
+                      () => CircleAvatar(
+                        backgroundImage:
+                            profileimagecontroller.isProfilePath.value == true
+                                ? FileImage(File(profileimagecontroller
+                                    .profilePath.value)) as ImageProvider
+                                : const AssetImage(
+                                    "assets/userimage3.png",
+                                  ),
                       ),
-                      backgroundColor: Colors.white,
                     ),
                     SizedBox(
                       width: 10,
                     ),
                     Text(
-                      user!,
+                      widget.docs['chats'][pressedAttentionIndex]["nickname"],
                       style: TextStyle(
                           fontSize: 16,
                           color: blackmode ? Colors.white : blackmodecolor),
@@ -304,9 +311,6 @@ class _ChatBoxState extends State<ChatBox> {
             .snapshots(),
         builder: (context,
             AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>> snapshot) {
-          // if (snapshot.connectionState == ConnectionState.waiting) {
-          //   return const CircularProgressIndicator();
-          // }
           if (snapshot.hasData) {
             final Docs = snapshot.data!;
             Get.put(BlackModeController());
@@ -361,7 +365,7 @@ class _ChatBoxState extends State<ChatBox> {
                                                                       .value))
                                                               as ImageProvider
                                                           : const AssetImage(
-                                                              "assets/user_image.png",
+                                                              "assets/userimage3.png",
                                                             ),
                                                 ),
                                               ),
