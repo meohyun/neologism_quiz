@@ -58,6 +58,7 @@ class _BulletinCreateState extends State<BulletinCreate> {
     return GetBuilder(
       init: BlackModeController(),
       builder: (_) => Scaffold(
+          resizeToAvoidBottomInset: false,
           appBar: AppBar(
             centerTitle: false,
             title: Text(

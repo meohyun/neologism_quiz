@@ -35,6 +35,7 @@ class _NeologismState extends State<Neologism> {
       theme: ThemeData(
         fontFamily: 'MapleStory',
       ),
+      useInheritedMediaQuery: true,
       routes: {
         '/': (context) => Startpage(),
         '/word': (context) => NeologismQuiz(),

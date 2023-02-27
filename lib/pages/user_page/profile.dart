@@ -37,7 +37,6 @@ class _UserProfileState extends State<UserProfile> {
     final useruid = FirebaseAuth.instance.currentUser!.uid;
     final blackmode = Get.find<BlackModeController>().blackmode;
     final username = FirebaseAuth.instance.currentUser!.displayName;
-
     return GetBuilder(
       init: BlackModeController(),
       builder: (_) => Scaffold(

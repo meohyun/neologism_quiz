@@ -3,13 +3,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:intl/intl.dart';
 import 'package:neologism/getx/blackmode.dart';
 import 'package:neologism/getx/chatmodify.dart';
-import 'package:neologism/getx/profileimage.dart';
 import 'package:neologism/neo_function/bulletin_func.dart';
-import 'package:neologism/neo_function/quiz_func.dart';
 import 'package:neologism/pages/startpage.dart';
 import 'package:neologism/pages/user_page/profile.dart';
 
@@ -29,8 +26,6 @@ class ChatContainer extends StatefulWidget {
 }
 
 class _ChatContainerState extends State<ChatContainer> {
-  final _chatkey = GlobalKey<FormState>();
-
   addchat() {
     List<dynamic> chat = [
       {
@@ -309,15 +304,15 @@ class _ChatBoxState extends State<ChatBox> {
             .snapshots(),
         builder: (context,
             AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>> snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const CircularProgressIndicator();
-          }
+          // if (snapshot.connectionState == ConnectionState.waiting) {
+          //   return const CircularProgressIndicator();
+          // }
           if (snapshot.hasData) {
             final Docs = snapshot.data!;
             Get.put(BlackModeController());
             final blackmode = Get.find<BlackModeController>().blackmode;
             return SizedBox(
-              height: MediaQuery.of(context).size.height,
+              height: 500,
               child: ListView.builder(
                 physics: const ClampingScrollPhysics(),
                 itemCount: Docs['chats'].length,
@@ -443,9 +438,6 @@ class _ChatBoxState extends State<ChatBox> {
                                                           Get.find<
                                                                   chatcontroller>()
                                                               .chatmodify();
-                                                          print(Get.find<
-                                                                  chatcontroller>()
-                                                              .chatmodified);
                                                         },
                                                         child: Text(
                                                           "수정",

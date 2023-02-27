@@ -21,6 +21,7 @@ class UpdateNickname extends StatefulWidget {
 }
 
 class _UpdateNicknameState extends State<UpdateNickname> {
+  final _formkey = GlobalKey<FormState>();
   getnickname() async {
     final useruid = FirebaseAuth.instance.currentUser!.uid;
 
@@ -53,234 +54,238 @@ class _UpdateNicknameState extends State<UpdateNickname> {
 
   @override
   Widget build(BuildContext context) {
-    final _formkey = GlobalKey<FormState>();
     final blackmode = Get.find<BlackModeController>().blackmode;
     final userid = FirebaseAuth.instance.currentUser!.uid;
     return GetBuilder(
       init: BlackModeController(),
-      builder: (_) => Scaffold(
-        appBar: AppBar(
-          title: Text(
-            "프로필 수정",
-            style: TextStyle(
-                color: blackmode ? Colors.white : blackmodecolor,
-                fontWeight: FontWeight.bold),
+      builder: (_) => GestureDetector(
+        onTap: () {
+          FocusScope.of(context).unfocus();
+        },
+        child: Scaffold(
+          appBar: AppBar(
+            title: Text(
+              "프로필 수정",
+              style: TextStyle(
+                  color: blackmode ? Colors.white : blackmodecolor,
+                  fontWeight: FontWeight.bold),
+            ),
+            leading: const SizedBox(),
+            backgroundColor: blackmode ? blackmodecolor : notblackmodecolor,
+            elevation: 0.0,
           ),
-          leading: const SizedBox(),
-          backgroundColor: blackmode ? blackmodecolor : notblackmodecolor,
-          elevation: 0.0,
-        ),
-        body: Container(
-          height: MediaQuery.of(context).size.height,
-          color: blackmode ? blackmodecolor : notblackmodecolor,
-          child: Center(
-              child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              InkWell(
-                onTap: () {
-                  showModalBottomSheet(
-                      backgroundColor: Colors.grey[400],
-                      context: context,
-                      builder: (context) => bottomsheet(context));
-                },
-                child: Obx(
-                  () => CircleAvatar(
-                    child: Stack(
-                      children: [
-                        Align(
-                          alignment: Alignment.bottomRight,
-                          child: Padding(
-                            padding: const EdgeInsets.fromLTRB(20, 20, 0, 0),
-                            child: CircleAvatar(
-                                radius: 14,
-                                backgroundColor: Colors.white,
-                                child: Icon(
-                                  CupertinoIcons.add,
-                                  size: 20,
-                                )),
-                          ),
-                        )
-                      ],
+          body: Container(
+            height: MediaQuery.of(context).size.height,
+            color: blackmode ? blackmodecolor : notblackmodecolor,
+            child: Center(
+                child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                InkWell(
+                  onTap: () {
+                    showModalBottomSheet(
+                        backgroundColor: Colors.grey[400],
+                        context: context,
+                        builder: (context) => bottomsheet(context));
+                  },
+                  child: Obx(
+                    () => CircleAvatar(
+                      child: Stack(
+                        children: [
+                          Align(
+                            alignment: Alignment.bottomRight,
+                            child: Padding(
+                              padding: const EdgeInsets.fromLTRB(20, 20, 0, 0),
+                              child: CircleAvatar(
+                                  radius: 14,
+                                  backgroundColor: Colors.white,
+                                  child: Icon(
+                                    CupertinoIcons.add,
+                                    size: 20,
+                                  )),
+                            ),
+                          )
+                        ],
+                      ),
+                      backgroundImage:
+                          profileimagecontroller.isProfilePath.value == true
+                              ? FileImage(File(
+                                      profileimagecontroller.profilePath.value))
+                                  as ImageProvider
+                              : const AssetImage(
+                                  "assets/user_image.png",
+                                ),
+                      radius: 35,
                     ),
-                    backgroundImage: profileimagecontroller
-                                .isProfilePath.value ==
-                            true
-                        ? FileImage(
-                                File(profileimagecontroller.profilePath.value))
-                            as ImageProvider
-                        : const AssetImage(
-                            "assets/user_image.png",
-                          ),
-                    radius: 35,
                   ),
                 ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Column(
-                children: [
-                  Form(
-                    key: _formkey,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.5,
-                        height: 50,
-                        child: TextFormField(
-                            style: TextStyle(
-                                color: blackmode ? Colors.white : Colors.black),
-                            onSaved: (value) {
-                              setState(() {
-                                _nicknameController.text = value as String;
-                              });
-                            },
-                            validator: (value) {
-                              if (value == null) {
-                                return "닉네임을 입력해주세요.";
-                              }
-                              if (value.length < 2) {
-                                return "두 글자 이상 입력해주세요.";
-                              }
-                              if (value.contains(RegExp(r'\s'))) {
-                                return "공백을 제거해주세요.";
-                              }
-                              if (value.contains(RegExp(r"[ㄱ-ㅎㅏ-ㅣ]"))) {
-                                return "유효한 닉네임을 입력해주세요.";
-                              }
-                              if (value.contains(RegExp("씨발"))) {
-                                return "비속어를 사용할 수 없습니다.";
-                              }
-                              if (value.contains(
-                                  RegExp(r'[!@#$%^&*(),.?":{}|<>_-]'))) {
-                                return "닉네임에 특수문자를 넣을수 없습니다.";
-                              }
-                            },
-                            controller: _nicknameController,
-                            decoration: InputDecoration(
-                              enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      width: 1,
-                                      color: blackmode
-                                          ? Colors.white
-                                          : blackmodecolor)),
-                              focusedBorder: OutlineInputBorder(
-                                  borderSide:
-                                      BorderSide(width: 1, color: Colors.blue)),
-                              border: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      width: 1,
-                                      color: blackmode
-                                          ? Colors.white
-                                          : blackmodecolor)),
-                            )),
+                const SizedBox(
+                  height: 20,
+                ),
+                Column(
+                  children: [
+                    Form(
+                      key: _formkey,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.5,
+                          height: 50,
+                          child: TextFormField(
+                              style: TextStyle(
+                                  color:
+                                      blackmode ? Colors.white : Colors.black),
+                              onSaved: (value) {
+                                setState(() {
+                                  _nicknameController.text = value as String;
+                                });
+                              },
+                              validator: (value) {
+                                if (value == null) {
+                                  return "닉네임을 입력해주세요.";
+                                }
+                                if (value.length < 2) {
+                                  return "두 글자 이상 입력해주세요.";
+                                }
+                                if (value.contains(RegExp(r'\s'))) {
+                                  return "공백을 제거해주세요.";
+                                }
+                                if (value.contains(RegExp(r"[ㄱ-ㅎㅏ-ㅣ]"))) {
+                                  return "유효한 닉네임을 입력해주세요.";
+                                }
+                                if (value.contains(RegExp("씨발"))) {
+                                  return "비속어를 사용할 수 없습니다.";
+                                }
+                                if (value.contains(
+                                    RegExp(r'[!@#$%^&*(),.?":{}|<>_-]'))) {
+                                  return "닉네임에 특수문자를 넣을수 없습니다.";
+                                }
+                              },
+                              controller: _nicknameController,
+                              decoration: InputDecoration(
+                                enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        width: 1,
+                                        color: blackmode
+                                            ? Colors.white
+                                            : blackmodecolor)),
+                                focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        width: 1, color: Colors.blue)),
+                                border: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        width: 1,
+                                        color: blackmode
+                                            ? Colors.white
+                                            : blackmodecolor)),
+                              )),
+                        ),
                       ),
                     ),
-                  ),
-                  const SizedBox(
-                    height: 40,
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "※ 유의사항",
-                        style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: blackmode ? Colors.white : blackmodecolor),
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Text(
-                        "1. 닉네임은 두 글자 이상으로 해주세요.",
-                        style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: blackmode ? Colors.white : blackmodecolor),
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Text(
-                        "2. 특수문자는 사용할 수 없습니다.",
-                        style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: blackmode ? Colors.white : blackmodecolor),
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Text(
-                        "3. 띄어쓰기를 사용할 수 없습니다.",
-                        style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: blackmode ? Colors.white : blackmodecolor),
-                      ),
-                      const SizedBox(
-                        height: 40,
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        width: 90,
-                        height: 40,
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(15)),
-                        child: TextButton(
-                            onPressed: () {
-                              Get.back();
-                            },
-                            child: const Text(
-                              "취소",
-                              style: TextStyle(fontSize: 20),
-                            )),
-                      ),
-                      const SizedBox(
-                        width: 20,
-                      ),
-                      Container(
-                        width: 90,
-                        height: 40,
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(15)),
-                        child: TextButton(
-                            onPressed: () {
-                              if (_formkey.currentState!.validate()) {
-                                _formkey.currentState!.save();
-                                nicknameUpdate();
-                                Navigator.push(context,
-                                    MaterialPageRoute(builder: (context) {
-                                  return UserProfile(
-                                    name: _nicknameController.text,
-                                    userid: userid,
-                                  );
-                                }));
-                              }
-                            },
-                            child: const Text(
-                              "확인",
-                              style: TextStyle(fontSize: 20),
-                            )),
-                      ),
-                    ],
-                  )
-                ],
-              ),
-            ],
-          )),
+                    const SizedBox(
+                      height: 40,
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "※ 유의사항",
+                          style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: blackmode ? Colors.white : blackmodecolor),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Text(
+                          "1. 닉네임은 두 글자 이상으로 해주세요.",
+                          style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: blackmode ? Colors.white : blackmodecolor),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Text(
+                          "2. 특수문자는 사용할 수 없습니다.",
+                          style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: blackmode ? Colors.white : blackmodecolor),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Text(
+                          "3. 띄어쓰기를 사용할 수 없습니다.",
+                          style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: blackmode ? Colors.white : blackmodecolor),
+                        ),
+                        const SizedBox(
+                          height: 40,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          width: 90,
+                          height: 40,
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(15)),
+                          child: TextButton(
+                              onPressed: () {
+                                Get.back();
+                              },
+                              child: const Text(
+                                "취소",
+                                style: TextStyle(fontSize: 20),
+                              )),
+                        ),
+                        const SizedBox(
+                          width: 20,
+                        ),
+                        Container(
+                          width: 90,
+                          height: 40,
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(15)),
+                          child: TextButton(
+                              onPressed: () {
+                                if (_formkey.currentState!.validate()) {
+                                  _formkey.currentState!.save();
+                                  nicknameUpdate();
+                                  Navigator.push(context,
+                                      MaterialPageRoute(builder: (context) {
+                                    return UserProfile(
+                                      name: _nicknameController.text,
+                                      userid: userid,
+                                    );
+                                  }));
+                                }
+                              },
+                              child: const Text(
+                                "확인",
+                                style: TextStyle(fontSize: 20),
+                              )),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+              ],
+            )),
+          ),
         ),
       ),
     );
