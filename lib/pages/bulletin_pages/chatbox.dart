@@ -28,8 +28,8 @@ class ChatContainer extends StatefulWidget {
 }
 
 class _ChatContainerState extends State<ChatContainer> {
-  getprofile() {
-    FirebaseFirestore.instance
+  getprofile() async {
+    await FirebaseFirestore.instance
         .collection('post')
         .doc(widget.docId)
         .get()
@@ -43,10 +43,9 @@ class _ChatContainerState extends State<ChatContainer> {
           .then((value) {
         final datas = value.data();
         for (int i = 0; i < data!['chats'].length; i++) {
-          profileimagecontroller
-              .pathput(datas![widget.chats[i]['user']]['imagepath']);
-          profileimagecontroller
-              .hasimageput(datas[widget.chats[i]['user']]['hasimage']);
+          final chatadmin = data['chats'][i]['user'];
+          profileimagecontroller.pathput(datas![chatadmin]['imagepath']);
+          profileimagecontroller.hasimageput(datas[chatadmin]['hasimage']);
         }
       });
     });
@@ -69,7 +68,6 @@ class _ChatContainerState extends State<ChatContainer> {
 
   @override
   void initState() {
-    getprofile();
     super.initState();
   }
 

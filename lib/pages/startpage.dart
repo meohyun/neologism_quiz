@@ -119,10 +119,7 @@ class Authentication extends StatelessWidget {
 }
 
 class ScreenPage extends StatefulWidget {
-  const ScreenPage({super.key, this.imagepath, this.hasimage});
-
-  final imagepath;
-  final hasimage;
+  const ScreenPage({super.key});
 
   @override
   State<ScreenPage> createState() => _ScreenPageState();
@@ -146,7 +143,6 @@ class _ScreenPageState extends State<ScreenPage> {
             .update({
           '$useruid.result': [],
           '$useruid.hasimage': false,
-          '$useruid.imagepath': "",
         });
       }
     });
@@ -166,10 +162,7 @@ class _ScreenPageState extends State<ScreenPage> {
     return GetBuilder(
       init: BlackModeController(),
       builder: (_) => Scaffold(
-          drawer: MyDrawer(
-            imagepath: profileimagecontroller.profilePath.value,
-            hasimage: profileimagecontroller.isProfilePath.value,
-          ),
+          drawer: const MyDrawer(),
           backgroundColor: Get.find<BlackModeController>().blackmode
               ? blackmodecolor
               : notblackmodecolor,

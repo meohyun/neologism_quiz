@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -13,6 +14,7 @@ File? pickedFile;
 ImagePicker imagePicker = ImagePicker();
 TextEditingController _nicknameController = TextEditingController();
 final useruid = FirebaseAuth.instance.currentUser!.uid;
+String imageUrl = "";
 
 class UpdateNickname extends StatefulWidget {
   const UpdateNickname({super.key});
@@ -23,6 +25,7 @@ class UpdateNickname extends StatefulWidget {
 
 class _UpdateNicknameState extends State<UpdateNickname> {
   final _formkey = GlobalKey<FormState>();
+
   getprofile() async {
     await FirebaseFirestore.instance
         .collection('user')
@@ -93,9 +96,9 @@ class _UpdateNicknameState extends State<UpdateNickname> {
                       () => CircleAvatar(
                         backgroundImage:
                             profileimagecontroller.isProfilePath.value == true
-                                ? FileImage(File(profileimagecontroller
-                                    .profilePath.value)) as ImageProvider
-                                : const AssetImage(
+                                ? NetworkImage(profileimagecontroller
+                                    .profilePath.value) as ImageProvider
+                                : AssetImage(
                                     "assets/userimage3.png",
                                   ),
                         radius: 35,
@@ -367,13 +370,24 @@ void takePhoto(ImageSource source) async {
   final pickedimage =
       await imagePicker.pickImage(source: source, imageQuality: 100);
 
-  pickedFile = File(pickedimage!.path);
+  //upload to firebase storage
+  Reference referenceRoot = FirebaseStorage.instance.ref();
+  Reference referenceDirImages = referenceRoot.child('image');
+  Reference referenceImageToUpload = referenceDirImages.child(useruid);
 
+  try {
+    await referenceImageToUpload.putFile(File(pickedimage!.path));
+    imageUrl = await referenceImageToUpload.getDownloadURL();
+  } catch (error) {
+    //some error occurred
+  }
   profileimagecontroller.isProfilePath.value = true;
-  profileimagecontroller.setProfileImagePath(pickedimage.path);
+  profileimagecontroller.setProfileImagePath(imageUrl);
 
-  FirebaseFirestore.instance.collection('user').doc('userdatabase').update(
-      {'$useruid.imagepath': pickedFile!.path, '$useruid.hasimage': true});
+  FirebaseFirestore.instance
+      .collection('user')
+      .doc('userdatabase')
+      .update({'$useruid.imagepath': imageUrl, '$useruid.hasimage': true});
 
   Get.back();
 }

@@ -95,13 +95,12 @@ class _UserProfileState extends State<UserProfile> {
                   ),
                   Obx(
                     () => CircleAvatar(
-                      backgroundImage: profileimagecontroller
-                                  .isProfilePath.value ==
-                              true
-                          ? FileImage(File(widget.imagepath)) as ImageProvider
-                          : const AssetImage(
-                              "assets/userimage3.png",
-                            ),
+                      backgroundImage:
+                          profileimagecontroller.isProfilePath.value == true
+                              ? NetworkImage(widget.imagepath) as ImageProvider
+                              : const AssetImage(
+                                  "assets/userimage3.png",
+                                ),
                       radius: 35,
                     ),
                   ),

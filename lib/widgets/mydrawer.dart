@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -8,20 +9,29 @@ import 'package:neologism/neo_function/login_func.dart';
 import 'package:neologism/pages/user_page/profile.dart';
 
 class MyDrawer extends StatefulWidget {
-  const MyDrawer({super.key, this.imagepath, this.hasimage});
-
-  final imagepath;
-  final hasimage;
+  const MyDrawer({super.key});
 
   @override
   State<MyDrawer> createState() => _MyDrawerState();
 }
 
 class _MyDrawerState extends State<MyDrawer> {
+  getprofile() {
+    final useruid = FirebaseAuth.instance.currentUser!.uid;
+    FirebaseFirestore.instance
+        .collection('user')
+        .doc('userdatabase')
+        .get()
+        .then((value) {
+      final data = value.data();
+      profileimagecontroller.profilePath.value = data![useruid]['imagepath'];
+      profileimagecontroller.isProfilePath.value = data[useruid]['hasimage'];
+    });
+  }
+
   @override
   void initState() {
-    final _auth = FirebaseAuth.instance.currentUser!;
-    _auth.reload();
+    getprofile();
     super.initState();
   }
 
@@ -48,8 +58,8 @@ class _MyDrawerState extends State<MyDrawer> {
                 currentAccountPicture: Obx(() => CircleAvatar(
                       backgroundImage:
                           profileimagecontroller.isProfilePath.value == true
-                              ? FileImage(File(
-                                      profileimagecontroller.profilePath.value))
+                              ? NetworkImage(
+                                      profileimagecontroller.profilePath.value)
                                   as ImageProvider
                               : const AssetImage(
                                   "assets/userimage3.png",
@@ -103,8 +113,8 @@ class _MyDrawerState extends State<MyDrawer> {
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
                     return UserProfile(
                       userid: userid,
-                      imagepath: widget.imagepath,
-                      hasimage: widget.hasimage,
+                      imagepath: profileimagecontroller.profilePath.value,
+                      hasimage: profileimagecontroller.isProfilePath.value,
                     );
                   }));
                 }),
