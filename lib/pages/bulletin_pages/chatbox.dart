@@ -18,15 +18,40 @@ final userid = FirebaseAuth.instance.currentUser!.uid;
 int pressedAttentionIndex = 0;
 
 class ChatContainer extends StatefulWidget {
-  const ChatContainer({super.key, this.docId});
+  const ChatContainer({super.key, this.docId, this.chats});
 
   final docId;
+  final chats;
 
   @override
   State<ChatContainer> createState() => _ChatContainerState();
 }
 
 class _ChatContainerState extends State<ChatContainer> {
+  getprofile() {
+    FirebaseFirestore.instance
+        .collection('post')
+        .doc(widget.docId)
+        .get()
+        .then((val) {
+      final data = val.data();
+
+      FirebaseFirestore.instance
+          .collection('user')
+          .doc('userdatabase')
+          .get()
+          .then((value) {
+        final datas = value.data();
+        for (int i = 0; i < data!['chats'].length; i++) {
+          profileimagecontroller
+              .pathput(datas![widget.chats[i]['user']]['imagepath']);
+          profileimagecontroller
+              .hasimageput(datas[widget.chats[i]['user']]['hasimage']);
+        }
+      });
+    });
+  }
+
   addchat() {
     List<dynamic> chat = [
       {
@@ -43,6 +68,12 @@ class _ChatContainerState extends State<ChatContainer> {
   }
 
   @override
+  void initState() {
+    getprofile();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     Get.put(chatcontroller());
     final blackmode = Get.find<BlackModeController>().blackmode;
@@ -53,6 +84,7 @@ class _ChatContainerState extends State<ChatContainer> {
         children: [
           Obx(() {
             return SizedBox(
+              height: 60,
               width: MediaQuery.of(context).size.width * 0.85,
               child: TextFormField(
                 style:
@@ -85,6 +117,7 @@ class _ChatContainerState extends State<ChatContainer> {
                             width: 1,
                             color: blackmode ? Colors.white : Colors.black))),
                 onFieldSubmitted: (value) {
+                  getprofile();
                   chatController.text = value;
                   addchat();
                   chatController.text = "";
@@ -94,6 +127,7 @@ class _ChatContainerState extends State<ChatContainer> {
           }),
           ChatBox(
             docid: widget.docId,
+            chats: widget.chats,
           )
         ],
       ),
@@ -157,35 +191,33 @@ class _ChatUpdateBoxState extends State<ChatUpdateBox> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 10),
-                child: Row(
-                  children: [
-                    const SizedBox(
-                      width: 5,
+              Row(
+                children: [
+                  const SizedBox(
+                    width: 5,
+                  ),
+                  Obx(
+                    () => CircleAvatar(
+                      backgroundImage:
+                          profileimagecontroller.isProfilePath.value == true
+                              ? FileImage(File(
+                                      profileimagecontroller.profilePath.value))
+                                  as ImageProvider
+                              : const AssetImage(
+                                  "assets/userimage3.png",
+                                ),
                     ),
-                    Obx(
-                      () => CircleAvatar(
-                        backgroundImage:
-                            profileimagecontroller.isProfilePath.value == true
-                                ? FileImage(File(profileimagecontroller
-                                    .profilePath.value)) as ImageProvider
-                                : const AssetImage(
-                                    "assets/userimage3.png",
-                                  ),
-                      ),
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Text(
-                      widget.docs['chats'][pressedAttentionIndex]["nickname"],
-                      style: TextStyle(
-                          fontSize: 16,
-                          color: blackmode ? Colors.white : blackmodecolor),
-                    ),
-                  ],
-                ),
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Text(
+                    widget.docs['chats'][pressedAttentionIndex]["nickname"],
+                    style: TextStyle(
+                        fontSize: 16,
+                        color: blackmode ? Colors.white : blackmodecolor),
+                  ),
+                ],
               ),
               Row(
                 children: [
@@ -271,17 +303,42 @@ class _ChatUpdateBoxState extends State<ChatUpdateBox> {
 }
 
 class ChatBox extends StatefulWidget {
-  const ChatBox({super.key, this.docid});
+  const ChatBox({super.key, this.docid, this.chats});
 
   final docid;
+  final chats;
 
   @override
   State<ChatBox> createState() => _ChatBoxState();
 }
 
 class _ChatBoxState extends State<ChatBox> {
+  getprofile() async {
+    await FirebaseFirestore.instance
+        .collection('post')
+        .doc(widget.docid)
+        .get()
+        .then((val) {
+      final data = val.data();
+
+      FirebaseFirestore.instance
+          .collection('user')
+          .doc('userdatabase')
+          .get()
+          .then((value) {
+        final datas = value.data();
+        for (int i = 0; i < data!['chats'].length; i++) {
+          final chatadmin = data['chats'][i]['user'];
+          profileimagecontroller.pathput(datas![chatadmin]['imagepath']);
+          profileimagecontroller.hasimageput(datas[chatadmin]['hasimage']);
+        }
+      });
+    });
+  }
+
   @override
   void initState() {
+    getprofile();
     super.initState();
   }
 
@@ -316,7 +373,8 @@ class _ChatBoxState extends State<ChatBox> {
             Get.put(BlackModeController());
             final blackmode = Get.find<BlackModeController>().blackmode;
             return SizedBox(
-              height: 500,
+              width: MediaQuery.of(context).size.width * 0.85,
+              height: MediaQuery.of(context).size.height,
               child: ListView.builder(
                 physics: const ClampingScrollPhysics(),
                 itemCount: Docs['chats'].length,
@@ -325,6 +383,7 @@ class _ChatBoxState extends State<ChatBox> {
                   DateTime dt = timestamp.toDate();
                   final mytime = DateFormat('MM/dd HH:mm').format(dt);
                   return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Divider(
                         height: 45,
@@ -332,148 +391,165 @@ class _ChatBoxState extends State<ChatBox> {
                         color: blackmode ? Colors.white : Colors.black,
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(bottom: 10),
-                        child: SizedBox(
-                            width: MediaQuery.of(context).size.width * 0.9,
-                            height: 100,
-                            child: Obx(() {
-                              return Get.find<chatcontroller>()
-                                          .chatmodified
-                                          .value &&
-                                      pressedAttentionIndex == index
-                                  ? ChatUpdateBox(
-                                      docid: widget.docid,
-                                      docs: Docs,
-                                    )
-                                  : ListTile(
-                                      title: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Row(
-                                            children: [
-                                              Obx(
-                                                () => CircleAvatar(
-                                                  backgroundImage:
-                                                      profileimagecontroller
-                                                                  .isProfilePath
-                                                                  .value ==
-                                                              true
-                                                          ? FileImage(File(
-                                                                  profileimagecontroller
-                                                                      .profilePath
-                                                                      .value))
-                                                              as ImageProvider
-                                                          : const AssetImage(
-                                                              "assets/userimage3.png",
-                                                            ),
-                                                ),
-                                              ),
-                                              const SizedBox(
-                                                width: 10,
-                                              ),
-                                              GestureDetector(
-                                                onTap: () {
-                                                  Navigator.push(context,
-                                                      MaterialPageRoute(
-                                                          builder: (context) {
-                                                    return UserProfile(
-                                                      name: Docs['chats'][index]
-                                                          ['nickname'],
-                                                      userid: Docs['chats']
-                                                          [index]['user'],
-                                                    );
-                                                  }));
-                                                },
-                                                child: Text(
-                                                  Docs['chats'][index]
-                                                          ['nickname']
-                                                      .toString(),
-                                                  style: TextStyle(
-                                                      color: blackmode
-                                                          ? Colors.white
-                                                          : blackmodecolor),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          const SizedBox(
-                                            height: 20,
-                                          ),
-                                          Text(
-                                            Docs['chats'][index]["content"]
-                                                .toString(),
-                                            style: TextStyle(
-                                                color: blackmode
-                                                    ? Colors.white
-                                                    : blackmodecolor),
-                                          ),
-                                        ],
-                                      ),
-                                      subtitle: Text(
-                                        mytime.toString(),
-                                        style: TextStyle(
-                                            color: blackmode
-                                                ? Colors.white
-                                                : blackmodecolor),
-                                      ),
-                                      trailing: Get.find<chatcontroller>()
-                                                  .chatmodified
-                                                  .value ==
-                                              false
-                                          ? (userid ==
-                                                  Docs['chats'][index]["user"]
-                                              ? SizedBox(
-                                                  width: 60,
-                                                  child: Row(
-                                                    children: [
-                                                      GestureDetector(
-                                                        onTap: () {
-                                                          setState(() {
-                                                            pressedAttentionIndex =
-                                                                index;
-                                                          });
-                                                          updateChatController
-                                                              .text = Docs[
-                                                                      'chats'][
-                                                                  pressedAttentionIndex]
-                                                              ["content"];
-
-                                                          Get.find<
-                                                                  chatcontroller>()
-                                                              .chatmodify();
-                                                        },
-                                                        child: Text(
-                                                          "수정",
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.blue),
-                                                        ),
+                        padding: const EdgeInsets.fromLTRB(20, 0, 0, 10),
+                        child: Obx(() {
+                          return Get.find<chatcontroller>()
+                                      .chatmodified
+                                      .value &&
+                                  pressedAttentionIndex == index
+                              ? ChatUpdateBox(
+                                  docid: widget.docid,
+                                  docs: Docs,
+                                )
+                              : Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Wrap(
+                                      children: [
+                                        Obx(
+                                          () => CircleAvatar(
+                                            radius: 20,
+                                            backgroundImage:
+                                                profileimagecontroller
+                                                                .isprofilepaths[
+                                                            index] ==
+                                                        true
+                                                    ? FileImage(File(
+                                                            profileimagecontroller
+                                                                .profilepaths
+                                                                .value[index]))
+                                                        as ImageProvider
+                                                    : const AssetImage(
+                                                        "assets/userimage3.png",
                                                       ),
-                                                      SizedBox(
-                                                        width: 10,
-                                                      ),
-                                                      GestureDetector(
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          width: 10,
+                                        ),
+                                        GestureDetector(
+                                          onTap: () {
+                                            Navigator.push(context,
+                                                MaterialPageRoute(
+                                                    builder: (context) {
+                                              return UserProfile(
+                                                name: Docs['chats'][index]
+                                                    ['nickname'],
+                                                userid: Docs['chats'][index]
+                                                    ['user'],
+                                                imagepath:
+                                                    profileimagecontroller
+                                                        .profilepaths
+                                                        .value[index],
+                                                hasimage: profileimagecontroller
+                                                    .isprofilepaths[index],
+                                              );
+                                            }));
+                                          },
+                                          child: Padding(
+                                            padding:
+                                                const EdgeInsets.only(top: 8),
+                                            child: Text(
+                                              Docs['chats'][index]['nickname']
+                                                  .toString(),
+                                              style: TextStyle(
+                                                  color: blackmode
+                                                      ? Colors.white
+                                                      : blackmodecolor,
+                                                  fontSize: 18),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    const SizedBox(
+                                      height: 15,
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          Docs['chats'][index]["content"]
+                                              .toString(),
+                                          style: TextStyle(
+                                              color: blackmode
+                                                  ? Colors.white
+                                                  : blackmodecolor,
+                                              fontSize: 18),
+                                        ),
+                                        Get.find<chatcontroller>()
+                                                    .chatmodified
+                                                    .value ==
+                                                false
+                                            ? (userid ==
+                                                    Docs['chats'][index]["user"]
+                                                ? SizedBox(
+                                                    width: 60,
+                                                    child: Row(
+                                                      children: [
+                                                        GestureDetector(
                                                           onTap: () {
                                                             setState(() {
                                                               pressedAttentionIndex =
                                                                   index;
                                                             });
-                                                            deleteChatDialog(
-                                                                context,
-                                                                deletechat,
-                                                                Docs);
+                                                            updateChatController
+                                                                .text = Docs[
+                                                                        'chats']
+                                                                    [
+                                                                    pressedAttentionIndex]
+                                                                ["content"];
+
+                                                            Get.find<
+                                                                    chatcontroller>()
+                                                                .chatmodify();
                                                           },
-                                                          child: Text("삭제",
-                                                              style: TextStyle(
-                                                                  color: Colors
-                                                                      .blue)))
-                                                    ],
-                                                  ),
-                                                )
-                                              : null)
-                                          : null);
-                            })),
+                                                          child: Text(
+                                                            "수정",
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .blue),
+                                                          ),
+                                                        ),
+                                                        SizedBox(
+                                                          width: 10,
+                                                        ),
+                                                        GestureDetector(
+                                                            onTap: () {
+                                                              setState(() {
+                                                                pressedAttentionIndex =
+                                                                    index;
+                                                              });
+                                                              deleteChatDialog(
+                                                                  context,
+                                                                  deletechat,
+                                                                  Docs);
+                                                            },
+                                                            child: Text("삭제",
+                                                                style: TextStyle(
+                                                                    color: Colors
+                                                                        .blue)))
+                                                      ],
+                                                    ),
+                                                  )
+                                                : SizedBox())
+                                            : SizedBox()
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 18,
+                                    ),
+                                    Text(
+                                      mytime.toString(),
+                                      style: TextStyle(
+                                          color: blackmode
+                                              ? Colors.white
+                                              : blackmodecolor),
+                                    ),
+                                  ],
+                                );
+                        }),
                       ),
                     ],
                   );

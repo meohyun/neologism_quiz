@@ -51,6 +51,8 @@ class BulletinPost extends StatefulWidget {
 
 class _BulletinPostState extends State<BulletinPost> {
   TextEditingController chatController = TextEditingController();
+  final useruid = FirebaseAuth.instance.currentUser!.uid;
+
   updateChatUser() {
     final user = FirebaseAuth.instance.currentUser!;
     final userid = user.uid;
@@ -97,13 +99,17 @@ class _BulletinPostState extends State<BulletinPost> {
   @override
   void initState() {
     Get.put(chatcontroller());
+    profileimagecontroller.profilepaths.value = [];
+    profileimagecontroller.isprofilepaths.value = [];
     updateChatUser();
     super.initState();
-    setState(() {
-      likeCount = widget.like;
-      isLiked = widget.userlike;
-      disLiked = widget.userdislike;
-      dislikeCount = widget.dislike;
+    Future.delayed(Duration.zero, () {
+      setState(() {
+        likeCount = widget.like;
+        isLiked = widget.userlike;
+        disLiked = widget.userdislike;
+        dislikeCount = widget.dislike;
+      });
     });
     Get.find<chatcontroller>().chatmodified.value = false;
   }
@@ -421,6 +427,7 @@ class _BulletinPostState extends State<BulletinPost> {
                                         ),
                                         ChatContainer(
                                           docId: widget.docId,
+                                          chats: widget.chats,
                                         )
                                       ],
                                     ),

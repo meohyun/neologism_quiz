@@ -8,7 +8,10 @@ import 'package:neologism/neo_function/login_func.dart';
 import 'package:neologism/pages/user_page/profile.dart';
 
 class MyDrawer extends StatefulWidget {
-  const MyDrawer({super.key});
+  const MyDrawer({super.key, this.imagepath, this.hasimage});
+
+  final imagepath;
+  final hasimage;
 
   @override
   State<MyDrawer> createState() => _MyDrawerState();
@@ -42,20 +45,17 @@ class _MyDrawerState extends State<MyDrawer> {
                         ? Colors.grey[600]
                         : Colors.deepPurple[200],
                     borderRadius: BorderRadius.circular(40)),
-                currentAccountPicture: Obx(
-                  () => CircleAvatar(
-                    backgroundImage: profileimagecontroller
-                                .isProfilePath.value ==
-                            true
-                        ? FileImage(
-                                File(profileimagecontroller.profilePath.value))
-                            as ImageProvider
-                        : AssetImage(
-                            "assets/userimage3.png",
-                          ),
-                    radius: 35,
-                  ),
-                ),
+                currentAccountPicture: Obx(() => CircleAvatar(
+                      backgroundImage:
+                          profileimagecontroller.isProfilePath.value == true
+                              ? FileImage(File(
+                                      profileimagecontroller.profilePath.value))
+                                  as ImageProvider
+                              : const AssetImage(
+                                  "assets/userimage3.png",
+                                ),
+                      radius: 35,
+                    )),
                 accountName:
                     Text(user.toString(), style: const TextStyle(fontSize: 20)),
                 accountEmail: null),
@@ -103,6 +103,8 @@ class _MyDrawerState extends State<MyDrawer> {
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
                     return UserProfile(
                       userid: userid,
+                      imagepath: widget.imagepath,
+                      hasimage: widget.hasimage,
                     );
                   }));
                 }),

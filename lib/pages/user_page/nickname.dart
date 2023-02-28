@@ -12,6 +12,7 @@ import 'package:neologism/pages/user_page/profile.dart';
 File? pickedFile;
 ImagePicker imagePicker = ImagePicker();
 TextEditingController _nicknameController = TextEditingController();
+final useruid = FirebaseAuth.instance.currentUser!.uid;
 
 class UpdateNickname extends StatefulWidget {
   const UpdateNickname({super.key});
@@ -22,9 +23,7 @@ class UpdateNickname extends StatefulWidget {
 
 class _UpdateNicknameState extends State<UpdateNickname> {
   final _formkey = GlobalKey<FormState>();
-  getnickname() async {
-    final useruid = FirebaseAuth.instance.currentUser!.uid;
-
+  getprofile() async {
     await FirebaseFirestore.instance
         .collection('user')
         .doc('userdatabase')
@@ -32,6 +31,8 @@ class _UpdateNicknameState extends State<UpdateNickname> {
         .then((value) {
       final datas = value.data();
       _nicknameController.text = datas![useruid]['user'];
+      profileimagecontroller.profilePath.value = datas[useruid]['imagepath'];
+      profileimagecontroller.isProfilePath.value = datas[useruid]['hasimage'];
     });
   }
 
@@ -48,7 +49,7 @@ class _UpdateNicknameState extends State<UpdateNickname> {
 
   @override
   void initState() {
-    getnickname();
+    getprofile();
     super.initState();
   }
 
@@ -82,43 +83,42 @@ class _UpdateNicknameState extends State<UpdateNickname> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 InkWell(
-                  onTap: () {
-                    showModalBottomSheet(
-                        backgroundColor: Colors.grey[400],
-                        context: context,
-                        builder: (context) => bottomsheet(context));
-                  },
-                  child: Obx(
-                    () => CircleAvatar(
-                      backgroundImage:
-                          profileimagecontroller.isProfilePath.value == true
-                              ? FileImage(File(
-                                      profileimagecontroller.profilePath.value))
-                                  as ImageProvider
-                              : const AssetImage(
-                                  "assets/userimage3.png",
-                                ),
-                      radius: 35,
-                      child: Stack(
-                        children: [
-                          Align(
-                            alignment: Alignment.bottomRight,
-                            child: Padding(
-                              padding: const EdgeInsets.fromLTRB(20, 20, 0, 0),
-                              child: CircleAvatar(
-                                  radius: 14,
-                                  backgroundColor: Colors.grey[300],
-                                  child: Icon(
-                                    CupertinoIcons.add,
-                                    size: 20,
-                                  )),
-                            ),
-                          )
-                        ],
+                    onTap: () {
+                      showModalBottomSheet(
+                          backgroundColor: Colors.grey[400],
+                          context: context,
+                          builder: (context) => bottomsheet(context));
+                    },
+                    child: Obx(
+                      () => CircleAvatar(
+                        backgroundImage:
+                            profileimagecontroller.isProfilePath.value == true
+                                ? FileImage(File(profileimagecontroller
+                                    .profilePath.value)) as ImageProvider
+                                : const AssetImage(
+                                    "assets/userimage3.png",
+                                  ),
+                        radius: 35,
+                        child: Stack(
+                          children: [
+                            Align(
+                              alignment: Alignment.bottomRight,
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.fromLTRB(20, 20, 0, 0),
+                                child: CircleAvatar(
+                                    radius: 14,
+                                    backgroundColor: Colors.grey[300],
+                                    child: Icon(
+                                      CupertinoIcons.add,
+                                      size: 20,
+                                    )),
+                              ),
+                            )
+                          ],
+                        ),
                       ),
-                    ),
-                  ),
-                ),
+                    )),
                 const SizedBox(
                   height: 20,
                 ),
@@ -270,6 +270,11 @@ class _UpdateNicknameState extends State<UpdateNickname> {
                                     return UserProfile(
                                       name: _nicknameController.text,
                                       userid: userid,
+                                      imagepath: profileimagecontroller
+                                          .profilePath.value,
+                                      hasimage: profileimagecontroller
+                                          .isProfilePath.value,
+                                      route: Startpage(),
                                     );
                                   }));
                                 }
@@ -363,7 +368,12 @@ void takePhoto(ImageSource source) async {
       await imagePicker.pickImage(source: source, imageQuality: 100);
 
   pickedFile = File(pickedimage!.path);
-  profileimagecontroller.setProfileImagePath(pickedFile!.path);
+
+  profileimagecontroller.isProfilePath.value = true;
+  profileimagecontroller.setProfileImagePath(pickedimage.path);
+
+  FirebaseFirestore.instance.collection('user').doc('userdatabase').update(
+      {'$useruid.imagepath': pickedFile!.path, '$useruid.hasimage': true});
 
   Get.back();
 }

@@ -5,9 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:neologism/getx/blackmode.dart';
+import 'package:neologism/getx/profileimage.dart';
 import 'package:neologism/neo_function/quiz_func.dart';
 import 'package:neologism/pages/bulletin_pages/bulletin_board.dart';
 import 'package:neologism/pages/dictionary_page/dict_neologism.dart';
+import 'package:neologism/pages/user_page/profile.dart';
 import 'package:neologism/widgets/Buttons.dart';
 import 'package:neologism/widgets/mydrawer.dart';
 
@@ -117,7 +119,10 @@ class Authentication extends StatelessWidget {
 }
 
 class ScreenPage extends StatefulWidget {
-  const ScreenPage({super.key});
+  const ScreenPage({super.key, this.imagepath, this.hasimage});
+
+  final imagepath;
+  final hasimage;
 
   @override
   State<ScreenPage> createState() => _ScreenPageState();
@@ -125,6 +130,7 @@ class ScreenPage extends StatefulWidget {
 
 class _ScreenPageState extends State<ScreenPage> {
   final useruid = FirebaseAuth.instance.currentUser!.uid;
+
   makeuserprofile() async {
     await FirebaseFirestore.instance
         .collection('user')
@@ -139,6 +145,8 @@ class _ScreenPageState extends State<ScreenPage> {
             .doc('userdatabase')
             .update({
           '$useruid.result': [],
+          '$useruid.hasimage': false,
+          '$useruid.imagepath': "",
         });
       }
     });
@@ -154,10 +162,14 @@ class _ScreenPageState extends State<ScreenPage> {
 
   @override
   Widget build(BuildContext context) {
+    Get.put(ProfileImageController());
     return GetBuilder(
       init: BlackModeController(),
       builder: (_) => Scaffold(
-          drawer: const MyDrawer(),
+          drawer: MyDrawer(
+            imagepath: profileimagecontroller.profilePath.value,
+            hasimage: profileimagecontroller.isProfilePath.value,
+          ),
           backgroundColor: Get.find<BlackModeController>().blackmode
               ? blackmodecolor
               : notblackmodecolor,
