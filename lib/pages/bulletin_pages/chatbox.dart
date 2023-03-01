@@ -28,30 +28,35 @@ class ChatContainer extends StatefulWidget {
 }
 
 class _ChatContainerState extends State<ChatContainer> {
-  getprofile() async {
-    await FirebaseFirestore.instance
+  getprofile() {
+    FirebaseFirestore.instance
         .collection('post')
         .doc(widget.docId)
-        .get()
-        .then((val) {
-      final data = val.data();
+        .snapshots()
+        .listen((docsnapshot) {
+      if (docsnapshot.exists) {
+        Map<String, dynamic> data = docsnapshot.data()!;
 
-      FirebaseFirestore.instance
-          .collection('user')
-          .doc('userdatabase')
-          .get()
-          .then((value) {
-        final datas = value.data();
-        for (int i = 0; i < data!['chats'].length; i++) {
-          final chatadmin = data['chats'][i]['user'];
-          profileimagecontroller.pathput(datas![chatadmin]['imagepath']);
-          profileimagecontroller.hasimageput(datas[chatadmin]['hasimage']);
-        }
-      });
+        final chatdata = data['chats'];
+
+        FirebaseFirestore.instance
+            .collection('user')
+            .doc('userdatabase')
+            .get()
+            .then((value) {
+          final datas = value.data();
+          for (int i = 0; i < chatdata.length; i++) {
+            final chatadmin = chatdata[i]['user'];
+            profileimagecontroller.pathput(datas![chatadmin]['imagepath']);
+            profileimagecontroller.hasimageput(datas[chatadmin]['hasimage']);
+          }
+        });
+      }
+      print(profileimagecontroller.profilepaths);
     });
   }
 
-  addchat() {
+  addchat() async {
     List<dynamic> chat = [
       {
         "content": chatController.text,
@@ -60,15 +65,10 @@ class _ChatContainerState extends State<ChatContainer> {
         "nickname": user
       },
     ];
-    FirebaseFirestore.instance
+    await FirebaseFirestore.instance
         .collection('post')
         .doc(widget.docId)
         .update({"chats": FieldValue.arrayUnion(chat)});
-  }
-
-  @override
-  void initState() {
-    super.initState();
   }
 
   @override
@@ -115,9 +115,11 @@ class _ChatContainerState extends State<ChatContainer> {
                             width: 1,
                             color: blackmode ? Colors.white : Colors.black))),
                 onFieldSubmitted: (value) {
-                  getprofile();
                   chatController.text = value;
+                  profileimagecontroller.profilepaths.value = [];
+                  profileimagecontroller.isprofilepaths.value = [];
                   addchat();
+                  getprofile();
                   chatController.text = "";
                 },
               ),
@@ -311,38 +313,16 @@ class ChatBox extends StatefulWidget {
 }
 
 class _ChatBoxState extends State<ChatBox> {
-  getprofile() async {
-    await FirebaseFirestore.instance
-        .collection('post')
-        .doc(widget.docid)
-        .get()
-        .then((val) {
-      final data = val.data();
-
-      FirebaseFirestore.instance
-          .collection('user')
-          .doc('userdatabase')
-          .get()
-          .then((value) {
-        final datas = value.data();
-        for (int i = 0; i < data!['chats'].length; i++) {
-          final chatadmin = data['chats'][i]['user'];
-          profileimagecontroller.pathput(datas![chatadmin]['imagepath']);
-          profileimagecontroller.hasimageput(datas[chatadmin]['hasimage']);
-        }
-      });
-    });
-  }
-
   @override
   void initState() {
-    getprofile();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     Get.put(chatcontroller());
+    Get.put(BlackModeController());
+    final blackmode = Get.find<BlackModeController>().blackmode;
     Future<void> deletechat(docs) async {
       List<dynamic> chat = [
         {
@@ -367,17 +347,15 @@ class _ChatBoxState extends State<ChatBox> {
         builder: (context,
             AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>> snapshot) {
           if (snapshot.hasData) {
-            final Docs = snapshot.data!;
-            Get.put(BlackModeController());
-            final blackmode = Get.find<BlackModeController>().blackmode;
+            final docs = snapshot.data!;
             return SizedBox(
               width: MediaQuery.of(context).size.width * 0.85,
               height: MediaQuery.of(context).size.height,
               child: ListView.builder(
                 physics: const ClampingScrollPhysics(),
-                itemCount: Docs['chats'].length,
+                itemCount: docs['chats'].length,
                 itemBuilder: (context, index) {
-                  final timestamp = Docs['chats'][index]['time'];
+                  final timestamp = docs['chats'][index]['time'];
                   DateTime dt = timestamp.toDate();
                   final mytime = DateFormat('MM/dd HH:mm').format(dt);
                   return Column(
@@ -397,7 +375,7 @@ class _ChatBoxState extends State<ChatBox> {
                                   pressedAttentionIndex == index
                               ? ChatUpdateBox(
                                   docid: widget.docid,
-                                  docs: Docs,
+                                  docs: docs,
                                 )
                               : Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -412,10 +390,10 @@ class _ChatBoxState extends State<ChatBox> {
                                                                 .isprofilepaths[
                                                             index] ==
                                                         true
-                                                    ? FileImage(File(
+                                                    ? NetworkImage(
                                                             profileimagecontroller
                                                                 .profilepaths
-                                                                .value[index]))
+                                                                .value[index])
                                                         as ImageProvider
                                                     : const AssetImage(
                                                         "assets/userimage3.png",
@@ -431,9 +409,9 @@ class _ChatBoxState extends State<ChatBox> {
                                                 MaterialPageRoute(
                                                     builder: (context) {
                                               return UserProfile(
-                                                name: Docs['chats'][index]
+                                                name: docs['chats'][index]
                                                     ['nickname'],
-                                                userid: Docs['chats'][index]
+                                                userid: docs['chats'][index]
                                                     ['user'],
                                                 imagepath:
                                                     profileimagecontroller
@@ -448,7 +426,7 @@ class _ChatBoxState extends State<ChatBox> {
                                             padding:
                                                 const EdgeInsets.only(top: 8),
                                             child: Text(
-                                              Docs['chats'][index]['nickname']
+                                              docs['chats'][index]['nickname']
                                                   .toString(),
                                               style: TextStyle(
                                                   color: blackmode
@@ -468,7 +446,7 @@ class _ChatBoxState extends State<ChatBox> {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
-                                          Docs['chats'][index]["content"]
+                                          docs['chats'][index]["content"]
                                               .toString(),
                                           style: TextStyle(
                                               color: blackmode
@@ -481,7 +459,7 @@ class _ChatBoxState extends State<ChatBox> {
                                                     .value ==
                                                 false
                                             ? (userid ==
-                                                    Docs['chats'][index]["user"]
+                                                    docs['chats'][index]["user"]
                                                 ? SizedBox(
                                                     width: 60,
                                                     child: Row(
@@ -493,7 +471,7 @@ class _ChatBoxState extends State<ChatBox> {
                                                                   index;
                                                             });
                                                             updateChatController
-                                                                .text = Docs[
+                                                                .text = docs[
                                                                         'chats']
                                                                     [
                                                                     pressedAttentionIndex]
@@ -522,7 +500,7 @@ class _ChatBoxState extends State<ChatBox> {
                                                               deleteChatDialog(
                                                                   context,
                                                                   deletechat,
-                                                                  Docs);
+                                                                  docs);
                                                             },
                                                             child: Text("삭제",
                                                                 style: TextStyle(

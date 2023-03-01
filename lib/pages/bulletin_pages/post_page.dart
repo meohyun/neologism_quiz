@@ -53,6 +53,29 @@ class _BulletinPostState extends State<BulletinPost> {
   TextEditingController chatController = TextEditingController();
   final useruid = FirebaseAuth.instance.currentUser!.uid;
 
+  getprofile() async {
+    FirebaseFirestore.instance
+        .collection('post')
+        .doc(widget.docId)
+        .get()
+        .then((val) {
+      final data = val.data();
+
+      FirebaseFirestore.instance
+          .collection('user')
+          .doc('userdatabase')
+          .get()
+          .then((value) {
+        final datas = value.data();
+        for (int i = 0; i < data!['chats'].length; i++) {
+          final chatadmin = data['chats'][i]['user'];
+          profileimagecontroller.pathput(datas![chatadmin]['imagepath']);
+          profileimagecontroller.hasimageput(datas[chatadmin]['hasimage']);
+        }
+      });
+    });
+  }
+
   updateChatUser() {
     final user = FirebaseAuth.instance.currentUser!;
     final userid = user.uid;
@@ -91,6 +114,32 @@ class _BulletinPostState extends State<BulletinPost> {
               .collection('post')
               .doc(widget.docId)
               .update({"chats": FieldValue.arrayUnion(chat)});
+        } else {
+          List<dynamic> exchat = [
+            {
+              "content": datas["chats"][i]["content"],
+              "time": datas["chats"][i]["time"],
+              "user": datas["chats"][i]["user"],
+              "nickname": datas["chats"][i]["nickname"]
+            },
+          ];
+          FirebaseFirestore.instance
+              .collection('post')
+              .doc(widget.docId)
+              .update({"chats": FieldValue.arrayRemove(exchat)});
+
+          List<dynamic> chat = [
+            {
+              "content": datas["chats"][i]["content"],
+              "time": datas["chats"][i]["time"],
+              "user": datas["chats"][i]["user"],
+              "nickname": datas["chats"][i]["nickname"]
+            },
+          ];
+          FirebaseFirestore.instance
+              .collection('post')
+              .doc(widget.docId)
+              .update({"chats": FieldValue.arrayUnion(chat)});
         }
       }
     });
@@ -99,12 +148,13 @@ class _BulletinPostState extends State<BulletinPost> {
   @override
   void initState() {
     Get.put(chatcontroller());
-    profileimagecontroller.profilepaths.value = [];
-    profileimagecontroller.isprofilepaths.value = [];
+    getprofile();
     updateChatUser();
     super.initState();
     Future.delayed(Duration.zero, () {
       setState(() {
+        profileimagecontroller.profilepaths.value = [];
+        profileimagecontroller.isprofilepaths.value = [];
         likeCount = widget.like;
         isLiked = widget.userlike;
         disLiked = widget.userdislike;
