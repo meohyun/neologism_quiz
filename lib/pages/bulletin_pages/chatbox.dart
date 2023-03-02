@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -18,51 +17,31 @@ final userid = FirebaseAuth.instance.currentUser!.uid;
 int pressedAttentionIndex = 0;
 
 class ChatContainer extends StatefulWidget {
-  const ChatContainer({super.key, this.docId, this.chats});
+  const ChatContainer({
+    super.key,
+    this.docId,
+    this.chats,
+    this.username,
+  });
 
   final docId;
   final chats;
+  final username;
 
   @override
   State<ChatContainer> createState() => _ChatContainerState();
 }
 
 class _ChatContainerState extends State<ChatContainer> {
-  getprofile() {
-    FirebaseFirestore.instance
-        .collection('post')
-        .doc(widget.docId)
-        .snapshots()
-        .listen((docsnapshot) {
-      if (docsnapshot.exists) {
-        Map<String, dynamic> data = docsnapshot.data()!;
-
-        final chatdata = data['chats'];
-
-        FirebaseFirestore.instance
-            .collection('user')
-            .doc('userdatabase')
-            .get()
-            .then((value) {
-          final datas = value.data();
-          for (int i = 0; i < chatdata.length; i++) {
-            final chatadmin = chatdata[i]['user'];
-            profileimagecontroller.pathput(datas![chatadmin]['imagepath']);
-            profileimagecontroller.hasimageput(datas[chatadmin]['hasimage']);
-          }
-        });
-      }
-      print(profileimagecontroller.profilepaths);
-    });
-  }
-
   addchat() async {
     List<dynamic> chat = [
       {
         "content": chatController.text,
         "time": Timestamp.now(),
         "user": userid,
-        "nickname": user
+        "nickname": widget.username,
+        "imagepath": profileimagecontroller.profilePath.value,
+        "hasimage": profileimagecontroller.isProfilePath.value
       },
     ];
     await FirebaseFirestore.instance
@@ -74,12 +53,41 @@ class _ChatContainerState extends State<ChatContainer> {
   @override
   Widget build(BuildContext context) {
     Get.put(chatcontroller());
+    Get.put(ProfileImageController());
     final blackmode = Get.find<BlackModeController>().blackmode;
     return GetBuilder(
       init: BlackModeController(),
       builder: (_) => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          Obx(() {
+            return Padding(
+              padding: const EdgeInsets.only(left: 15),
+              child: Row(
+                children: [
+                  CircleAvatar(
+                      backgroundImage:
+                          profileimagecontroller.isProfilePath.value == true
+                              ? NetworkImage(
+                                      profileimagecontroller.profilePath.value)
+                                  as ImageProvider
+                              : const AssetImage('assets/userimage3.png')),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  Text(
+                    widget.username.toString(),
+                    style: TextStyle(
+                        fontSize: 16,
+                        color: blackmode ? Colors.white : blackmodecolor),
+                  )
+                ],
+              ),
+            );
+          }),
+          const SizedBox(
+            height: 10,
+          ),
           Obx(() {
             return SizedBox(
               height: 60,
@@ -116,10 +124,7 @@ class _ChatContainerState extends State<ChatContainer> {
                             color: blackmode ? Colors.white : Colors.black))),
                 onFieldSubmitted: (value) {
                   chatController.text = value;
-                  profileimagecontroller.profilepaths.value = [];
-                  profileimagecontroller.isprofilepaths.value = [];
                   addchat();
-                  getprofile();
                   chatController.text = "";
                 },
               ),
@@ -155,6 +160,8 @@ class _ChatUpdateBoxState extends State<ChatUpdateBox> {
         "time": docs['chats'][pressedAttentionIndex]["time"],
         "user": userid,
         "nickname": docs['chats'][pressedAttentionIndex]["nickname"],
+        "imagepath": profileimagecontroller.profilePath.value,
+        "hasimage": profileimagecontroller.isProfilePath.value,
       },
     ];
 
@@ -169,6 +176,8 @@ class _ChatUpdateBoxState extends State<ChatUpdateBox> {
         "time": Timestamp.now(),
         "user": userid,
         "nickname": docs['chats'][pressedAttentionIndex]["nickname"],
+        "imagepath": profileimagecontroller.profilePath.value,
+        "hasimage": profileimagecontroller.isProfilePath.value,
       },
     ];
     await FirebaseFirestore.instance
@@ -200,15 +209,15 @@ class _ChatUpdateBoxState extends State<ChatUpdateBox> {
                     () => CircleAvatar(
                       backgroundImage:
                           profileimagecontroller.isProfilePath.value == true
-                              ? FileImage(File(
-                                      profileimagecontroller.profilePath.value))
+                              ? NetworkImage(
+                                      profileimagecontroller.profilePath.value)
                                   as ImageProvider
                               : const AssetImage(
                                   "assets/userimage3.png",
                                 ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 10,
                   ),
                   Text(
@@ -318,26 +327,29 @@ class _ChatBoxState extends State<ChatBox> {
     super.initState();
   }
 
+  Future<void> deletechat(docs) async {
+    List<dynamic> chat = [
+      {
+        "content": docs['chats'][pressedAttentionIndex]["content"],
+        "time": docs['chats'][pressedAttentionIndex]["time"],
+        "user": userid,
+        "nickname": docs['chats'][pressedAttentionIndex]["nickname"],
+        "imagepath": profileimagecontroller.profilePath.value,
+        "hasimage": profileimagecontroller.isProfilePath.value,
+      },
+    ];
+
+    await FirebaseFirestore.instance
+        .collection("post")
+        .doc(widget.docid)
+        .update({"chats": FieldValue.arrayRemove(chat)});
+  }
+
   @override
   Widget build(BuildContext context) {
     Get.put(chatcontroller());
     Get.put(BlackModeController());
     final blackmode = Get.find<BlackModeController>().blackmode;
-    Future<void> deletechat(docs) async {
-      List<dynamic> chat = [
-        {
-          "content": docs['chats'][pressedAttentionIndex]["content"],
-          "time": docs['chats'][pressedAttentionIndex]["time"],
-          "user": userid,
-          "nickname": docs['chats'][pressedAttentionIndex]["nickname"],
-        },
-      ];
-
-      await FirebaseFirestore.instance
-          .collection("post")
-          .doc(widget.docid)
-          .update({"chats": FieldValue.arrayRemove(chat)});
-    }
 
     return StreamBuilder(
         stream: FirebaseFirestore.instance
@@ -382,23 +394,17 @@ class _ChatBoxState extends State<ChatBox> {
                                   children: [
                                     Wrap(
                                       children: [
-                                        Obx(
-                                          () => CircleAvatar(
-                                            radius: 20,
-                                            backgroundImage:
-                                                profileimagecontroller
-                                                                .isprofilepaths[
-                                                            index] ==
-                                                        true
-                                                    ? NetworkImage(
-                                                            profileimagecontroller
-                                                                .profilepaths
-                                                                .value[index])
-                                                        as ImageProvider
-                                                    : const AssetImage(
-                                                        "assets/userimage3.png",
-                                                      ),
-                                          ),
+                                        CircleAvatar(
+                                          radius: 20,
+                                          backgroundImage: docs['chats'][index]
+                                                      ['hasimage'] ==
+                                                  true
+                                              ? NetworkImage(docs['chats']
+                                                      [index]['imagepath'])
+                                                  as ImageProvider
+                                              : const AssetImage(
+                                                  "assets/userimage3.png",
+                                                ),
                                         ),
                                         const SizedBox(
                                           width: 10,
@@ -413,12 +419,10 @@ class _ChatBoxState extends State<ChatBox> {
                                                     ['nickname'],
                                                 userid: docs['chats'][index]
                                                     ['user'],
-                                                imagepath:
-                                                    profileimagecontroller
-                                                        .profilepaths
-                                                        .value[index],
-                                                hasimage: profileimagecontroller
-                                                    .isprofilepaths[index],
+                                                imagepath: docs['chats'][index]
+                                                    ['imagepath'],
+                                                hasimage: docs['chats'][index]
+                                                    ['hasimage'],
                                               );
                                             }));
                                           },

@@ -51,36 +51,11 @@ class BulletinPost extends StatefulWidget {
 
 class _BulletinPostState extends State<BulletinPost> {
   TextEditingController chatController = TextEditingController();
-  final useruid = FirebaseAuth.instance.currentUser!.uid;
 
-  getprofile() async {
-    FirebaseFirestore.instance
-        .collection('post')
-        .doc(widget.docId)
-        .get()
-        .then((val) {
-      final data = val.data();
-
-      FirebaseFirestore.instance
-          .collection('user')
-          .doc('userdatabase')
-          .get()
-          .then((value) {
-        final datas = value.data();
-        for (int i = 0; i < data!['chats'].length; i++) {
-          final chatadmin = data['chats'][i]['user'];
-          profileimagecontroller.pathput(datas![chatadmin]['imagepath']);
-          profileimagecontroller.hasimageput(datas[chatadmin]['hasimage']);
-        }
-      });
-    });
-  }
+  final userid = FirebaseAuth.instance.currentUser!.uid;
+  final username = FirebaseAuth.instance.currentUser!.displayName;
 
   updateChatUser() {
-    final user = FirebaseAuth.instance.currentUser!;
-    final userid = user.uid;
-    final username = user.displayName;
-
     FirebaseFirestore.instance
         .collection('post')
         .doc(widget.docId)
@@ -94,7 +69,9 @@ class _BulletinPostState extends State<BulletinPost> {
               "content": datas["chats"][i]["content"],
               "time": datas["chats"][i]["time"],
               "user": datas["chats"][i]["user"],
-              "nickname": datas["chats"][i]["nickname"]
+              "nickname": datas["chats"][i]["nickname"],
+              "imagepath": datas["chats"][i]["imagepath"],
+              "hasimage": datas["chats"][i]["hasimage"],
             },
           ];
           FirebaseFirestore.instance
@@ -107,7 +84,9 @@ class _BulletinPostState extends State<BulletinPost> {
               "content": datas["chats"][i]["content"],
               "time": datas["chats"][i]["time"],
               "user": datas["chats"][i]["user"],
-              "nickname": username
+              "nickname": username,
+              "imagepath": profileimagecontroller.profilePath.value,
+              "hasimage": profileimagecontroller.isProfilePath.value,
             },
           ];
           FirebaseFirestore.instance
@@ -120,7 +99,9 @@ class _BulletinPostState extends State<BulletinPost> {
               "content": datas["chats"][i]["content"],
               "time": datas["chats"][i]["time"],
               "user": datas["chats"][i]["user"],
-              "nickname": datas["chats"][i]["nickname"]
+              "nickname": datas["chats"][i]["nickname"],
+              "imagepath": datas["chats"][i]["imagepath"],
+              "hasimage": datas["chats"][i]["hasimage"],
             },
           ];
           FirebaseFirestore.instance
@@ -133,7 +114,9 @@ class _BulletinPostState extends State<BulletinPost> {
               "content": datas["chats"][i]["content"],
               "time": datas["chats"][i]["time"],
               "user": datas["chats"][i]["user"],
-              "nickname": datas["chats"][i]["nickname"]
+              "nickname": datas["chats"][i]["nickname"],
+              "imagepath": datas["chats"][i]["imagepath"],
+              "hasimage": datas["chats"][i]["hasimage"],
             },
           ];
           FirebaseFirestore.instance
@@ -147,14 +130,11 @@ class _BulletinPostState extends State<BulletinPost> {
 
   @override
   void initState() {
-    Get.put(chatcontroller());
-    getprofile();
     updateChatUser();
+    Get.put(chatcontroller());
     super.initState();
     Future.delayed(Duration.zero, () {
       setState(() {
-        profileimagecontroller.profilepaths.value = [];
-        profileimagecontroller.isprofilepaths.value = [];
         likeCount = widget.like;
         isLiked = widget.userlike;
         disLiked = widget.userdislike;
@@ -416,16 +396,15 @@ class _BulletinPostState extends State<BulletinPost> {
                                                             MainAxisAlignment
                                                                 .center,
                                                         children: [
-                                                          Icon(Icons
+                                                          const Icon(Icons
                                                               .thumb_up_alt),
                                                           Padding(
                                                             padding:
                                                                 const EdgeInsets
                                                                         .only(
                                                                     left: 10),
-                                                            child: Text("좋아요  " +
-                                                                likeCount
-                                                                    .toString()),
+                                                            child: Text(
+                                                                "좋아요 ${likeCount.toString()} "),
                                                           )
                                                         ],
                                                       ),
@@ -458,9 +437,8 @@ class _BulletinPostState extends State<BulletinPost> {
                                                               const EdgeInsets
                                                                       .only(
                                                                   left: 10),
-                                                          child: Text("싫어요  " +
-                                                              dislikeCount
-                                                                  .toString()),
+                                                          child: Text(
+                                                              "싫어요  ${dislikeCount.toString()}"),
                                                         )
                                                       ],
                                                     ),
@@ -478,6 +456,7 @@ class _BulletinPostState extends State<BulletinPost> {
                                         ChatContainer(
                                           docId: widget.docId,
                                           chats: widget.chats,
+                                          username: username,
                                         )
                                       ],
                                     ),

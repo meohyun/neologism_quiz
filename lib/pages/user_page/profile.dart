@@ -93,16 +93,13 @@ class _UserProfileState extends State<UserProfile> {
                   const SizedBox(
                     height: 10,
                   ),
-                  Obx(
-                    () => CircleAvatar(
-                      backgroundImage:
-                          profileimagecontroller.isProfilePath.value == true
-                              ? NetworkImage(widget.imagepath) as ImageProvider
-                              : const AssetImage(
-                                  "assets/userimage3.png",
-                                ),
-                      radius: 35,
-                    ),
+                  CircleAvatar(
+                    backgroundImage: widget.hasimage == true
+                        ? NetworkImage(widget.imagepath) as ImageProvider
+                        : const AssetImage(
+                            "assets/userimage3.png",
+                          ),
+                    radius: 35,
                   ),
                   const SizedBox(
                     height: 10,
