@@ -110,7 +110,7 @@ class _BulletinBoardState extends State<BulletinBoard> {
                       color: Colors.white30,
                       width: MediaQuery.of(context).size.width,
                       height: MediaQuery.of(context).size.height,
-                      child: Blluettin(),
+                      child: const Blluettin(),
                     ),
                   ),
                 ],
@@ -120,11 +120,10 @@ class _BulletinBoardState extends State<BulletinBoard> {
 }
 
 class Blluettin extends StatelessWidget {
-  Blluettin({super.key});
+  const Blluettin({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final user = FirebaseAuth.instance.currentUser!.displayName;
     final userid = FirebaseAuth.instance.currentUser!.uid;
     final board = FirebaseFirestore.instance.collection('post');
     return StreamBuilder(
