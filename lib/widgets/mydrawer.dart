@@ -8,6 +8,8 @@ import 'package:neologism/getx/profileimage.dart';
 import 'package:neologism/neo_function/login_func.dart';
 import 'package:neologism/pages/user_page/profile.dart';
 
+String intro = "";
+
 class MyDrawer extends StatefulWidget {
   const MyDrawer({super.key});
 
@@ -26,6 +28,7 @@ class _MyDrawerState extends State<MyDrawer> {
       final data = value.data();
       profileimagecontroller.profilePath.value = data![useruid]['imagepath'];
       profileimagecontroller.isProfilePath.value = data[useruid]['hasimage'];
+      intro = data[useruid]['intro'];
     });
   }
 
@@ -115,6 +118,7 @@ class _MyDrawerState extends State<MyDrawer> {
                       userid: userid,
                       imagepath: profileimagecontroller.profilePath.value,
                       hasimage: profileimagecontroller.isProfilePath.value,
+                      intro: intro,
                     );
                   }));
                 }),

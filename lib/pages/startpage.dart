@@ -63,53 +63,71 @@ class Authentication extends StatelessWidget {
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 25),
-                    child: Text(
-                      "신조어 퀴즈에 오신걸 환영합니다!",
-                      style: TextStyle(fontSize: 25),
-                    ),
-                  ),
-                  const Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 25),
-                    child: Text(
-                      "퀴즈를 통해 신조어를 배워봐요!",
-                      style: TextStyle(fontSize: 25),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 50,
-                    width: 150,
-                    child: TextButton(
-                      style: TextButton.styleFrom(
-                          backgroundColor: Colors.grey,
-                          shape: RoundedRectangleBorder(
-                              side: BorderSide(color: Colors.white, width: 0.5),
-                              borderRadius: BorderRadius.circular(15.0))),
-                      onPressed: () {
-                        signInWithGoogle();
-                      },
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Image.network(
-                            'http://pngimg.com/uploads/google/google_PNG19635.png',
-                            fit: BoxFit.cover,
-                            height: 50,
-                          ),
-                          const Text(
-                            "구글 로그인",
-                            style: TextStyle(color: Colors.black, fontSize: 18),
-                          ),
-                        ],
+            return Container(
+              color: Colors.deepPurple[100],
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 25),
+                      child: Text(
+                        "Neologism Quiz",
+                        style: TextStyle(
+                            fontSize: 35,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.teal),
                       ),
                     ),
-                  )
-                ],
+                    const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 25),
+                      child: Text(
+                        "신조어 퀴즈에 오신걸 환영합니다!",
+                        style: TextStyle(fontSize: 25),
+                      ),
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 25),
+                      child: Text(
+                        "퀴즈를 통해 신조어를 배워봐요!",
+                        style: TextStyle(fontSize: 25),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    SizedBox(
+                      height: 50,
+                      width: 300,
+                      child: TextButton(
+                        style: TextButton.styleFrom(
+                            backgroundColor: Colors.grey,
+                            shape: RoundedRectangleBorder(
+                                side:
+                                    BorderSide(color: Colors.white, width: 0.5),
+                                borderRadius: BorderRadius.circular(15.0))),
+                        onPressed: () {
+                          signInWithGoogle();
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Image.network(
+                              'http://pngimg.com/uploads/google/google_PNG19635.png',
+                              fit: BoxFit.cover,
+                              height: 50,
+                            ),
+                            const Text(
+                              "구글계정으로 로그인하기",
+                              style:
+                                  TextStyle(color: Colors.black, fontSize: 18),
+                            ),
+                          ],
+                        ),
+                      ),
+                    )
+                  ],
+                ),
               ),
             );
           }
@@ -127,6 +145,7 @@ class ScreenPage extends StatefulWidget {
 
 class _ScreenPageState extends State<ScreenPage> {
   final useruid = FirebaseAuth.instance.currentUser!.uid;
+  final username = FirebaseAuth.instance.currentUser!.displayName;
 
   makeuserprofile() async {
     await FirebaseFirestore.instance
@@ -142,7 +161,11 @@ class _ScreenPageState extends State<ScreenPage> {
             .doc('userdatabase')
             .update({
           '$useruid.result': [],
+          '$useruid.intro': "",
           '$useruid.hasimage': false,
+          '$useruid.imagepath':
+              "https://firebasestorage.googleapis.com/v0/b/neologismquiz.appspot.com/o/image%2Fuserimage3.png?alt=media&token=1bca2275-037e-4470-904d-81491727fdbb",
+          '$useruid.user': username,
         });
       }
     });

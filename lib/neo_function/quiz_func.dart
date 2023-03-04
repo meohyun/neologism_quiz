@@ -43,15 +43,9 @@ nextpage() {
 quizresult(String quiztype) {
   final user = FirebaseAuth.instance.currentUser!;
   final userid = user.uid;
-  final username = user.displayName;
 
   List result = [
-    {
-      "user": username,
-      "result": number_answer,
-      "type": quiztype,
-      "time": Timestamp.now()
-    }
+    {"result": number_answer, "type": quiztype, "time": Timestamp.now()}
   ];
   FirebaseFirestore.instance
       .collection('user')

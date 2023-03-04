@@ -20,12 +20,14 @@ class UserProfile extends StatefulWidget {
       this.userid,
       this.imagepath,
       this.hasimage,
+      this.intro,
       this.route});
 
   final name;
   final userid;
   final imagepath;
   final hasimage;
+  final intro;
   final route;
 
   @override
@@ -49,6 +51,7 @@ class _UserProfileState extends State<UserProfile> {
     return GetBuilder(
       init: BlackModeController(),
       builder: (_) => Scaffold(
+          backgroundColor: blackmode ? blackmodecolor : notblackmodecolor,
           appBar: AppBar(
             leading: IconButton(
                 onPressed: () {
@@ -122,6 +125,44 @@ class _UserProfileState extends State<UserProfile> {
                   const SizedBox(
                     height: 15,
                   ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 0, 0, 15),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "소개",
+                          style: TextStyle(
+                              fontSize: 20,
+                              color: blackmode ? Colors.white : blackmodecolor),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Column(
+                    children: [
+                      SizedBox(
+                          height: 100,
+                          width: MediaQuery.of(context).size.width * 0.9,
+                          child: widget.intro == ""
+                              ? Text(
+                                  "자기소개가 없습니다.",
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      color: blackmode
+                                          ? Colors.white
+                                          : blackmodecolor),
+                                )
+                              : Text(
+                                  widget.intro,
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      color: blackmode
+                                          ? Colors.white
+                                          : blackmodecolor),
+                                ))
+                    ],
+                  ),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -136,8 +177,9 @@ class _UserProfileState extends State<UserProfile> {
                       ),
                     ],
                   ),
-                  const SizedBox(
-                    height: 10,
+                  const Divider(
+                    height: 30,
+                    thickness: 3,
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -163,18 +205,20 @@ class _UserProfileState extends State<UserProfile> {
                                   DateTime dt = timestamp.toDate();
                                   final mytime =
                                       DateFormat('MM.dd HH:mm').format(dt);
-                                  return ListTile(
-                                    title: Text(
-                                      "맞춘개수 : " +
-                                          "${userdocs[index]['result']}",
-                                      style: TextStyle(
-                                          fontSize: 20,
-                                          color: blackmode
-                                              ? Colors.white
-                                              : blackmodecolor),
-                                    ),
-                                    subtitle:
-                                        userdocs[index]['type'] == "WordQuiz"
+                                  return Column(
+                                    children: [
+                                      ListTile(
+                                        title: Text(
+                                          "맞춘개수 : " +
+                                              "${userdocs[index]['result']}",
+                                          style: TextStyle(
+                                              fontSize: 20,
+                                              color: blackmode
+                                                  ? Colors.white
+                                                  : blackmodecolor),
+                                        ),
+                                        subtitle: userdocs[index]['type'] ==
+                                                "WordQuiz"
                                             ? Text("단어퀴즈",
                                                 style: TextStyle(
                                                     color: blackmode
@@ -185,16 +229,23 @@ class _UserProfileState extends State<UserProfile> {
                                                     color: blackmode
                                                         ? Colors.white
                                                         : blackmodecolor)),
-                                    trailing: Padding(
-                                      padding: const EdgeInsets.only(top: 10),
-                                      child: Opacity(
-                                          opacity: 0.6,
-                                          child: Text(mytime.toString(),
-                                              style: TextStyle(
-                                                  color: blackmode
-                                                      ? Colors.white
-                                                      : blackmodecolor))),
-                                    ),
+                                        trailing: Padding(
+                                          padding:
+                                              const EdgeInsets.only(top: 10),
+                                          child: Opacity(
+                                              opacity: 0.6,
+                                              child: Text(mytime.toString(),
+                                                  style: TextStyle(
+                                                      color: blackmode
+                                                          ? Colors.white
+                                                          : blackmodecolor))),
+                                        ),
+                                      ),
+                                      const Divider(
+                                        height: 10,
+                                        thickness: 1.5,
+                                      )
+                                    ],
                                   );
                                 });
                           }),

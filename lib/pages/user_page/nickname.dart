@@ -13,6 +13,7 @@ import 'package:neologism/pages/user_page/profile.dart';
 File? pickedFile;
 ImagePicker imagePicker = ImagePicker();
 TextEditingController _nicknameController = TextEditingController();
+TextEditingController _introController = TextEditingController();
 final useruid = FirebaseAuth.instance.currentUser!.uid;
 String imageUrl = "";
 
@@ -25,6 +26,7 @@ class UpdateNickname extends StatefulWidget {
 
 class _UpdateNicknameState extends State<UpdateNickname> {
   final _formkey = GlobalKey<FormState>();
+  final _introformkey = GlobalKey<FormState>();
 
   getprofile() async {
     await FirebaseFirestore.instance
@@ -44,10 +46,10 @@ class _UpdateNicknameState extends State<UpdateNickname> {
     user.updateDisplayName(_nicknameController.text);
     user.reload();
 
-    FirebaseFirestore.instance
-        .collection('user')
-        .doc('userdatabase')
-        .update({'${user.uid}.user': _nicknameController.text});
+    FirebaseFirestore.instance.collection('user').doc('userdatabase').update({
+      '${user.uid}.user': _nicknameController.text,
+      '${user.uid}.intro': _introController.text,
+    });
   }
 
   @override
@@ -127,12 +129,28 @@ class _UpdateNicknameState extends State<UpdateNickname> {
                 ),
                 Column(
                   children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 42),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "닉네임",
+                            style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color:
+                                    blackmode ? Colors.white : blackmodecolor),
+                          ),
+                        ],
+                      ),
+                    ),
                     Form(
                       key: _formkey,
                       child: Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.all(10),
                         child: SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.5,
+                          width: MediaQuery.of(context).size.width * 0.8,
                           height: 50,
                           child: TextFormField(
                               style: TextStyle(
@@ -172,7 +190,7 @@ class _UpdateNicknameState extends State<UpdateNickname> {
                                         color: blackmode
                                             ? Colors.white
                                             : blackmodecolor)),
-                                focusedBorder: OutlineInputBorder(
+                                focusedBorder: const OutlineInputBorder(
                                     borderSide: BorderSide(
                                         width: 1, color: Colors.blue)),
                                 border: OutlineInputBorder(
@@ -187,6 +205,63 @@ class _UpdateNicknameState extends State<UpdateNickname> {
                     ),
                     const SizedBox(
                       height: 40,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 18),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "자기소개",
+                            style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color:
+                                    blackmode ? Colors.white : blackmodecolor),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(15),
+                      child: Form(
+                          key: _introformkey,
+                          child: TextFormField(
+                            controller: _introController,
+                            decoration: InputDecoration(
+                                border: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        width: 1,
+                                        color: blackmode
+                                            ? Colors.white
+                                            : blackmodecolor)),
+                                enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        width: 1,
+                                        color: blackmode
+                                            ? Colors.white
+                                            : blackmodecolor)),
+                                focusedBorder: const OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        width: 1, color: Colors.blue))),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return "한 글자 이상 입력해주세요!.";
+                              }
+                              if (value.contains(RegExp("씨발"))) {
+                                return "비속어를 사용할 수 없습니다.";
+                              }
+                              if (value.length > 30) {
+                                return "자기소개는 30자 이하로 작성해주세요.";
+                              }
+                            },
+                            onSaved: (value) {
+                              _introController.text = value as String;
+                            },
+                          )),
+                    ),
+                    const SizedBox(
+                      height: 20,
                     ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -265,8 +340,10 @@ class _UpdateNicknameState extends State<UpdateNickname> {
                               borderRadius: BorderRadius.circular(15)),
                           child: TextButton(
                               onPressed: () {
-                                if (_formkey.currentState!.validate()) {
+                                if (_formkey.currentState!.validate() &&
+                                    _introformkey.currentState!.validate()) {
                                   _formkey.currentState!.save();
+                                  _introformkey.currentState!.save();
                                   nicknameUpdate();
                                   Navigator.push(context,
                                       MaterialPageRoute(builder: (context) {
@@ -277,6 +354,7 @@ class _UpdateNicknameState extends State<UpdateNickname> {
                                           .profilePath.value,
                                       hasimage: profileimagecontroller
                                           .isProfilePath.value,
+                                      intro: _introController.text,
                                       route: Startpage(),
                                     );
                                   }));
