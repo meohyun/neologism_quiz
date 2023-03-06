@@ -16,7 +16,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(Neologism());
+  runApp(const Neologism());
 }
 
 class Neologism extends StatefulWidget {
