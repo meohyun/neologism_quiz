@@ -18,7 +18,9 @@ final useruid = FirebaseAuth.instance.currentUser!.uid;
 String imageUrl = "";
 
 class UpdateNickname extends StatefulWidget {
-  const UpdateNickname({super.key});
+  const UpdateNickname({super.key,this.intro});
+
+  final intro;
 
   @override
   State<UpdateNickname> createState() => _UpdateNicknameState();
@@ -55,6 +57,7 @@ class _UpdateNicknameState extends State<UpdateNickname> {
   @override
   void initState() {
     getprofile();
+    _introController.text = widget.intro;
     super.initState();
   }
 
@@ -104,7 +107,7 @@ class _UpdateNicknameState extends State<UpdateNickname> {
                               profileimagecontroller.isProfilePath.value == true
                                   ? NetworkImage(profileimagecontroller
                                       .profilePath.value) as ImageProvider
-                                  : AssetImage(
+                                  : const AssetImage(
                                       "assets/userimage3.png",
                                     ),
                           radius: 35,
@@ -118,7 +121,7 @@ class _UpdateNicknameState extends State<UpdateNickname> {
                                   child: CircleAvatar(
                                       radius: 14,
                                       backgroundColor: Colors.grey[300],
-                                      child: Icon(
+                                      child: const Icon(
                                         CupertinoIcons.add,
                                         size: 20,
                                       )),
@@ -231,6 +234,9 @@ class _UpdateNicknameState extends State<UpdateNickname> {
                         child: Form(
                             key: _introformkey,
                             child: TextFormField(
+                              style: TextStyle(
+                                    color:
+                                        blackmode ? Colors.white : Colors.black),
                               controller: _introController,
                               decoration: InputDecoration(
                                   border: OutlineInputBorder(

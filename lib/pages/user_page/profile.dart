@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:neologism/getx/blackmode.dart';
@@ -12,6 +11,7 @@ import 'package:neologism/pages/user_page/nickname.dart';
 
 ProfileImageController profileimagecontroller =
     Get.find<ProfileImageController>();
+String userintro = "";
 
 class UserProfile extends StatefulWidget {
   UserProfile(
@@ -35,11 +35,25 @@ class UserProfile extends StatefulWidget {
 }
 
 class _UserProfileState extends State<UserProfile> {
+
+
+  getuserprofile(){
+    FirebaseFirestore.instance.collection('user').doc('userdatabase').get().then((value){
+      final datas = value.data();
+      setState(() {
+        userintro = datas![widget.userid]['intro'];
+      });
+       
+    });
+  }
+
   @override
   void initState() {
     final _auth = FirebaseAuth.instance.currentUser!;
     _auth.reload();
+    getuserprofile();
     super.initState();
+
   }
 
   @override
@@ -74,7 +88,9 @@ class _UserProfileState extends State<UserProfile> {
                       onPressed: () {
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context) {
-                          return const UpdateNickname();
+                          return UpdateNickname(
+                            intro: widget.intro,
+                          );
                         }));
                       },
                       icon: Icon(
@@ -142,9 +158,9 @@ class _UserProfileState extends State<UserProfile> {
                   Column(
                     children: [
                       SizedBox(
-                          height: 100,
+                          height: 80,
                           width: MediaQuery.of(context).size.width * 0.9,
-                          child: widget.intro == ""
+                          child: userintro == ""
                               ? Text(
                                   "자기소개가 없습니다.",
                                   style: TextStyle(
@@ -154,7 +170,7 @@ class _UserProfileState extends State<UserProfile> {
                                           : blackmodecolor),
                                 )
                               : Text(
-                                  widget.intro,
+                                  userintro,
                                   style: TextStyle(
                                       fontSize: 20,
                                       color: blackmode
@@ -184,7 +200,7 @@ class _UserProfileState extends State<UserProfile> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Container(
-                      height: MediaQuery.of(context).size.height * 0.6,
+                      height: MediaQuery.of(context).size.height * 0.5,
                       child: StreamBuilder<DocumentSnapshot<Map>>(
                           stream: FirebaseFirestore.instance
                               .collection('user')

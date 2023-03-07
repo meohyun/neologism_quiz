@@ -171,9 +171,24 @@ class _ScreenPageState extends State<ScreenPage> {
     });
   }
 
+  getprofile() {
+    final useruid = FirebaseAuth.instance.currentUser!.uid;
+    FirebaseFirestore.instance
+        .collection('user')
+        .doc('userdatabase')
+        .get()
+        .then((value) {
+      final data = value.data();
+      profileimagecontroller.profilePath.value = data![useruid]['imagepath'];
+      profileimagecontroller.isProfilePath.value = data[useruid]['hasimage'];
+      intro = data[useruid]['intro'];
+    });
+  }
+
   @override
   void initState() {
     makeuserprofile();
+    getprofile();
     final _auth = FirebaseAuth.instance.currentUser!;
     _auth.reload();
     super.initState();

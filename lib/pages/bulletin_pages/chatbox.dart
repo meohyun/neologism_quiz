@@ -15,6 +15,7 @@ TextEditingController updateChatController = TextEditingController();
 final user = FirebaseAuth.instance.currentUser!.displayName;
 final userid = FirebaseAuth.instance.currentUser!.uid;
 int pressedAttentionIndex = 0;
+String userintro = "";
 
 class ChatContainer extends StatefulWidget {
   const ChatContainer({
@@ -238,19 +239,19 @@ class _ChatUpdateBoxState extends State<ChatUpdateBox> {
                         Get.find<chatcontroller>().chatmodify();
                       }
                     },
-                    child: Text(
+                    child: const Text(
                       "확인",
                       style: TextStyle(color: Colors.blue),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 10,
                   ),
                   GestureDetector(
                     onTap: () {
                       Get.find<chatcontroller>().chatmodify();
                     },
-                    child: Text(
+                    child: const Text(
                       "취소",
                       style: TextStyle(color: Colors.blue),
                     ),
@@ -259,7 +260,7 @@ class _ChatUpdateBoxState extends State<ChatUpdateBox> {
               ),
             ],
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           SizedBox(
@@ -326,7 +327,7 @@ class _ChatBoxState extends State<ChatBox> {
   void initState() {
     super.initState();
   }
-  String userintro = "";
+  
   Future<void> deletechat(docs) async {
     List<dynamic> chat = [
       {
@@ -343,15 +344,6 @@ class _ChatBoxState extends State<ChatBox> {
         .collection("post")
         .doc(widget.docid)
         .update({"chats": FieldValue.arrayRemove(chat)});
-  }
-
-  getuserprofile(docs) async{
-    await FirebaseFirestore.instance.collection('user').doc('userdatabase').get().then((value){
-      final datas = value.data();
-
-       userintro = datas![docs['chats'][pressedAttentionIndex]['user']]['intro'];
-    });
-    print(userintro);
   }
 
   @override
@@ -419,9 +411,7 @@ class _ChatBoxState extends State<ChatBox> {
                                           width: 10,
                                         ),
                                         GestureDetector(
-                                          onTap: () {
-                                            getuserprofile(docs);
-
+                                          onTap: () async{
                                             Navigator.push(context,
                                                 MaterialPageRoute(
                                                     builder: (context) {
@@ -433,9 +423,7 @@ class _ChatBoxState extends State<ChatBox> {
                                                 imagepath: docs['chats'][index]
                                                     ['imagepath'],
                                                 hasimage: docs['chats'][index]
-                                                    ['hasimage'],
-                                                intro: userintro,
-                                                
+                                                    ['hasimage'],                              
                                               );
                                             }));
                                           },
@@ -498,14 +486,14 @@ class _ChatBoxState extends State<ChatBox> {
                                                                     chatcontroller>()
                                                                 .chatmodify();
                                                           },
-                                                          child: Text(
+                                                          child: const Text(
                                                             "수정",
                                                             style: TextStyle(
                                                                 color: Colors
                                                                     .blue),
                                                           ),
                                                         ),
-                                                        SizedBox(
+                                                        const SizedBox(
                                                           width: 10,
                                                         ),
                                                         GestureDetector(
@@ -519,18 +507,18 @@ class _ChatBoxState extends State<ChatBox> {
                                                                   deletechat,
                                                                   docs);
                                                             },
-                                                            child: Text("삭제",
+                                                            child: const Text("삭제",
                                                                 style: TextStyle(
                                                                     color: Colors
                                                                         .blue)))
                                                       ],
                                                     ),
                                                   )
-                                                : SizedBox())
-                                            : SizedBox()
+                                                : const SizedBox())
+                                            : const SizedBox()
                                       ],
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 18,
                                     ),
                                     Text(
