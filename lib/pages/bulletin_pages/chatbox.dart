@@ -326,7 +326,7 @@ class _ChatBoxState extends State<ChatBox> {
   void initState() {
     super.initState();
   }
-
+  String userintro = "";
   Future<void> deletechat(docs) async {
     List<dynamic> chat = [
       {
@@ -343,6 +343,15 @@ class _ChatBoxState extends State<ChatBox> {
         .collection("post")
         .doc(widget.docid)
         .update({"chats": FieldValue.arrayRemove(chat)});
+  }
+
+  getuserprofile(docs) async{
+    await FirebaseFirestore.instance.collection('user').doc('userdatabase').get().then((value){
+      final datas = value.data();
+
+       userintro = datas![docs['chats'][pressedAttentionIndex]['user']]['intro'];
+    });
+    print(userintro);
   }
 
   @override
@@ -411,6 +420,8 @@ class _ChatBoxState extends State<ChatBox> {
                                         ),
                                         GestureDetector(
                                           onTap: () {
+                                            getuserprofile(docs);
+
                                             Navigator.push(context,
                                                 MaterialPageRoute(
                                                     builder: (context) {
@@ -423,6 +434,8 @@ class _ChatBoxState extends State<ChatBox> {
                                                     ['imagepath'],
                                                 hasimage: docs['chats'][index]
                                                     ['hasimage'],
+                                                intro: userintro,
+                                                
                                               );
                                             }));
                                           },

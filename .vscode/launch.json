@@ -20,7 +20,7 @@
             "request": "attach"
         },
         {
-            "name": "neologism",
+            "name": "neologism(debug)",
             "request": "launch",
             "type": "dart"
         },

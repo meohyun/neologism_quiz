@@ -14,6 +14,30 @@
       },
       "oauth_client": [
         {
+          "client_id": "200024650804-lopv1si2od8kb6r7t0emdemahuinqfc3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.neologism",
+            "certificate_hash": "21f7af82a6fff3245174573f401a89f8d8bb5780"
+          }
+        },
+        {
+          "client_id": "200024650804-ng492b8pbd134h31rn3dlb8e5acaiin8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.neologism",
+            "certificate_hash": "f7c956c6060cadbfd2872b4f98a81c475adf4819"
+          }
+        },
+        {
+          "client_id": "200024650804-qvlfgqc6s8pe90l07bdpm5kea7dq9r51.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.neologism",
+            "certificate_hash": "fa2db8c4c4d08ff85aec076e480d8e360ecbd659"
+          }
+        },
+        {
           "client_id": "200024650804-6gq69u7seekjc0s1b5ifimn18urcrn92.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,6 +53,13 @@
             {
               "client_id": "200024650804-6gq69u7seekjc0s1b5ifimn18urcrn92.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "200024650804-c77v6g1mnnndl76944fin5h0vkbtkf4b.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.neologism"
+              }
             }
           ]
         }
