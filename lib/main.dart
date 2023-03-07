@@ -16,7 +16,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(Neologism());
+  runApp(const Neologism());
 }
 
 class Neologism extends StatefulWidget {
@@ -41,9 +41,9 @@ class _NeologismState extends State<Neologism> {
         '/word': (context) => NeologismQuiz(),
         '/dict': (context) => NeologismDict(),
         '/sentence': (context) => EssayQuiz(),
-        '/bulletin': (context) => BulletinBoard(),
-        '/create': (context) => BulletinCreate(),
-        '/post': (context) => BulletinPost(),
+        '/bulletin': (context) => const BulletinBoard(),
+        '/create': (context) => const BulletinCreate(),
+        '/post': (context) => const BulletinPost(),
       },
       debugShowCheckedModeBanner: false,
     );
