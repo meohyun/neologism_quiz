@@ -14,14 +14,6 @@
       },
       "oauth_client": [
         {
-          "client_id": "200024650804-lopv1si2od8kb6r7t0emdemahuinqfc3.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.neologism",
-            "certificate_hash": "21f7af82a6fff3245174573f401a89f8d8bb5780"
-          }
-        },
-        {
           "client_id": "200024650804-ng492b8pbd134h31rn3dlb8e5acaiin8.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -30,7 +22,7 @@
           }
         },
         {
-          "client_id": "200024650804-qvlfgqc6s8pe90l07bdpm5kea7dq9r51.apps.googleusercontent.com",
+          "client_id": "200024650804-ta18dgn1idnhahmumc34583653d9m9bd.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.neologism",
