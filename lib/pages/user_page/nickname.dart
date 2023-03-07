@@ -80,297 +80,305 @@ class _UpdateNicknameState extends State<UpdateNickname> {
             backgroundColor: blackmode ? blackmodecolor : notblackmodecolor,
             elevation: 0.0,
           ),
-          body: Container(
-            height: MediaQuery.of(context).size.height,
-            color: blackmode ? blackmodecolor : notblackmodecolor,
-            child: Center(
-                child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                InkWell(
-                    onTap: () {
-                      showModalBottomSheet(
-                          backgroundColor: Colors.grey[400],
-                          context: context,
-                          builder: (context) => bottomsheet(context));
-                    },
-                    child: Obx(
-                      () => CircleAvatar(
-                        backgroundImage:
-                            profileimagecontroller.isProfilePath.value == true
-                                ? NetworkImage(profileimagecontroller
-                                    .profilePath.value) as ImageProvider
-                                : AssetImage(
-                                    "assets/userimage3.png",
-                                  ),
-                        radius: 35,
-                        child: Stack(
+          body: WillPopScope(
+            onWillPop: (){
+              return Future(() => false);
+            },
+            child: Container(
+              height: MediaQuery.of(context).size.height,
+              color: blackmode ? blackmodecolor : notblackmodecolor,
+              child: Center(
+                  child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  InkWell(
+                      onTap: () {
+                        showModalBottomSheet(
+                            backgroundColor: Colors.grey[400],
+                            context: context,
+                            builder: (context) => bottomsheet(context));
+                      },
+                      child: Obx(
+                        () => CircleAvatar(
+                          backgroundImage:
+                              profileimagecontroller.isProfilePath.value == true
+                                  ? NetworkImage(profileimagecontroller
+                                      .profilePath.value) as ImageProvider
+                                  : const AssetImage(
+                                      "assets/userimage3.png",
+                                    ),
+                          radius: 35,
+                          child: Stack(
+                            children: [
+                              Align(
+                                alignment: Alignment.bottomRight,
+                                child: Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(20, 20, 0, 0),
+                                  child: CircleAvatar(
+                                      radius: 14,
+                                      backgroundColor: Colors.grey[300],
+                                      child: const Icon(
+                                        CupertinoIcons.add,
+                                        size: 20,
+                                      )),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      )),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: 42),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Align(
-                              alignment: Alignment.bottomRight,
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.fromLTRB(20, 20, 0, 0),
-                                child: CircleAvatar(
-                                    radius: 14,
-                                    backgroundColor: Colors.grey[300],
-                                    child: Icon(
-                                      CupertinoIcons.add,
-                                      size: 20,
-                                    )),
-                              ),
-                            )
+                            Text(
+                              "닉네임",
+                              style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                  color:
+                                      blackmode ? Colors.white : blackmodecolor),
+                            ),
                           ],
                         ),
                       ),
-                    )),
-                const SizedBox(
-                  height: 20,
-                ),
-                Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 42),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "닉네임",
-                            style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                color:
-                                    blackmode ? Colors.white : blackmodecolor),
+                      Form(
+                        key: _formkey,
+                        child: Padding(
+                          padding: const EdgeInsets.all(10),
+                          child: SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.8,
+                            height: 50,
+                            child: TextFormField(
+                                style: TextStyle(
+                                    color:
+                                        blackmode ? Colors.white : Colors.black),
+                                onSaved: (value) {
+                                  setState(() {
+                                    _nicknameController.text = value as String;
+                                  });
+                                },
+                                validator: (value) {
+                                  if (value == null) {
+                                    return "닉네임을 입력해주세요.";
+                                  }
+                                  if (value.length < 2) {
+                                    return "두 글자 이상 입력해주세요.";
+                                  }
+                                  if (value.contains(RegExp(r'\s'))) {
+                                    return "공백을 제거해주세요.";
+                                  }
+                                  if (value.contains(RegExp(r"[ㄱ-ㅎㅏ-ㅣ]"))) {
+                                    return "유효한 닉네임을 입력해주세요.";
+                                  }
+                                  if (value.contains(RegExp("씨발"))) {
+                                    return "비속어를 사용할 수 없습니다.";
+                                  }
+                                  if (value.contains(
+                                      RegExp(r'[!@#$%^&*(),.?":{}|<>_-]'))) {
+                                    return "닉네임에 특수문자를 넣을수 없습니다.";
+                                  }
+                                },
+                                controller: _nicknameController,
+                                decoration: InputDecoration(
+                                  enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          width: 1,
+                                          color: blackmode
+                                              ? Colors.white
+                                              : blackmodecolor)),
+                                  focusedBorder: const OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          width: 1, color: Colors.blue)),
+                                  border: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          width: 1,
+                                          color: blackmode
+                                              ? Colors.white
+                                              : blackmodecolor)),
+                                )),
                           ),
-                        ],
+                        ),
                       ),
-                    ),
-                    Form(
-                      key: _formkey,
-                      child: Padding(
-                        padding: const EdgeInsets.all(10),
-                        child: SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.8,
-                          height: 50,
-                          child: TextFormField(
+                      const SizedBox(
+                        height: 40,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 18),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "자기소개",
                               style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
                                   color:
-                                      blackmode ? Colors.white : Colors.black),
-                              onSaved: (value) {
-                                setState(() {
-                                  _nicknameController.text = value as String;
-                                });
-                              },
+                                      blackmode ? Colors.white : blackmodecolor),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(15),
+                        child: Form(
+                            key: _introformkey,
+                            child: TextFormField(
+                              style: TextStyle(
+                                    color:
+                                        blackmode ? Colors.white : Colors.black),
+                              controller: _introController,
+                              decoration: InputDecoration(
+                                  border: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          width: 1,
+                                          color: blackmode
+                                              ? Colors.white
+                                              : blackmodecolor)),
+                                  enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          width: 1,
+                                          color: blackmode
+                                              ? Colors.white
+                                              : blackmodecolor)),
+                                  focusedBorder: const OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          width: 1, color: Colors.blue))),
                               validator: (value) {
-                                if (value == null) {
-                                  return "닉네임을 입력해주세요.";
-                                }
-                                if (value.length < 2) {
-                                  return "두 글자 이상 입력해주세요.";
-                                }
-                                if (value.contains(RegExp(r'\s'))) {
-                                  return "공백을 제거해주세요.";
-                                }
-                                if (value.contains(RegExp(r"[ㄱ-ㅎㅏ-ㅣ]"))) {
-                                  return "유효한 닉네임을 입력해주세요.";
+                                if (value == null || value.isEmpty) {
+                                  return "한 글자 이상 입력해주세요!.";
                                 }
                                 if (value.contains(RegExp("씨발"))) {
                                   return "비속어를 사용할 수 없습니다.";
                                 }
-                                if (value.contains(
-                                    RegExp(r'[!@#$%^&*(),.?":{}|<>_-]'))) {
-                                  return "닉네임에 특수문자를 넣을수 없습니다.";
+                                if (value.length > 30) {
+                                  return "자기소개는 30자 이하로 작성해주세요.";
                                 }
                               },
-                              controller: _nicknameController,
-                              decoration: InputDecoration(
-                                enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        width: 1,
-                                        color: blackmode
-                                            ? Colors.white
-                                            : blackmodecolor)),
-                                focusedBorder: const OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        width: 1, color: Colors.blue)),
-                                border: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        width: 1,
-                                        color: blackmode
-                                            ? Colors.white
-                                            : blackmodecolor)),
-                              )),
-                        ),
+                              onSaved: (value) {
+                                _introController.text = value as String;
+                              },
+                            )),
                       ),
-                    ),
-                    const SizedBox(
-                      height: 40,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 18),
-                      child: Row(
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "자기소개",
+                            "※ 유의사항",
                             style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
-                                color:
-                                    blackmode ? Colors.white : blackmodecolor),
+                                color: blackmode ? Colors.white : blackmodecolor),
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Text(
+                            "1. 닉네임은 두 글자 이상으로 해주세요.",
+                            style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: blackmode ? Colors.white : blackmodecolor),
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Text(
+                            "2. 특수문자는 사용할 수 없습니다.",
+                            style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: blackmode ? Colors.white : blackmodecolor),
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Text(
+                            "3. 띄어쓰기를 사용할 수 없습니다.",
+                            style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: blackmode ? Colors.white : blackmodecolor),
+                          ),
+                          const SizedBox(
+                            height: 40,
                           ),
                         ],
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(15),
-                      child: Form(
-                          key: _introformkey,
-                          child: TextFormField(
-                            controller: _introController,
-                            decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        width: 1,
-                                        color: blackmode
-                                            ? Colors.white
-                                            : blackmodecolor)),
-                                enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        width: 1,
-                                        color: blackmode
-                                            ? Colors.white
-                                            : blackmodecolor)),
-                                focusedBorder: const OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        width: 1, color: Colors.blue))),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return "한 글자 이상 입력해주세요!.";
-                              }
-                              if (value.contains(RegExp("씨발"))) {
-                                return "비속어를 사용할 수 없습니다.";
-                              }
-                              if (value.length > 30) {
-                                return "자기소개는 30자 이하로 작성해주세요.";
-                              }
-                            },
-                            onSaved: (value) {
-                              _introController.text = value as String;
-                            },
-                          )),
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "※ 유의사항",
-                          style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              color: blackmode ? Colors.white : blackmodecolor),
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                          "1. 닉네임은 두 글자 이상으로 해주세요.",
-                          style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              color: blackmode ? Colors.white : blackmodecolor),
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                          "2. 특수문자는 사용할 수 없습니다.",
-                          style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              color: blackmode ? Colors.white : blackmodecolor),
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                          "3. 띄어쓰기를 사용할 수 없습니다.",
-                          style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              color: blackmode ? Colors.white : blackmodecolor),
-                        ),
-                        const SizedBox(
-                          height: 40,
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          width: 90,
-                          height: 40,
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(15)),
-                          child: TextButton(
-                              onPressed: () {
-                                Get.back();
-                              },
-                              child: const Text(
-                                "취소",
-                                style: TextStyle(fontSize: 20),
-                              )),
-                        ),
-                        const SizedBox(
-                          width: 20,
-                        ),
-                        Container(
-                          width: 90,
-                          height: 40,
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(15)),
-                          child: TextButton(
-                              onPressed: () {
-                                if (_formkey.currentState!.validate() &&
-                                    _introformkey.currentState!.validate()) {
-                                  _formkey.currentState!.save();
-                                  _introformkey.currentState!.save();
-                                  nicknameUpdate();
-                                  Navigator.push(context,
-                                      MaterialPageRoute(builder: (context) {
-                                    return UserProfile(
-                                      name: _nicknameController.text,
-                                      userid: userid,
-                                      imagepath: profileimagecontroller
-                                          .profilePath.value,
-                                      hasimage: profileimagecontroller
-                                          .isProfilePath.value,
-                                      intro: _introController.text,
-                                      route: Startpage(),
-                                    );
-                                  }));
-                                }
-                              },
-                              child: const Text(
-                                "확인",
-                                style: TextStyle(fontSize: 20),
-                              )),
-                        ),
-                      ],
-                    )
-                  ],
-                ),
-              ],
-            )),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            width: 90,
+                            height: 40,
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(15)),
+                            child: TextButton(
+                                onPressed: () {
+                                  Get.back();
+                                },
+                                child: const Text(
+                                  "취소",
+                                  style: TextStyle(fontSize: 20),
+                                )),
+                          ),
+                          const SizedBox(
+                            width: 20,
+                          ),
+                          Container(
+                            width: 90,
+                            height: 40,
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(15)),
+                            child: TextButton(
+                                onPressed: () {
+                                  if (_formkey.currentState!.validate() &&
+                                      _introformkey.currentState!.validate()) {
+                                    _formkey.currentState!.save();
+                                    _introformkey.currentState!.save();
+                                    nicknameUpdate();
+                                    Navigator.push(context,
+                                        MaterialPageRoute(builder: (context) {
+                                      return UserProfile(
+                                        name: _nicknameController.text,
+                                        userid: userid,
+                                        imagepath: profileimagecontroller
+                                            .profilePath.value,
+                                        hasimage: profileimagecontroller
+                                            .isProfilePath.value,
+                                        intro: _introController.text,
+                                        route: Startpage(),
+                                      );
+                                    }));
+                                  }
+                                },
+                                child: const Text(
+                                  "확인",
+                                  style: TextStyle(fontSize: 20),
+                                )),
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                ],
+              )),
+            ),
           ),
         ),
       ),
