@@ -35,15 +35,16 @@ class UserProfile extends StatefulWidget {
 }
 
 class _UserProfileState extends State<UserProfile> {
-
-
-  getuserprofile(){
-    FirebaseFirestore.instance.collection('user').doc('userdatabase').get().then((value){
+  getuserprofile() {
+    FirebaseFirestore.instance
+        .collection('user')
+        .doc('userdatabase')
+        .get()
+        .then((value) {
       final datas = value.data();
       setState(() {
         userintro = datas![widget.userid]['intro'];
       });
-       
     });
   }
 
@@ -53,7 +54,6 @@ class _UserProfileState extends State<UserProfile> {
     _auth.reload();
     getuserprofile();
     super.initState();
-
   }
 
   @override
@@ -140,50 +140,46 @@ class _UserProfileState extends State<UserProfile> {
                         ),
                   const SizedBox(
                     height: 15,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 0, 0, 15),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "소개",
-                          style: TextStyle(
-                              fontSize: 20,
-                              color: blackmode ? Colors.white : blackmodecolor),
-                        ),
-                      ],
-                    ),
-                  ),
+                  ),                
                   Column(
                     children: [
-                      SizedBox(
+                      Container(
+                          decoration: BoxDecoration(
+                              border: Border.all(
+                                width: 1,
+                                color:
+                                    blackmode ? Colors.white : blackmodecolor,
+                              ),
+                              borderRadius: BorderRadius.circular(15)),
                           height: 80,
-                          width: MediaQuery.of(context).size.width * 0.9,
-                          child: userintro == ""
-                              ? Text(
-                                  "자기소개가 없습니다.",
-                                  style: TextStyle(
-                                      fontSize: 20,
-                                      color: blackmode
-                                          ? Colors.white
-                                          : blackmodecolor),
-                                )
-                              : Text(
-                                  userintro,
-                                  style: TextStyle(
-                                      fontSize: 20,
-                                      color: blackmode
-                                          ? Colors.white
-                                          : blackmodecolor),
-                                ))
+                          width: MediaQuery.of(context).size.width * 0.95,
+                          child: Padding(
+                            padding: const EdgeInsets.all(12),
+                            child: userintro == ""
+                                ? Text(
+                                    "자기소개가 없습니다.",
+                                    style: TextStyle(
+                                        fontSize: 20,
+                                        color: blackmode
+                                            ? Colors.white
+                                            : blackmodecolor),
+                                  )
+                                : Text(
+                                    userintro,
+                                    style: TextStyle(
+                                        fontSize: 20,
+                                        color: blackmode
+                                            ? Colors.white
+                                            : blackmodecolor),
+                                  ),
+                          ))
                     ],
                   ),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
-                        padding: const EdgeInsets.only(left: 20),
+                        padding: const EdgeInsets.fromLTRB(20, 20, 0, 0),
                         child: Text(
                           "게임 기록",
                           style: TextStyle(
@@ -195,7 +191,7 @@ class _UserProfileState extends State<UserProfile> {
                   ),
                   const Divider(
                     height: 30,
-                    thickness: 3,
+                    thickness: 2,
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),

@@ -60,17 +60,22 @@ class _DictInfoState extends State<DictInfo> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 300),
-                      child: Text("분류: " + datas[widget.index]["category"],
-                          style: TextStyle(
-                              fontSize: 20.0,
-                              color:
-                                  Get.find<BlackModeController>().blackmode ==
-                                          true
-                                      ? Colors.white
-                                      : blackmodecolor,
-                              fontWeight: FontWeight.bold)),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 15, 10, 5),
+                          child: Text("분류: " + datas[widget.index]["category"],
+                              style: TextStyle(
+                                  fontSize: 20.0,
+                                  color:
+                                      Get.find<BlackModeController>().blackmode ==
+                                              true
+                                          ? Colors.white
+                                          : blackmodecolor,
+                                  fontWeight: FontWeight.bold)),
+                        ),
+                      ],
                     ),
                     Column(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -78,7 +83,7 @@ class _DictInfoState extends State<DictInfo> {
                           Padding(
                             padding: const EdgeInsets.all(10.0),
                             child: SizedBox(
-                              height: 200,
+                              height: MediaQuery.of(context).size.height * 0.3,
                               child: Column(
                                 children: [
                                   Text(
@@ -120,20 +125,28 @@ class _DictInfoState extends State<DictInfo> {
                                 : blackmodecolor,
                           ),
                           SizedBox(
-                            height: 380,
+                            height: MediaQuery.of(context).size.height * 0.4,
                             child: Padding(
                               padding: const EdgeInsets.only(top: 30),
                               child: Column(
                                 children: [
-                                  Text("예시",
-                                      style: TextStyle(
-                                          color: Get.find<BlackModeController>()
-                                                      .blackmode ==
-                                                  true
-                                              ? Colors.white
-                                              : blackmodecolor,
-                                          fontSize: 22,
-                                          fontWeight: FontWeight.bold)),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.only(left: 30),
+                                        child: Text("예시",
+                                            style: TextStyle(
+                                                color: Get.find<BlackModeController>()
+                                                            .blackmode ==
+                                                        true
+                                                    ? Colors.white
+                                                    : blackmodecolor,
+                                                fontSize: 22,
+                                                fontWeight: FontWeight.bold)),
+                                      ),
+                                    ],
+                                  ),
                                   SizedBox(
                                     height: 50,
                                   ),

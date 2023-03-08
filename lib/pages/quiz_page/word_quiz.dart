@@ -87,8 +87,8 @@ class _MyWidgetState extends State<NeologismQuiz> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
-                height: MediaQuery.of(context).size.height * 0.4,
-                padding: EdgeInsets.fromLTRB(0.0, 20.0, 15.0, 80.0),
+                height: MediaQuery.of(context).size.height * 0.3,
+                padding: EdgeInsets.fromLTRB(0.0, 20.0, 15.0, 0),
                 child: Column(
                   children: [
                     Column(
@@ -107,14 +107,14 @@ class _MyWidgetState extends State<NeologismQuiz> {
                                             true
                                         ? Colors.white
                                         : Colors.black,
-                                    fontSize: 25),
+                                    fontSize: 18),
                                 textAlign: TextAlign.start,
                               ),
                             ),
                             Text(
                               "남은시간: " + _time,
                               style: TextStyle(
-                                  fontSize: 25,
+                                  fontSize: 18,
                                   fontWeight: FontWeight.bold,
                                   color: time <= 3
                                       ? Colors.red
@@ -154,7 +154,7 @@ class _MyWidgetState extends State<NeologismQuiz> {
                                                 true
                                             ? Colors.white
                                             : Colors.black,
-                                        fontSize: 25))
+                                        fontSize: 18))
                               ],
                             ),
                             Text("맞춘개수: " + "$number_answer",
@@ -164,7 +164,7 @@ class _MyWidgetState extends State<NeologismQuiz> {
                                             true
                                         ? Colors.white
                                         : Colors.black,
-                                    fontSize: 25.0))
+                                    fontSize: 18))
                           ],
                         ),
                       ],
@@ -191,115 +191,120 @@ class _MyWidgetState extends State<NeologismQuiz> {
                     ? Colors.white
                     : Colors.black,
               ),
-              Expanded(
+              Container(
+                height: MediaQuery.of(context).size.height * 0.5,
                 child: ListView.builder(
                     physics: NeverScrollableScrollPhysics(),
                     itemCount: 4,
                     itemBuilder: (context, index) {
-                      return Card(
-                        color: Get.find<BlackModeController>().blackmode == true
-                            ? blackmodecolor
-                            : notblackmodecolor,
-                        elevation: 0.0,
-                        child: Padding(
-                          padding: const EdgeInsets.only(top: 14.0),
-                          child: ListTile(
-                            shape: RoundedRectangleBorder(
-                              side: BorderSide(
-                                  color: answershow == true
-                                      ? datas[order]["options"][index] ==
-                                              datas[order]["answer"]
-                                          ? Colors.greenAccent
-                                          : Colors.red
-                                      : Colors.white,
-                                  width: answershow ? 2.5 : 1),
-                              borderRadius: BorderRadius.circular(15),
+                      return SizedBox(
+                        height: 70,
+                        child: Card(
+                          color: Get.find<BlackModeController>().blackmode == true
+                              ? blackmodecolor
+                              : notblackmodecolor,
+                          elevation: 0.0,
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 5.0),
+                            child: ListTile(
+                              shape: RoundedRectangleBorder(
+                                side: BorderSide(
+                                    color: answershow == true
+                                        ? datas[order]["options"][index] ==
+                                                datas[order]["answer"]
+                                            ? Colors.greenAccent
+                                            : Colors.red
+                                        : Colors.white,
+                                    width: answershow ? 2.5 : 1),
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              tileColor:
+                                  Get.find<BlackModeController>().blackmode == true
+                                      ? blackmodecolor
+                                      : Colors.blue[300],
+                              leading: Text(
+                                (index + 1).toString(),
+                                style: TextStyle(
+                                    fontSize: 20,
+                                    color:
+                                        Get.find<BlackModeController>().blackmode ==
+                                                true
+                                            ? Colors.white
+                                            : blackmodecolor),
+                              ),
+                              trailing: answershow == true
+                                  ? datas[order]["options"][index] ==
+                                          datas[order]["answer"]
+                                      ? Icon(
+                                          Icons.circle,
+                                          color: Colors.greenAccent[400],
+                                        )
+                                      : Icon(
+                                          Icons.dangerous,
+                                          color: Colors.red,
+                                        )
+                                  : null,
+                              title: Text(
+                                datas[order]["options"][index].toString(),
+                                style: TextStyle(
+                                    color:
+                                        Get.find<BlackModeController>().blackmode ==
+                                                true
+                                            ? Colors.white
+                                            : blackmodecolor,
+                                    fontSize: 20),
+                              ),
+                              onTap: () {
+                                if (datas[order]["options"][index] ==
+                                    datas[order]["answer"]) {
+                                  answer = true;
+                                }
+                                if (datas[order]["options"][index] ==
+                                        datas[order]["answer"] &&
+                                    answershow == false) {
+                                  rightSound();
+                                  number_answer++;
+                                } else if (datas[order]["options"][index] !=
+                                        datas[order]["answer"] &&
+                                    answershow == false) {
+                                  wrongSound();
+                                }
+                                showanswer(answer);
+                              },
                             ),
-                            tileColor:
-                                Get.find<BlackModeController>().blackmode == true
-                                    ? blackmodecolor
-                                    : Colors.blue[300],
-                            leading: Text(
-                              (index + 1).toString(),
-                              style: TextStyle(
-                                  fontSize: 20,
-                                  color:
-                                      Get.find<BlackModeController>().blackmode ==
-                                              true
-                                          ? Colors.white
-                                          : blackmodecolor),
-                            ),
-                            trailing: answershow == true
-                                ? datas[order]["options"][index] ==
-                                        datas[order]["answer"]
-                                    ? Icon(
-                                        Icons.circle,
-                                        color: Colors.greenAccent[400],
-                                      )
-                                    : Icon(
-                                        Icons.dangerous,
-                                        color: Colors.red,
-                                      )
-                                : null,
-                            title: Text(
-                              datas[order]["options"][index].toString(),
-                              style: TextStyle(
-                                  color:
-                                      Get.find<BlackModeController>().blackmode ==
-                                              true
-                                          ? Colors.white
-                                          : blackmodecolor,
-                                  fontSize: 20),
-                            ),
-                            onTap: () {
-                              if (datas[order]["options"][index] ==
-                                  datas[order]["answer"]) {
-                                answer = true;
-                              }
-                              if (datas[order]["options"][index] ==
-                                      datas[order]["answer"] &&
-                                  answershow == false) {
-                                rightSound();
-                                number_answer++;
-                              } else if (datas[order]["options"][index] !=
-                                      datas[order]["answer"] &&
-                                  answershow == false) {
-                                wrongSound();
-                              }
-                              showanswer(answer);
-                            },
                           ),
                         ),
                       );
                     }),
               ),
               answershow == true
-                  ? Padding(
-                      padding: const EdgeInsets.only(bottom: 30.0),
-                      child: SizedBox(
-                        width: 100,
-                        child: TextButton(
-                            style: TextButton.styleFrom(
-                                backgroundColor: Colors.blue[400],
-                                shape: RoundedRectangleBorder(
-                                    side: BorderSide(
-                                        color: Colors.white, width: 1.0),
-                                    borderRadius: BorderRadius.circular(15.0))),
-                            onPressed: () {
-                              if (idx < 10) {
-                                setState(() {
-                                  nextpage();
-                                });
-                              } else {
-                                endpage(context, '/word', "wordquiz");
-                              }
-                            },
-                            child: Text(
-                              "다음",
-                              style: TextStyle(color: Colors.white, fontSize: 20),
-                            )),
-                      ))
-                  : SizedBox()
+                  ? SizedBox(
+                    height: 35,
+                    width: 100,
+                    child: TextButton(
+                        style: TextButton.styleFrom(
+                            backgroundColor: Colors.blue[400],
+                            shape: RoundedRectangleBorder(
+                                side: BorderSide(
+                                    color: Colors.white, width: 1.0),
+                                borderRadius: BorderRadius.circular(15.0))),
+                        onPressed: () {
+                          if (idx < 10) {
+                            setState(() {
+                              nextpage();
+                            });
+                          } else {
+                            endpage(context, '/word', "wordquiz");
+                          }
+                        },
+                        child: Text(
+                          "다음",
+                          style: TextStyle(color: Colors.white, fontSize: 15),
+                        )),
+                  )
+                  : SizedBox(
+                    height: 30,
+                  )
             ],
           ),
         ),
