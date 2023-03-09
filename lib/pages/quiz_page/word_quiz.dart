@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:neologism/getx/blackmode.dart';
+import 'package:neologism/neo_function/bgm.dart';
 import 'package:neologism/neo_function/quiz_func.dart';
 import 'package:neologism/pages/startpage.dart';
 import 'package:neologism/datas/quizdata.dart';
@@ -57,6 +58,7 @@ class _MyWidgetState extends State<NeologismQuiz> {
         }
         _time = time.toString();
         if (time <= 0) {
+          timeOverSound();
           showanswer(answer);
         }
       });
@@ -112,7 +114,7 @@ class _MyWidgetState extends State<NeologismQuiz> {
                               ),
                             ),
                             Text(
-                              "남은시간: " + _time,
+                              "남은시간: $_time",
                               style: TextStyle(
                                   fontSize: 18,
                                   fontWeight: FontWeight.bold,
@@ -157,7 +159,7 @@ class _MyWidgetState extends State<NeologismQuiz> {
                                         fontSize: 18))
                               ],
                             ),
-                            Text("맞춘개수: " + "$number_answer",
+                            Text("맞춘개수: $number_answer",
                                 style: TextStyle(
                                     color: Get.find<BlackModeController>()
                                                 .blackmode ==
@@ -192,9 +194,9 @@ class _MyWidgetState extends State<NeologismQuiz> {
                     : Colors.black,
               ),
               Container(
-                height: MediaQuery.of(context).size.height * 0.5,
+                height: MediaQuery.of(context).size.height * 0.43,
                 child: ListView.builder(
-                    physics: NeverScrollableScrollPhysics(),
+                    physics: const NeverScrollableScrollPhysics(),
                     itemCount: 4,
                     itemBuilder: (context, index) {
                       return SizedBox(
@@ -239,7 +241,7 @@ class _MyWidgetState extends State<NeologismQuiz> {
                                           Icons.circle,
                                           color: Colors.greenAccent[400],
                                         )
-                                      : Icon(
+                                      : const Icon(
                                           Icons.dangerous,
                                           color: Colors.red,
                                         )
@@ -279,13 +281,13 @@ class _MyWidgetState extends State<NeologismQuiz> {
               ),
               answershow == true
                   ? SizedBox(
-                    height: 35,
+                    height: 40,
                     width: 100,
                     child: TextButton(
                         style: TextButton.styleFrom(
                             backgroundColor: Colors.blue[400],
                             shape: RoundedRectangleBorder(
-                                side: BorderSide(
+                                side: const BorderSide(
                                     color: Colors.white, width: 1.0),
                                 borderRadius: BorderRadius.circular(15.0))),
                         onPressed: () {
@@ -294,15 +296,16 @@ class _MyWidgetState extends State<NeologismQuiz> {
                               nextpage();
                             });
                           } else {
+                            gameEndSound();
                             endpage(context, '/word', "wordquiz");
                           }
                         },
-                        child: Text(
+                        child: const Text(
                           "다음",
-                          style: TextStyle(color: Colors.white, fontSize: 15),
+                          style: TextStyle(color: Colors.white, fontSize: 18),
                         )),
                   )
-                  : SizedBox(
+                  : const SizedBox(
                     height: 30,
                   )
             ],

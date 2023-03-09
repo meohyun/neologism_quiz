@@ -83,6 +83,8 @@ flutter:
     - assets/user_image2.png
     - assets/correct.mp3
     - assets/wrong.mp3
+    - assets/game_end.mp3
+    - assets/timeover.mp3
     - assets/userimage3.png
 
   # An image asset can refer to one or more resolution-specific "variants", see

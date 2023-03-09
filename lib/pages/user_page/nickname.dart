@@ -72,6 +72,7 @@ class _UpdateNicknameState extends State<UpdateNickname> {
           FocusScope.of(context).unfocus();
         },
         child: Scaffold(
+          resizeToAvoidBottomInset: false,
           appBar: AppBar(
             title: Text(
               "프로필 수정",
@@ -81,7 +82,7 @@ class _UpdateNicknameState extends State<UpdateNickname> {
             ),
             leading: const SizedBox(),
             backgroundColor: blackmode ? blackmodecolor : notblackmodecolor,
-            elevation: 0.0,
+            elevation: 0.0,    
           ),
           body: WillPopScope(
             onWillPop: (){

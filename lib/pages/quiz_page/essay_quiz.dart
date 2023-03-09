@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:neologism/getx/blackmode.dart';
+import 'package:neologism/neo_function/bgm.dart';
 import 'package:neologism/neo_function/essay_func.dart';
 import 'package:neologism/neo_function/quiz_func.dart';
 import 'package:neologism/pages/quiz_page/word_quiz.dart';
@@ -59,13 +60,14 @@ class _EssayQuizState extends State<EssayQuiz> {
     super.initState();
     _essaytimer?.cancel();
     setinit();
-    _essaytimer = Timer.periodic(Duration(seconds: 1), (timer) {
+    _essaytimer = Timer.periodic(const Duration(seconds: 1), (timer) {
       setState(() {
         if (essay_running) {
           essayTime--;
         }
         _essayTime = essayTime.toString();
         if (essayTime <= 0) {
+          timeOverSound();
           timeout();
         }
       });
@@ -104,8 +106,8 @@ class _EssayQuizState extends State<EssayQuiz> {
             },
             child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
               Container(
-                height: MediaQuery.of(context).size.height * 0.392,
-                padding: EdgeInsets.fromLTRB(0.0, 30.0, 15.0, 80.0),
+                height: MediaQuery.of(context).size.height * 0.4,
+                padding: const EdgeInsets.fromLTRB(0.0, 30.0, 15.0, 0),
                 child: Column(children: [
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -123,13 +125,13 @@ class _EssayQuizState extends State<EssayQuiz> {
                                               true
                                           ? Colors.white
                                           : Colors.black,
-                                  fontSize: 25),
+                                  fontSize: 20),
                               textAlign: TextAlign.start,
                             ),
                             Text(
-                              "남은시간: " + _essayTime,
+                              "남은시간: $_essayTime" ,
                               style: TextStyle(
-                                  fontSize: 25,
+                                  fontSize: 20,
                                   fontWeight: FontWeight.bold,
                                   color: essayTime <= 3
                                       ? Colors.red
@@ -170,23 +172,23 @@ class _EssayQuizState extends State<EssayQuiz> {
                                               true
                                           ? Colors.white
                                           : Colors.black,
-                                      fontSize: 25))
+                                      fontSize: 20))
                             ],
                           ),
-                          Text("맞춘개수: " + "$number_answer",
+                          Text("맞춘개수: $number_answer",
                               style: TextStyle(
                                   color:
                                       Get.find<BlackModeController>().blackmode ==
                                               true
                                           ? Colors.white
                                           : Colors.black,
-                                  fontSize: 25))
+                                  fontSize: 20))
                         ],
                       ),
                     ],
                   ),
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(40.0, 40.0, 0.0, 0.0),
+                    padding: const EdgeInsets.fromLTRB(40.0, 30.0, 0.0, 0.0),
                     child: Text(
                       sen_data[order]["question"].toString(),
                       style: TextStyle(
@@ -197,49 +199,47 @@ class _EssayQuizState extends State<EssayQuiz> {
                           fontWeight: FontWeight.bold),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 6.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        for (int i = 0; i < spellingnum(); i++)
-                          Padding(
-                            padding:
-                                const EdgeInsets.fromLTRB(5.0, 30.0, 5.0, 0.0),
-                            child: SizedBox(
-                              width: 45,
-                              height: 45,
-                              child: DecoratedBox(
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: Colors.white,
-                                    width: 25,
-                                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      for (int i = 0; i < spellingnum(); i++)
+                        Padding(
+                          padding:
+                              const EdgeInsets.fromLTRB(5.0, 30.0, 5.0, 0.0),
+                          child: SizedBox(
+                            width: 45,
+                            height: 45,
+                            child: DecoratedBox(
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: Colors.white,
+                                  width: 25,
                                 ),
-                                child: Center(
-                                  child: Text(
-                                    i == word_num ? wordhint : "",
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 25,
-                                        fontWeight: FontWeight.bold,
-                                        fontFamily: 'MapleStory'),
-                                  ),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  i == word_num ? wordhint : "",
+                                  style: const TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 25,
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: 'MapleStory'),
                                 ),
                               ),
                             ),
-                          )
-                      ],
-                    ),
+                          ),
+                        )
+                    ],
                   )
                 ]),
               ),
+              const SizedBox(height: 10,),
               Divider(
-                height: 40,
+                height: 30,
                 color: Get.find<BlackModeController>().blackmode == true
                     ? Colors.white
                     : Colors.black,
-              ),
+              ),           
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 25.0),
                 child: TextField(
@@ -270,11 +270,11 @@ class _EssayQuizState extends State<EssayQuiz> {
                         hintText: "정답을 입력하세요.",
                         hintStyle:
                             TextStyle(fontSize: 20, color: Colors.grey[500]),
-                        focusedBorder: OutlineInputBorder(
+                        focusedBorder: const OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.greenAccent)),
-                        enabledBorder: OutlineInputBorder(
+                        enabledBorder: const OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.white)),
-                        disabledBorder: OutlineInputBorder(
+                        disabledBorder: const OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.grey)))),
               ),
               essay_answershow == true
@@ -290,7 +290,7 @@ class _EssayQuizState extends State<EssayQuiz> {
                                     style: TextButton.styleFrom(
                                         backgroundColor: Colors.blue[400],
                                         shape: RoundedRectangleBorder(
-                                            side: BorderSide(
+                                            side: const BorderSide(
                                                 color: Colors.white, width: 1.0),
                                             borderRadius:
                                                 BorderRadius.circular(15.0))),
@@ -301,12 +301,13 @@ class _EssayQuizState extends State<EssayQuiz> {
                                           textcontroller.clear();
                                           typetext = true;
                                         } else {
+                                          gameEndSound();
                                           endpage(context, '/sentence',
                                               'sentencequiz');
                                         }
                                       });
                                     },
-                                    child: Text(
+                                    child: const Text(
                                       "다음",
                                       style: TextStyle(
                                           color: Colors.white, fontSize: 20.0),

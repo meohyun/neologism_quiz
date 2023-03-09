@@ -1,16 +1,20 @@
 import 'package:neologism/datas/quizdata.dart';
+import 'package:neologism/neo_function/bgm.dart';
 import 'package:neologism/neo_function/quiz_func.dart';
 import 'package:neologism/datas/sentence_data.dart';
 import 'package:neologism/pages/quiz_page/essay_quiz.dart';
 
 isanswer(value) {
   if (value.toString().toUpperCase() == sen_data[order]["answer"].toString()) {
+    rightSound();
     essay_running = false;
     answer = true;
     number_answer++;
     hintblocked = true;
     typetext = false;
+    
   } else {
+    wrongSound();
     answer_chance--;
   }
 }
