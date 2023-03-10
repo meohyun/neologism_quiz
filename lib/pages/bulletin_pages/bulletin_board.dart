@@ -60,7 +60,7 @@ class _BulletinBoardState extends State<BulletinBoard> {
                     onPressed: () {
                       Navigator.pushNamed(context, '/');
                     },
-                    icon: Icon(Icons.arrow_back)),
+                    icon: const Icon(Icons.arrow_back)),
                 backgroundColor: Get.find<BlackModeController>().blackmode
                     ? blackmodecolor
                     : notblackmodecolor,
@@ -157,7 +157,6 @@ class Blluettin extends StatelessWidget {
                       if (postDocs[index]["likes"][userid] != null) {
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => BulletinPost(
-                                  index: index,
                                   name: postDocs[index]["name"],
                                   content: postDocs[index]["content"],
                                   datetime: d24,

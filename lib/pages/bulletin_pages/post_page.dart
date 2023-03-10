@@ -20,7 +20,6 @@ bool disLiked = false;
 class BulletinPost extends StatefulWidget {
   const BulletinPost({
     super.key,
-    this.index,
     this.name,
     this.content,
     this.datetime,
@@ -33,7 +32,6 @@ class BulletinPost extends StatefulWidget {
     this.userdislike,
   });
 
-  final index;
   final name;
   final content;
   final datetime;
@@ -62,7 +60,7 @@ class _BulletinPostState extends State<BulletinPost> {
         .get()
         .then((val) {
       final datas = val.data() as Map<String, dynamic>;
-      for (int i = 0; i < datas["chats"].length; i++) {
+      for (int i = 0; i < datas["chats"].length; i++){
         if (datas["chats"][i]["user"] == userid) {
           List<dynamic> exchat = [
             {
@@ -109,7 +107,7 @@ class _BulletinPostState extends State<BulletinPost> {
               .doc(widget.docId)
               .update({"chats": FieldValue.arrayRemove(exchat)});
 
-          List<dynamic> chat = [
+          List<dynamic> chats = [
             {
               "content": datas["chats"][i]["content"],
               "time": datas["chats"][i]["time"],
@@ -122,15 +120,14 @@ class _BulletinPostState extends State<BulletinPost> {
           FirebaseFirestore.instance
               .collection('post')
               .doc(widget.docId)
-              .update({"chats": FieldValue.arrayUnion(chat)});
+              .update({"chats": FieldValue.arrayUnion(chats)});
         }
       }
     });
   }
 
   @override
-  void initState() {
-    updateChatUser();
+  void initState() {   
     Get.put(chatcontroller());
     super.initState();
     Future.delayed(Duration.zero, () {
@@ -140,6 +137,7 @@ class _BulletinPostState extends State<BulletinPost> {
         disLiked = widget.userdislike;
         dislikeCount = widget.dislike;
       });
+      updateChatUser();
     });
     Get.find<chatcontroller>().chatmodified.value = false;
   }
@@ -236,7 +234,7 @@ class _BulletinPostState extends State<BulletinPost> {
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  icon: Icon(Icons.arrow_back)),
+                  icon: const Icon(Icons.arrow_back)),
               title: Text("게시판",
                   style: TextStyle(
                     color: blackcontroller.blackmode

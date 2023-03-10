@@ -279,7 +279,7 @@ class _ChatUpdateBoxState extends State<ChatUpdateBox> {
                 },
                 // when enterkey pressed
                 onFieldSubmitted: (value) {
-                  updateChatController.text = value as String;
+                  updateChatController.text = value;
                   if (_updatekey.currentState!.validate()) {
                     updatechat(widget.docs);
                     Get.find<chatcontroller>().chatmodify();
@@ -363,9 +363,9 @@ class _ChatBoxState extends State<ChatBox> {
             final docs = snapshot.data!;
             return SizedBox(
               width: MediaQuery.of(context).size.width * 0.85,
-              height: MediaQuery.of(context).size.height,
+              height: docs['chats'].length.toDouble() * 170,
               child: ListView.builder(
-                physics: const ClampingScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 itemCount: docs['chats'].length,
                 itemBuilder: (context, index) {
                   final timestamp = docs['chats'][index]['time'];
