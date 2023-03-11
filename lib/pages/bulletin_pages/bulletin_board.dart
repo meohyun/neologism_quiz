@@ -3,9 +3,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:neologism/getx/blackmode.dart';
+import 'package:neologism/neo_function/bulletin_func.dart';
 import 'package:neologism/pages/bulletin_pages/post_page.dart';
 import 'package:neologism/pages/startpage.dart';
 import 'package:intl/intl.dart';
+import 'package:neologism/search/bulletin_search.dart';
+import 'package:neologism/widgets/bulletin.dart';
 
 class BulletinBoard extends StatefulWidget {
   const BulletinBoard({super.key});
@@ -43,6 +46,8 @@ class _BulletinBoardState extends State<BulletinBoard> {
       });
     }
   }
+
+
 
   @override
   void initState() {
@@ -87,7 +92,11 @@ class _BulletinBoardState extends State<BulletinBoard> {
                                 : blackmodecolor)),
                   ),
                   IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context){
+                          return const BulletinSearch();
+                        }));
+                      },
                       icon: Icon(
                         Icons.search,
                         color: Get.find<BlackModeController>().blackmode
@@ -134,176 +143,7 @@ class Blluettin extends StatelessWidget {
             return const Center(child: CircularProgressIndicator());
           }
           final postDocs = snapshot.data!.docs;
-          return ListView.builder(
-              itemCount: postDocs.length,
-              itemBuilder: ((context, index) {
-                final timestamp = postDocs[index]['time'];
-                DateTime dt = timestamp.toDate();
-                final d24 = DateFormat('yy/MM/dd HH:mm').format(dt);
-                return Padding(
-                  padding: const EdgeInsets.only(bottom: 1),
-                  child: GestureDetector(
-                    onTap: () {
-                      if (postDocs[index]["likes"][userid] == null &&
-                          postDocs[index]['dislikes'][userid] == null) {
-                        FirebaseFirestore.instance
-                            .collection('post')
-                            .doc(postDocs[index].id)
-                            .update({
-                          'likes.$userid': false,
-                          'dislikes.$userid': false
-                        });
-                      }
-                      if (postDocs[index]["likes"][userid] != null) {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => BulletinPost(
-                                  name: postDocs[index]["name"],
-                                  content: postDocs[index]["content"],
-                                  datetime: d24,
-                                  like: postDocs[index]["like"],
-                                  dislike: postDocs[index]["dislike"],
-                                  admin: postDocs[index]["admin"]
-                                      ["usernickname"],
-                                  chats: postDocs[index]["chats"],
-                                  docId: postDocs[index].id,
-                                  userlike: postDocs[index]["likes"][userid],
-                                  userdislike: postDocs[index]["dislikes"]
-                                      [userid],
-                                )));
-                      }
-                    },
-                    child: GetBuilder(
-                        init: BlackModeController(),
-                        builder: (context) {
-                          return Container(
-                            height: 100,
-                            decoration: BoxDecoration(
-                                color: Get.find<BlackModeController>().blackmode
-                                    ? blackmodecolor
-                                    : notblackmodecolor,
-                                border: Border(
-                                  bottom:
-                                      BorderSide(width: 1, color: Colors.grey),
-                                )),
-                            child: Padding(
-                              padding: const EdgeInsets.only(left: 8),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          postDocs[index]["name"] +
-                                              "  [${postDocs[index]["chats"].length}]",
-                                          style: TextStyle(
-                                              fontSize: 20,
-                                              color: Get.find<
-                                                          BlackModeController>()
-                                                      .blackmode
-                                                  ? Colors.white
-                                                  : blackmodecolor),
-                                        ),
-                                        Text(
-                                            postDocs[index]["admin"]
-                                                    ["usernickname"]
-                                                .toString(),
-                                            style: TextStyle(
-                                                fontSize: 16,
-                                                color: Get.find<
-                                                            BlackModeController>()
-                                                        .blackmode
-                                                    ? Colors.white
-                                                    : blackmodecolor))
-                                      ],
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Opacity(
-                                          opacity: 0.5,
-                                          child: Text(
-                                            d24,
-                                            style: TextStyle(
-                                                fontSize: 18,
-                                                color: Get.find<
-                                                            BlackModeController>()
-                                                        .blackmode
-                                                    ? Colors.white
-                                                    : blackmodecolor),
-                                          ),
-                                        ),
-                                        Opacity(
-                                          opacity: 0.5,
-                                          child: Row(
-                                            children: [
-                                              Icon(
-                                                Icons.thumb_up,
-                                                size: 20,
-                                                color: Get.find<
-                                                            BlackModeController>()
-                                                        .blackmode
-                                                    ? Colors.white
-                                                    : blackmodecolor,
-                                              ),
-                                              SizedBox(
-                                                width: 5,
-                                              ),
-                                              Text(
-                                                  postDocs[index]["like"]
-                                                      .toString(),
-                                                  style: TextStyle(
-                                                      color: Get.find<
-                                                                  BlackModeController>()
-                                                              .blackmode
-                                                          ? Colors.white
-                                                          : blackmodecolor)),
-                                              SizedBox(
-                                                width: 5,
-                                              ),
-                                              Icon(
-                                                Icons.thumb_down,
-                                                size: 20,
-                                                color: Get.find<
-                                                            BlackModeController>()
-                                                        .blackmode
-                                                    ? Colors.white
-                                                    : blackmodecolor,
-                                              ),
-                                              SizedBox(
-                                                width: 5,
-                                              ),
-                                              Text(
-                                                  postDocs[index]["dislike"]
-                                                      .toString(),
-                                                  style: TextStyle(
-                                                      color: Get.find<
-                                                                  BlackModeController>()
-                                                              .blackmode
-                                                          ? Colors.white
-                                                          : blackmodecolor)),
-                                            ],
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-                          );
-                        }),
-                  ),
-                );
-              }));
+          return BulletinTile(docs: postDocs);
         });
   }
 }

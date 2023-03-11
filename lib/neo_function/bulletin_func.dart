@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_connect/http/src/utils/utils.dart';
@@ -41,7 +43,7 @@ void deleteDialog(context, delete) {
                               delete();
                               Navigator.pushNamed(context, '/bulletin');
                             },
-                            child: Text(
+                            child: const Text(
                               "예",
                               style: TextStyle(fontSize: 25.0),
                             )),
@@ -49,7 +51,7 @@ void deleteDialog(context, delete) {
                             onPressed: () {
                               Navigator.pop(context);
                             },
-                            child: Text(
+                            child: const Text(
                               "아니요",
                               style: TextStyle(fontSize: 25.0),
                             ))
@@ -101,7 +103,7 @@ deleteChatDialog(context, delete, docs) {
                             delete(docs);
                             Navigator.pop(context);
                           },
-                          child: Text(
+                          child: const Text(
                             "예",
                             style: TextStyle(fontSize: 25.0),
                           )),
@@ -109,7 +111,7 @@ deleteChatDialog(context, delete, docs) {
                           onPressed: () {
                             Navigator.pop(context);
                           },
-                          child: Text(
+                          child: const Text(
                             "아니요",
                             style: TextStyle(fontSize: 25.0),
                           ))
@@ -122,3 +124,4 @@ deleteChatDialog(context, delete, docs) {
         );
       });
 }
+

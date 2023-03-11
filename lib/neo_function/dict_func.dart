@@ -15,7 +15,7 @@ class CustomSearchDelegate extends SearchDelegate {
         onPressed: () {
           close(context, null);
         },
-        icon: Icon(Icons.arrow_back)));
+        icon: const Icon(Icons.arrow_back)));
   }
 
   @override
@@ -143,7 +143,7 @@ class CustomSearchDelegate extends SearchDelegate {
           onPressed: () {
             query = '';
           },
-          icon: Icon(Icons.clear))
+          icon: const Icon(Icons.clear))
     ];
   }
 }

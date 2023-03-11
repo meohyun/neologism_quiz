@@ -52,15 +52,15 @@ class _BulletinPostState extends State<BulletinPost> {
 
   final userid = FirebaseAuth.instance.currentUser!.uid;
   final username = FirebaseAuth.instance.currentUser!.displayName;
-
+  
   updateChatUser() {
     FirebaseFirestore.instance
         .collection('post')
         .doc(widget.docId)
         .get()
         .then((val) {
-      final datas = val.data() as Map<String, dynamic>;
-      for (int i = 0; i < datas["chats"].length; i++){
+      final datas = val.data();
+      for (int i = 0; i < datas!["chats"].length; i++){
         if (datas["chats"][i]["user"] == userid) {
           List<dynamic> exchat = [
             {
@@ -128,6 +128,7 @@ class _BulletinPostState extends State<BulletinPost> {
 
   @override
   void initState() {   
+    updateChatUser();
     Get.put(chatcontroller());
     super.initState();
     Future.delayed(Duration.zero, () {
@@ -136,8 +137,8 @@ class _BulletinPostState extends State<BulletinPost> {
         isLiked = widget.userlike;
         disLiked = widget.userdislike;
         dislikeCount = widget.dislike;
+        
       });
-      updateChatUser();
     });
     Get.find<chatcontroller>().chatmodified.value = false;
   }
