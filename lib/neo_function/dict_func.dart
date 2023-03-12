@@ -45,7 +45,7 @@ class CustomSearchDelegate extends SearchDelegate {
                       : notblackmodecolor,
                   child: ListTile(
                     shape: RoundedRectangleBorder(
-                      side: BorderSide(color: Colors.white),
+                      side: const BorderSide(color: Colors.white),
                       borderRadius: BorderRadius.circular(15),
                     ),
                     tileColor: Get.find<BlackModeController>().blackmode == true
