@@ -62,7 +62,7 @@ class BulletinTile extends StatelessWidget {
                                 color: Get.find<BlackModeController>().blackmode
                                     ? blackmodecolor
                                     : notblackmodecolor,
-                                border: Border(
+                                border: const Border(
                                   bottom:
                                       BorderSide(width: 1, color: Colors.grey),
                                 )),
@@ -135,7 +135,7 @@ class BulletinTile extends StatelessWidget {
                                                     ? Colors.white
                                                     : blackmodecolor,
                                               ),
-                                              SizedBox(
+                                              const SizedBox(
                                                 width: 5,
                                               ),
                                               Text(
@@ -147,7 +147,7 @@ class BulletinTile extends StatelessWidget {
                                                               .blackmode
                                                           ? Colors.white
                                                           : blackmodecolor)),
-                                              SizedBox(
+                                              const SizedBox(
                                                 width: 5,
                                               ),
                                               Icon(
@@ -159,7 +159,7 @@ class BulletinTile extends StatelessWidget {
                                                     ? Colors.white
                                                     : blackmodecolor,
                                               ),
-                                              SizedBox(
+                                              const SizedBox(
                                                 width: 5,
                                               ),
                                               Text(

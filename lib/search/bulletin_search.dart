@@ -20,30 +20,43 @@ class _BulletinSearchState extends State<BulletinSearch> {
     final blackmode = Get.find<BlackModeController>().blackmode;
     return GetBuilder(
       init: BlackModeController(),
-      builder:(_)=> Scaffold(
+      builder: (_) => Scaffold(
         resizeToAvoidBottomInset: false,
         backgroundColor: blackmode ? blackmodecolor : notblackmodecolor,
         appBar: AppBar(
-          backgroundColor: blackmode ? blackmodecolor : notblackmodecolor ,
+          backgroundColor: blackmode ? blackmodecolor : notblackmodecolor,
           title: Card(
             child: TextField(
               decoration: const InputDecoration(
                   prefixIcon: Icon(Icons.search), hintText: "검색어를 입력해주세요."),
               onChanged: (value) {
-                name = value;
+                setState(() {
+                  name = value;
+                });
               },
+      
             ),
           ),
         ),
         body: StreamBuilder<QuerySnapshot>(
-            stream: FirebaseFirestore.instance.collection('post').orderBy('time', descending: true).snapshots(),
+            stream: FirebaseFirestore.instance.collection('post').snapshots(),
             builder: (context, snapshots) {
-              if (snapshots.connectionState == ConnectionState.waiting){
-                return const Center(
-                      child: CircularProgressIndicator());
+              if (snapshots.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
               }
-              var data = snapshots.data!.docs;
-              return BulletinTile(docs: data,);                            
+              return ListView.builder(
+                itemCount: snapshots.data!.docs.length,
+                itemBuilder: ((context, index) {
+                final datas = snapshots.data!.docs[index].data() as Map<String,dynamic>;
+                if (name.isEmpty){
+                  return Container();
+                }
+                   
+                  return ListTile(
+                    title: Text(datas['name'].toString()),
+                  );
+                          
+              }));
             }),
       ),
     );

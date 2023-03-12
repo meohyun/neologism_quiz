@@ -55,8 +55,8 @@ class _NeologismDictState extends State<NeologismDict> {
                   showSearch(
                       context: context, delegate: CustomSearchDelegate());
                 },
-                icon: Icon(Icons.search)),
-            SizedBox(
+                icon: const Icon(Icons.search)),
+            const SizedBox(
               width: 10,
             ),
           ],
