@@ -79,27 +79,33 @@ class _BulletinSearchState extends State<BulletinSearch> {
                               );
                             }));
                           },
-                          child: SizedBox(
-                            height: 80,
-                            child: Row(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.fromLTRB(12,10, 0, 5),
-                                  child: Text(
-                                    datas[index]["name"],
-                                    style: TextStyle(
-                                        fontSize: 20,
-                                        color: blackmode
-                                            ? Colors.white
-                                            : blackmodecolor),
-                                  ),
-                                ),
-                                const Divider(
-                                  height: 30,
-                                  thickness: 5,
-                                )
-                              ],
+                          child: ListTile(
+                            title: Text(
+                              datas[index]["name"],
+                              style: TextStyle(
+                                  color:
+                                      blackmode ? Colors.white : Colors.black,
+                                  fontSize: 18),
                             ),
+                            subtitle: Opacity(
+                              opacity: 0.5,
+                              child: Text(
+                                datas[index]["admin"]["usernickname"],
+                                style: TextStyle(
+                                    color:
+                                        blackmode ? Colors.white : Colors.black,
+                                    fontSize: 12),
+                              ),
+                            ),
+                            trailing: Opacity(
+                              opacity: 0.5,
+                              child: Text(
+                                  d24,
+                                  style: TextStyle(
+                                      color:
+                                          blackmode ? Colors.white : Colors.black,
+                                      fontSize: 12),),
+                            )
                           ));
                     }
                     return Container();
