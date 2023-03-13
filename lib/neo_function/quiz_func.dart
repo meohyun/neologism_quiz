@@ -88,7 +88,7 @@ endpage(context, page, String quiztype) {
                                   ? Colors.white
                                   : Colors.black),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 30,
                     ),
                     Row(
@@ -102,9 +102,9 @@ endpage(context, page, String quiztype) {
                               textcontroller.text = "";
                               _timer?.cancel();
                             },
-                            child: Text("홈으로",
+                            child: const Text("홈으로",
                                 style: TextStyle(color: Colors.white))),
-                        SizedBox(
+                       const  SizedBox(
                           width: 50,
                         ),
                         TextButton(
@@ -114,7 +114,7 @@ endpage(context, page, String quiztype) {
                               Navigator.pushNamed(context, page);
                               textcontroller.text = "";
                             },
-                            child: Text(
+                            child: const  Text(
                               "다시하기",
                               style: TextStyle(color: Colors.white),
                             )),
@@ -164,7 +164,7 @@ quizexit(context) {
                                   : Colors.black),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 50,
                   ),
                   Row(
@@ -180,11 +180,11 @@ quizexit(context) {
                             is_running = false;
                             descblocked = true;
                           },
-                          child: Text(
+                          child: const Text(
                             "나가기",
                             style: TextStyle(color: Colors.white),
                           )),
-                      SizedBox(
+                      const SizedBox(
                         width: 30,
                       ),
                       TextButton(
@@ -193,7 +193,7 @@ quizexit(context) {
                           onPressed: () {
                             Navigator.pop(context);
                           },
-                          child: Text("취소",
+                          child: const Text("취소",
                               style: TextStyle(color: Colors.white))),
                     ],
                   ),
