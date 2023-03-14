@@ -48,7 +48,7 @@ timeout() {
 }
 
 class EssayQuiz extends StatefulWidget {
-  EssayQuiz({super.key});
+  const EssayQuiz({super.key});
 
   @override
   State<EssayQuiz> createState() => _EssayQuizState();
@@ -321,16 +321,14 @@ class _EssayQuizState extends State<EssayQuiz> {
                                     child: RichText(
                                       text: TextSpan(children: [
                                         TextSpan(
-                                          text: "\"" +
-                                              sen_data[order]["answer"] +
-                                              "\"",
-                                          style: TextStyle(
+                                          text: "\"${sen_data[order]["answer"]}\"",
+                                          style: const TextStyle(
                                               color: Colors.blue,
                                               fontSize: 22,
                                               fontWeight: FontWeight.bold,
                                               fontFamily: "MapleStory"),
                                         ),
-                                        TextSpan(text: "   "),
+                                        const TextSpan(text: "   "),
                                         TextSpan(
                                           text: "정답입니다!",
                                           style: TextStyle(
@@ -375,7 +373,7 @@ class _EssayQuizState extends State<EssayQuiz> {
                                         style: TextButton.styleFrom(
                                             backgroundColor: Colors.blue[400],
                                             shape: RoundedRectangleBorder(
-                                                side: BorderSide(
+                                                side: const BorderSide(
                                                     color: Colors.white,
                                                     width: 1.0),
                                                 borderRadius:
@@ -392,7 +390,7 @@ class _EssayQuizState extends State<EssayQuiz> {
                                             }
                                           });
                                         },
-                                        child: Text(
+                                        child: const Text(
                                           "다음",
                                           style: TextStyle(
                                               color: Colors.white,
@@ -419,8 +417,8 @@ class _EssayQuizState extends State<EssayQuiz> {
                                                     fontFamily: 'MapleStory'),
                                                 children: <TextSpan>[
                                               TextSpan(
-                                                  text: "\"$ans" + "\"",
-                                                  style: TextStyle(
+                                                  text: "\"" + ans + "\"",
+                                                  style: const TextStyle(
                                                       color: Colors.blue,
                                                       fontFamily: 'MapleStory')),
                                               TextSpan(
@@ -471,7 +469,7 @@ class _EssayQuizState extends State<EssayQuiz> {
                                       children: <TextSpan>[
                                     TextSpan(
                                         text: "$answer_chance",
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                             color: Colors.blue,
                                             fontFamily: 'MapleStory')),
                                     TextSpan(
@@ -487,7 +485,7 @@ class _EssayQuizState extends State<EssayQuiz> {
                                             fontFamily: 'MapleStory'))
                                   ])),
                             )
-                  : SizedBox()
+                  : const SizedBox()
             ]),
           ),
         ),

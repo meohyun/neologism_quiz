@@ -80,33 +80,41 @@ class _BulletinSearchState extends State<BulletinSearch> {
                             }));
                           },
                           child: ListTile(
-                            title: Text(
-                              datas[index]["name"],
-                              style: TextStyle(
-                                  color:
-                                      blackmode ? Colors.white : Colors.black,
-                                  fontSize: 18),
-                            ),
-                            subtitle: Opacity(
-                              opacity: 0.5,
-                              child: Text(
-                                datas[index]["admin"]["usernickname"],
+                              shape: Border(
+                                  bottom: BorderSide(
+                                      width: 1,
+                                      color: blackmode
+                                          ? Colors.white
+                                          : Colors.grey)),
+                              title: Text(
+                                datas[index]["name"],
                                 style: TextStyle(
                                     color:
                                         blackmode ? Colors.white : Colors.black,
-                                    fontSize: 12),
+                                    fontSize: 18),
                               ),
-                            ),
-                            trailing: Opacity(
-                              opacity: 0.5,
-                              child: Text(
+                              subtitle: Opacity(
+                                opacity: 0.5,
+                                child: Text(
+                                  datas[index]["admin"]["usernickname"],
+                                  style: TextStyle(
+                                      color: blackmode
+                                          ? Colors.white
+                                          : Colors.black,
+                                      fontSize: 12),
+                                ),
+                              ),
+                              trailing: Opacity(
+                                opacity: 0.5,
+                                child: Text(
                                   d24,
                                   style: TextStyle(
-                                      color:
-                                          blackmode ? Colors.white : Colors.black,
-                                      fontSize: 12),),
-                            )
-                          ));
+                                      color: blackmode
+                                          ? Colors.white
+                                          : Colors.black,
+                                      fontSize: 12),
+                                ),
+                              )));
                     }
                     return Container();
                   }));

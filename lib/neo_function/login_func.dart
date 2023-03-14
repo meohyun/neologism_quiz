@@ -40,7 +40,7 @@ void logout(context) {
                               FirebaseAuth.instance.signOut();
                               Navigator.pop(context);
                             },
-                            child: Text(
+                            child: const Text(
                               "예",
                               style: TextStyle(fontSize: 25.0),
                             )),
@@ -48,7 +48,7 @@ void logout(context) {
                             onPressed: () {
                               Navigator.pop(context);
                             },
-                            child: Text(
+                            child: const Text(
                               "아니요",
                               style: TextStyle(fontSize: 25.0),
                             ))
