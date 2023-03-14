@@ -11,6 +11,7 @@ rightSound() async {
     return pool.load(soundData);
   });
   pool.play(soundId);
+
 }
 
 wrongSound() async {
@@ -21,6 +22,7 @@ wrongSound() async {
     return pool.load(soundData);
   });
   pool.play(soundId);
+  
 }
 
 timeOverSound() async {
@@ -30,10 +32,8 @@ timeOverSound() async {
       await rootBundle.load("assets/timeover.mp3").then((ByteData soundData) {
     return pool.load(soundData);
   });
-  await pool.play(soundId);
-  sleep(const Duration(seconds: 2));
-  pool.pause(soundId);
-  
+  pool.play(soundId);
+
 }
 
 gameEndSound() async {
