@@ -29,6 +29,8 @@ setinit() {
 }
 
 class NeologismQuiz extends StatefulWidget {
+  const NeologismQuiz({super.key});
+
   @override
   State<NeologismQuiz> createState() => _MyWidgetState();
 }
@@ -57,8 +59,7 @@ class _MyWidgetState extends State<NeologismQuiz> {
           time--;
         }
         _time = time.toString();
-        if (time <= 0) {
-          timeOverSound();
+        if (time <= 0) {   
           showanswer(answer);
         }
       });
@@ -82,9 +83,7 @@ class _MyWidgetState extends State<NeologismQuiz> {
             : notblackmodecolor,
         appBar: const QuizAppBar(apptitle: '단어 퀴즈', blackbutton: BlackModeButton()),
         body: WillPopScope(
-          onWillPop: (){
-            return Future(() => false);
-          },
+          onWillPop: () => quizonWillPop(context),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
