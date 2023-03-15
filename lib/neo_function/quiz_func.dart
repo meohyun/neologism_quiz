@@ -1,8 +1,10 @@
 import 'dart:async';
+import 'dart:io';
 import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:neologism/getx/blackmode.dart';
 import 'package:neologism/pages/quiz_page/essay_quiz.dart';
@@ -38,6 +40,50 @@ nextpage() {
   time = 10;
   is_running = true;
 }
+
+Future<bool> onWillPop(context) async {
+    return await showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text("종료 하시겠습니까?"),
+            actions: [
+              TextButton(
+                  onPressed: () {
+                    SystemNavigator.pop();
+                  },
+                  child: const Text("예",style: TextStyle(fontSize: 18))),
+               TextButton(
+                  onPressed: () {
+                    Navigator.pop(context, false);
+                  },
+                  child: const Text("아니오",style: TextStyle(fontSize: 18)))
+            ],
+          );
+        });
+  }
+
+Future<bool> quizonWillPop(context) async {
+    return await showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text("퀴즈를 종료 하시겠습니까?"),
+            actions: [
+              TextButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/');
+                  },
+                  child: const Text("예",style: TextStyle(fontSize: 18))),
+               TextButton(
+                  onPressed: () {
+                    Navigator.pop(context, false);
+                  },
+                  child: const Text("아니오",style: TextStyle(fontSize: 18)))
+            ],
+          );
+        });
+  }
 
 quizresult(String quiztype) {
   final user = FirebaseAuth.instance.currentUser!;
@@ -122,82 +168,6 @@ endpage(context, page, String quiztype) {
                     )
                   ],
                 ),
-              ),
-            ),
-          ),
-        );
-      });
-}
-
-quizexit(context) {
-  showDialog(
-      barrierDismissible: false,
-      context: context,
-      builder: (context) {
-        return GetBuilder(
-          init: BlackModeController(),
-          builder: (_) => Dialog(
-            child: Container(
-              width: MediaQuery.of(context).size.width * 0.9,
-              height: 300,
-              decoration: BoxDecoration(
-                  color: Get.find<BlackModeController>().blackmode == true
-                      ? Colors.black
-                      : Colors.white,
-                  borderRadius: BorderRadius.circular(10.0),
-                  border: Border.all(
-                      color: Colors.white,
-                      style: BorderStyle.solid,
-                      width: 1.0)),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 10.0),
-                    child: Text(
-                      "게임에서 나가시겠습니까?",
-                      style: TextStyle(
-                          fontSize: 28.0,
-                          color:
-                              Get.find<BlackModeController>().blackmode == true
-                                  ? Colors.white
-                                  : Colors.black),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 50,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      TextButton(
-                          style: TextButton.styleFrom(
-                              backgroundColor: Colors.blue),
-                          onPressed: () {
-                            Navigator.pushNamed(context, '/');
-                            textcontroller.text = "";
-                            _timer?.cancel();
-                            is_running = false;
-                            descblocked = true;
-                          },
-                          child: const Text(
-                            "나가기",
-                            style: TextStyle(color: Colors.white),
-                          )),
-                      const SizedBox(
-                        width: 30,
-                      ),
-                      TextButton(
-                          style: TextButton.styleFrom(
-                              backgroundColor: Colors.blue),
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          child: const Text("취소",
-                              style: TextStyle(color: Colors.white))),
-                    ],
-                  ),
-                ],
               ),
             ),
           ),
@@ -299,7 +269,7 @@ quiz_choice(context) {
                           text: "단어 퀴즈",
                         ),
                         MainPageButton(
-                          page: EssayQuiz(),
+                          page: const EssayQuiz(),
                           text: "문장 퀴즈",
                         )
                       ],

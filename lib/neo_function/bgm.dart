@@ -25,17 +25,6 @@ wrongSound() async {
   
 }
 
-timeOverSound() async {
-  Soundpool pool = Soundpool.fromOptions();
-
-  int soundId =
-      await rootBundle.load("assets/timeover.mp3").then((ByteData soundData) {
-    return pool.load(soundData);
-  });
-  pool.play(soundId);
-
-}
-
 gameEndSound() async {
   Soundpool pool = Soundpool.fromOptions();
 

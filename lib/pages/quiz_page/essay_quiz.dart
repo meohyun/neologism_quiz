@@ -67,7 +67,6 @@ class _EssayQuizState extends State<EssayQuiz> {
         }
         _essayTime = essayTime.toString();
         if (essayTime <= 0) {
-          timeOverSound();
           timeout();
         }
       });
@@ -101,9 +100,7 @@ class _EssayQuizState extends State<EssayQuiz> {
           ),
           resizeToAvoidBottomInset: false,
           body: WillPopScope(
-            onWillPop: () {
-              return Future(() => false);
-            },
+            onWillPop: () => quizonWillPop(context),
             child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
               Container(
                 height: MediaQuery.of(context).size.height * 0.4,

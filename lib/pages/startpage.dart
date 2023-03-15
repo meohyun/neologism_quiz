@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:neologism/getx/blackmode.dart';
@@ -9,6 +10,7 @@ import 'package:neologism/getx/profileimage.dart';
 import 'package:neologism/neo_function/quiz_func.dart';
 import 'package:neologism/pages/bulletin_pages/bulletin_board.dart';
 import 'package:neologism/pages/dictionary_page/dict_neologism.dart';
+import 'package:neologism/pages/quiz_page/word_quiz.dart';
 import 'package:neologism/pages/user_page/profile.dart';
 import 'package:neologism/widgets/Buttons.dart';
 import 'package:neologism/widgets/mydrawer.dart';
@@ -25,12 +27,13 @@ class _StartpageState extends State<Startpage> {
   Timer? _timer;
   @override
   void initState() {
+    descblocked = true;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       body: Authentication(),
     );
   }
@@ -146,6 +149,7 @@ class ScreenPage extends StatefulWidget {
 class _ScreenPageState extends State<ScreenPage> {
   final useruid = FirebaseAuth.instance.currentUser!.uid;
   final username = FirebaseAuth.instance.currentUser!.displayName;
+  DateTime? currentBackPressTime;
 
   makeuserprofile() async {
     await FirebaseFirestore.instance
@@ -226,46 +230,49 @@ class _ScreenPageState extends State<ScreenPage> {
                 ? blackmodecolor
                 : notblackmodecolor,
           ),
-          body: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                CircleAvatar(
-                  backgroundImage: const AssetImage('assets/odong.png'),
-                  backgroundColor:
-                      Get.find<BlackModeController>().blackmode == true
-                          ? blackmodecolor
-                          : notblackmodecolor,
-                  radius: 80.0,
-                ),
-                SizedBox(
-                  width: 100,
-                  child: TextButton(
-                      style: TextButton.styleFrom(
-                        backgroundColor: Colors.blue,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
+          body: WillPopScope(
+            onWillPop: () => onWillPop(context),
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  CircleAvatar(
+                    backgroundImage: const AssetImage('assets/odong.png'),
+                    backgroundColor:
+                        Get.find<BlackModeController>().blackmode == true
+                            ? blackmodecolor
+                            : notblackmodecolor,
+                    radius: 80.0,
+                  ),
+                  SizedBox(
+                    width: 100,
+                    child: TextButton(
+                        style: TextButton.styleFrom(
+                          backgroundColor: Colors.blue,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
                         ),
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          quiz_choice(context);
-                        });
-                      },
-                      child: const Text(
-                        "시작하기",
-                        style: TextStyle(color: Colors.white, fontSize: 18.0),
-                      )),
-                ),
-                MainPageButton(
-                  page: NeologismDict(),
-                  text: "신조어 사전",
-                ),
-                MainPageButton(
-                  page: const BulletinBoard(),
-                  text: "게시판",
-                )
-              ],
+                        onPressed: () {
+                          setState(() {
+                            quiz_choice(context);
+                          });
+                        },
+                        child: const Text(
+                          "시작하기",
+                          style: TextStyle(color: Colors.white, fontSize: 18.0),
+                        )),
+                  ),
+                  MainPageButton(
+                    page: NeologismDict(),
+                    text: "신조어 사전",
+                  ),
+                  MainPageButton(
+                    page: const BulletinBoard(),
+                    text: "게시판",
+                  )
+                ],
+              ),
             ),
           )),
     );

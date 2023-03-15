@@ -39,9 +39,7 @@ class _QuizAppBarState extends State<QuizAppBar> {
                 ? Colors.white
                 : blackmodecolor,
           ),
-          onTap: () {
-            quizexit(context);
-          },
+          onTap: () => quizonWillPop(context)
         ),
         actions: [widget.blackbutton],
         elevation: 2.0,
