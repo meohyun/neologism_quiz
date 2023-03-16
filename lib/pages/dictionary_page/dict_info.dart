@@ -65,7 +65,7 @@ class _DictInfoState extends State<DictInfo> {
                       children: [
                         Padding(
                           padding: const EdgeInsets.fromLTRB(0, 15, 10, 5),
-                          child: Text("분류: " + datas[widget.index]["category"],
+                          child: Text("분류: ${datas[widget.index]["category"]}",
                               style: TextStyle(
                                   fontSize: 20.0,
                                   color:
@@ -97,7 +97,7 @@ class _DictInfoState extends State<DictInfo> {
                                             : blackmodecolor,
                                         fontWeight: FontWeight.bold),
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     height: 30,
                                   ),
                                   Padding(
@@ -147,7 +147,7 @@ class _DictInfoState extends State<DictInfo> {
                                       ),
                                     ],
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     height: 50,
                                   ),
                                   Padding(

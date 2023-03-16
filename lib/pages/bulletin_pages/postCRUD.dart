@@ -34,8 +34,8 @@ class _BulletinCreateState extends State<BulletinCreate> {
       "like": 0,
       "dislike": 0,
       "chats": [],
-      "likes": {'$userid': false},
-      'dislikes': {'$userid': false}
+      "likes": {userid: false},
+      'dislikes': {userid: false}
     });
 
     Navigator.pushNamed(context, '/bulletin');
@@ -149,18 +149,18 @@ class _BulletinCreateState extends State<BulletinCreate> {
                       ),
                     ),
                     TextButton(
-                        onPressed: () {
-                          if (_contentformkey.currentState!.validate() &&
-                              _titleformkey.currentState!.validate()) {
-                            makepost(context);
-                          }
-                        },
-                        child: Text(
-                          "확인",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                        style:
-                            TextButton.styleFrom(backgroundColor: Colors.blue))
+                      onPressed: () {
+                        if (_contentformkey.currentState!.validate() &&
+                            _titleformkey.currentState!.validate()) {
+                          makepost(context);
+                        }
+                      },
+                      style: TextButton.styleFrom(backgroundColor: Colors.blue),
+                      child: const Text(
+                        "확인",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -284,15 +284,15 @@ class _BulletinUpdateState extends State<BulletinUpdate> {
                       ),
                     ),
                     TextButton(
-                        onPressed: () {
-                          updatepost();
-                        },
-                        child: Text(
-                          "확인",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                        style:
-                            TextButton.styleFrom(backgroundColor: Colors.blue))
+                      onPressed: () {
+                        updatepost();
+                      },
+                      style: TextButton.styleFrom(backgroundColor: Colors.blue),
+                      child: const Text(
+                        "확인",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    )
                   ],
                 ),
               ),

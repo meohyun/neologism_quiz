@@ -89,7 +89,7 @@ class _MyWidgetState extends State<NeologismQuiz> {
             children: [
               Container(
                 height: MediaQuery.of(context).size.height * 0.3,
-                padding: EdgeInsets.fromLTRB(0.0, 20.0, 15.0, 0),
+                padding: const EdgeInsets.fromLTRB(0.0, 20.0, 15.0, 0),
                 child: Column(
                   children: [
                     Column(
@@ -192,7 +192,7 @@ class _MyWidgetState extends State<NeologismQuiz> {
                     ? Colors.white
                     : Colors.black,
               ),
-              Container(
+              SizedBox(
                 height: MediaQuery.of(context).size.height * 0.43,
                 child: ListView.builder(
                     physics: const NeverScrollableScrollPhysics(),

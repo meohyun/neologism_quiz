@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:neologism/getx/blackmode.dart';
 import 'package:neologism/neo_function/dict_func.dart';
 import 'package:neologism/pages/dictionary_page/dict_info.dart';
-
 import 'package:neologism/pages/startpage.dart';
 import 'package:neologism/datas/quizdata.dart';
-import 'package:neologism/widgets/Buttons.dart';
+
 
 var category_filtered = "";
 int category_index = 0;
@@ -92,7 +90,7 @@ class _NeologismDictState extends State<NeologismDict> {
                                       : notblackmodecolor,
                               child: ListTile(
                                 shape: RoundedRectangleBorder(
-                                  side: BorderSide(color: Colors.white),
+                                  side: const BorderSide(color: Colors.white),
                                   borderRadius: BorderRadius.circular(15),
                                 ),
                                 tileColor:
