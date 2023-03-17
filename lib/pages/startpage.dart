@@ -13,12 +13,15 @@ import 'package:neologism/pages/dictionary_page/dict_neologism.dart';
 import 'package:neologism/pages/quiz_page/word_quiz.dart';
 import 'package:neologism/pages/user_page/profile.dart';
 import 'package:neologism/widgets/Buttons.dart';
+import 'package:neologism/widgets/bottom_navigation.dart';
 import 'package:neologism/widgets/mydrawer.dart';
 
 var blackmodecolor = Colors.black;
 var notblackmodecolor = Colors.deepPurple[100];
 
 class Startpage extends StatefulWidget {
+  const Startpage({super.key});
+
   @override
   State<Startpage> createState() => _StartpageState();
 }
@@ -107,7 +110,7 @@ class Authentication extends StatelessWidget {
                             backgroundColor: Colors.grey,
                             shape: RoundedRectangleBorder(
                                 side:
-                                    BorderSide(color: Colors.white, width: 0.5),
+                                    const BorderSide(color: Colors.white, width: 0.5),
                                 borderRadius: BorderRadius.circular(15.0))),
                         onPressed: () {
                           signInWithGoogle();
@@ -204,6 +207,7 @@ class _ScreenPageState extends State<ScreenPage> {
     return GetBuilder(
       init: BlackModeController(),
       builder: (_) => Scaffold(
+          bottomNavigationBar: const MyBottomNavigationBar(),
           drawer: const MyDrawer(),
           backgroundColor: Get.find<BlackModeController>().blackmode
               ? blackmodecolor
