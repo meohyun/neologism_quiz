@@ -5,7 +5,7 @@ import 'package:neologism/neo_function/dict_func.dart';
 import 'package:neologism/pages/dictionary_page/dict_info.dart';
 import 'package:neologism/pages/startpage.dart';
 import 'package:neologism/datas/quizdata.dart';
-
+import 'package:neologism/widgets/bottom_navigation.dart';
 
 var category_filtered = "";
 int category_index = 0;
@@ -59,6 +59,7 @@ class _NeologismDictState extends State<NeologismDict> {
             ),
           ],
         ),
+        bottomNavigationBar: const MyBottomnavigator(),
         backgroundColor: Get.find<BlackModeController>().blackmode == true
             ? blackmodecolor
             : notblackmodecolor,

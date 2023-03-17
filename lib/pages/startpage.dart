@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
@@ -28,6 +29,7 @@ class Startpage extends StatefulWidget {
 
 class _StartpageState extends State<Startpage> {
   Timer? _timer;
+
   @override
   void initState() {
     descblocked = true;
@@ -109,8 +111,8 @@ class Authentication extends StatelessWidget {
                         style: TextButton.styleFrom(
                             backgroundColor: Colors.grey,
                             shape: RoundedRectangleBorder(
-                                side:
-                                    const BorderSide(color: Colors.white, width: 0.5),
+                                side: const BorderSide(
+                                    color: Colors.white, width: 0.5),
                                 borderRadius: BorderRadius.circular(15.0))),
                         onPressed: () {
                           signInWithGoogle();
@@ -204,10 +206,11 @@ class _ScreenPageState extends State<ScreenPage> {
   @override
   Widget build(BuildContext context) {
     Get.put(ProfileImageController());
+    
     return GetBuilder(
       init: BlackModeController(),
       builder: (_) => Scaffold(
-          bottomNavigationBar: const MyBottomNavigationBar(),
+          bottomNavigationBar: const MyBottomnavigator(),
           drawer: const MyDrawer(),
           backgroundColor: Get.find<BlackModeController>().blackmode
               ? blackmodecolor
@@ -235,50 +238,49 @@ class _ScreenPageState extends State<ScreenPage> {
                 : notblackmodecolor,
           ),
           body: WillPopScope(
-            onWillPop: () => onWillPop(context),
-            child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  CircleAvatar(
-                    backgroundImage: const AssetImage('assets/odong.png'),
-                    backgroundColor:
-                        Get.find<BlackModeController>().blackmode == true
-                            ? blackmodecolor
-                            : notblackmodecolor,
-                    radius: 80.0,
-                  ),
-                  SizedBox(
-                    width: 100,
-                    child: TextButton(
-                        style: TextButton.styleFrom(
-                          backgroundColor: Colors.blue,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            quiz_choice(context);
-                          });
-                        },
-                        child: const Text(
-                          "시작하기",
-                          style: TextStyle(color: Colors.white, fontSize: 18.0),
-                        )),
-                  ),
-                  MainPageButton(
-                    page: NeologismDict(),
-                    text: "신조어 사전",
-                  ),
-                  MainPageButton(
-                    page: const BulletinBoard(),
-                    text: "게시판",
-                  )
-                ],
-              ),
+      onWillPop: () => onWillPop(context),
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            CircleAvatar(
+              backgroundImage: const AssetImage('assets/odong.png'),
+              backgroundColor: Get.find<BlackModeController>().blackmode == true
+                  ? blackmodecolor
+                  : notblackmodecolor,
+              radius: 80.0,
             ),
-          )),
+            SizedBox(
+              width: 100,
+              child: TextButton(
+                  style: TextButton.styleFrom(
+                    backgroundColor: Colors.blue,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      quiz_choice(context);
+                    });
+                  },
+                  child: const Text(
+                    "시작하기",
+                    style: TextStyle(color: Colors.white, fontSize: 18.0),
+                  )),
+            ),
+            MainPageButton(
+              page: NeologismDict(),
+              text: "신조어 사전",
+            ),
+            MainPageButton(
+              page: const BulletinBoard(),
+              text: "게시판",
+            )
+          ],
+        ),
+      ),
+    )),
     );
   }
 }
