@@ -2,10 +2,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:neologism/neo_function/quiz_func.dart';
+import 'package:neologism/pages/bulletin_pages/bulletin_board.dart';
 import 'package:neologism/pages/dictionary_page/dict_neologism.dart';
 import 'package:neologism/pages/startpage.dart';
 import 'package:neologism/pages/user_page/profile.dart';
+
+import '../getx/blackmode.dart';
 
 class MyBottomnavigator extends StatefulWidget {
   const MyBottomnavigator({super.key});
@@ -99,14 +103,12 @@ class _MyBottomnavigatorState extends State<MyBottomnavigator> {
           ),
           GestureDetector(
             onTap: () {
-              setState(() {
-                quiz_choice(context);
-              });
+              Get.to(const BulletinBoard());
             },
             child: const Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(CupertinoIcons.book),
+                Icon(CupertinoIcons.pencil),
                 SizedBox(
                   height: 5,
                 ),
@@ -116,26 +118,19 @@ class _MyBottomnavigatorState extends State<MyBottomnavigator> {
           ),
           GestureDetector(
             onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return UserProfile(
-                  userid: userid,
-                  imagepath: profileimagecontroller.profilePath.value,
-                  hasimage: profileimagecontroller.isProfilePath.value,
-                  intro: intro,
-                );
-              }));
+              Get.find<BlackModeController>().blackmodechange();
             },
             child: const Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(
-                  CupertinoIcons.person_crop_circle,
+                  Icons.dark_mode,
                   size: 30,
                 ),
                 SizedBox(
                   height: 5,
                 ),
-                Text("내 정보")
+                Text("다크 모드")
               ],
             ),
           ),

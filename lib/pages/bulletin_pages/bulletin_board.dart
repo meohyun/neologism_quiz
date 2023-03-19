@@ -8,6 +8,7 @@ import 'package:neologism/pages/bulletin_pages/post_page.dart';
 import 'package:neologism/pages/startpage.dart';
 import 'package:intl/intl.dart';
 import 'package:neologism/search/bulletin_search.dart';
+import 'package:neologism/widgets/bottom_navigation.dart';
 import 'package:neologism/widgets/bulletin.dart';
 
 class BulletinBoard extends StatefulWidget {
@@ -60,6 +61,7 @@ class _BulletinBoardState extends State<BulletinBoard> {
     return GetBuilder(
         init: BlackModeController(),
         builder: (_) => Scaffold(
+          bottomNavigationBar: const MyBottomnavigator(),
               appBar: AppBar(
                 leading: IconButton(
                     onPressed: () {

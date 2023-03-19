@@ -8,6 +8,7 @@ import 'package:neologism/getx/profileimage.dart';
 import 'package:neologism/pages/startpage.dart';
 import 'package:intl/intl.dart';
 import 'package:neologism/pages/user_page/nickname.dart';
+import 'package:neologism/widgets/bottom_navigation.dart';
 
 ProfileImageController profileimagecontroller =
     Get.find<ProfileImageController>();
@@ -66,6 +67,7 @@ class _UserProfileState extends State<UserProfile> {
       init: BlackModeController(),
       builder: (_) => Scaffold(
           backgroundColor: blackmode ? blackmodecolor : notblackmodecolor,
+          bottomNavigationBar: const MyBottomnavigator(),
           appBar: AppBar(
             leading: IconButton(
                 onPressed: () {
@@ -195,7 +197,7 @@ class _UserProfileState extends State<UserProfile> {
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Container(
+                    child: SizedBox(
                       height: MediaQuery.of(context).size.height * 0.5,
                       child: StreamBuilder<DocumentSnapshot<Map>>(
                           stream: FirebaseFirestore.instance

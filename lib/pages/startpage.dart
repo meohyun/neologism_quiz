@@ -188,9 +188,11 @@ class _ScreenPageState extends State<ScreenPage> {
         .get()
         .then((value) {
       final data = value.data();
-      profileimagecontroller.profilePath.value = data![useruid]['imagepath'];
-      profileimagecontroller.isProfilePath.value = data[useruid]['hasimage'];
-      intro = data[useruid]['intro'];
+      setState(() {
+        profileimagecontroller.profilePath.value = data![useruid]['imagepath'];
+        profileimagecontroller.isProfilePath.value = data[useruid]['hasimage'];
+        intro = data[useruid]['intro'];
+      });
     });
   }
 
@@ -206,7 +208,8 @@ class _ScreenPageState extends State<ScreenPage> {
   @override
   Widget build(BuildContext context) {
     Get.put(ProfileImageController());
-    
+    Get.put(BlackModeController());
+    final blackmode = Get.find<BlackModeController>().blackmode;
     return GetBuilder(
       init: BlackModeController(),
       builder: (_) => Scaffold(
@@ -238,49 +241,72 @@ class _ScreenPageState extends State<ScreenPage> {
                 : notblackmodecolor,
           ),
           body: WillPopScope(
-      onWillPop: () => onWillPop(context),
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            CircleAvatar(
-              backgroundImage: const AssetImage('assets/odong.png'),
-              backgroundColor: Get.find<BlackModeController>().blackmode == true
-                  ? blackmodecolor
-                  : notblackmodecolor,
-              radius: 80.0,
-            ),
-            SizedBox(
-              width: 100,
-              child: TextButton(
-                  style: TextButton.styleFrom(
-                    backgroundColor: Colors.blue,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
+            onWillPop: () => onWillPop(context),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: Row(
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            Get.to(UserProfile(
+                              userid: useruid,
+                              imagepath:
+                                  profileimagecontroller.profilePath.value,
+                              hasimage:
+                                  profileimagecontroller.isProfilePath.value,
+                              intro: intro,
+                            ));
+                          },
+                          child: CircleAvatar(
+                            backgroundImage:
+                                profileimagecontroller.isProfilePath.value ==
+                                        true
+                                    ? NetworkImage(profileimagecontroller
+                                        .profilePath.value) as ImageProvider
+                                    : const AssetImage(
+                                        "assets/userimage3.png",
+                                      ),
+                            radius: 25,
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 20,
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            Get.to(UserProfile(
+                              userid: useruid,
+                              imagepath:
+                                  profileimagecontroller.profilePath.value,
+                              hasimage:
+                                  profileimagecontroller.isProfilePath.value,
+                              intro: intro,
+                            ));
+                          },
+                          child: Text(
+                            username.toString(),
+                            style: TextStyle(
+                                fontSize: 20,
+                                color: Get.find<BlackModeController>().blackmode ? Colors.white : Colors.black),
+                          ),
+                        )
+                      ],
+                    )),
+                Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: Text(
+                    "최근 기록",
+                    style: TextStyle(
+                        fontSize: 20,
+                        color: Get.find<BlackModeController>().blackmode ? Colors.white : Colors.black),
                   ),
-                  onPressed: () {
-                    setState(() {
-                      quiz_choice(context);
-                    });
-                  },
-                  child: const Text(
-                    "시작하기",
-                    style: TextStyle(color: Colors.white, fontSize: 18.0),
-                  )),
+                ),
+              ],
             ),
-            MainPageButton(
-              page: NeologismDict(),
-              text: "신조어 사전",
-            ),
-            MainPageButton(
-              page: const BulletinBoard(),
-              text: "게시판",
-            )
-          ],
-        ),
-      ),
-    )),
+          )),
     );
   }
 }
