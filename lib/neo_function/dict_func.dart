@@ -150,7 +150,7 @@ class CustomSearchDelegate extends SearchDelegate {
 
 // 카테고리 버튼
 class CategoryButton extends StatefulWidget {
-  CategoryButton(
+  const CategoryButton(
       {super.key, required this.onChanged, required this.changedindex});
 
   final ValueChanged<String> onChanged;
@@ -183,6 +183,13 @@ class _CategorysState extends State<CategoryButton> {
                     category_selected = true;
                   });
                 },
+                style: TextButton.styleFrom(
+                  backgroundColor:
+                      pressAttention ? Colors.amberAccent : Colors.grey[200],
+                  shape: RoundedRectangleBorder(
+                      side: const BorderSide(color: Colors.white),
+                      borderRadius: BorderRadius.circular(15)),
+                ),
                 child: index != 0
                     ? Text(
                         datas[index]["category"],
@@ -192,13 +199,7 @@ class _CategorysState extends State<CategoryButton> {
                         "전체",
                         style: TextStyle(color: blackmodecolor, fontSize: 17),
                       ),
-                style: TextButton.styleFrom(
-                  backgroundColor:
-                      pressAttention ? Colors.amberAccent : Colors.grey[200],
-                  shape: RoundedRectangleBorder(
-                      side: BorderSide(color: Colors.white),
-                      borderRadius: BorderRadius.circular(15)),
-                ),
+                
               ),
             ),
           ));
@@ -207,7 +208,7 @@ class _CategorysState extends State<CategoryButton> {
 }
 
 class CategoryFilter extends StatefulWidget {
-  CategoryFilter({super.key});
+  const CategoryFilter({super.key});
 
   @override
   State<CategoryFilter> createState() => _CategoryFilterState();
@@ -243,7 +244,7 @@ class _CategoryFilterState extends State<CategoryFilter> {
                       : notblackmodecolor,
                   child: ListTile(
                     shape: RoundedRectangleBorder(
-                      side: BorderSide(color: Colors.white),
+                      side: const BorderSide(color: Colors.white),
                       borderRadius: BorderRadius.circular(15),
                     ),
                     tileColor: Get.find<BlackModeController>().blackmode == true

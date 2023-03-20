@@ -17,6 +17,8 @@ setinit() {
 }
 
 class NeologismDict extends StatefulWidget {
+  const NeologismDict({super.key});
+
   @override
   State<NeologismDict> createState() => _NeologismDictState();
 }
@@ -24,7 +26,6 @@ class NeologismDict extends StatefulWidget {
 class _NeologismDictState extends State<NeologismDict> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     setinit();
   }
@@ -120,7 +121,7 @@ class _NeologismDictState extends State<NeologismDict> {
                           })),
                     ),
                   )
-                : CategoryFilter(),
+                : const CategoryFilter(),
           ],
         ),
       ),

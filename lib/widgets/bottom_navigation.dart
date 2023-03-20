@@ -8,8 +8,15 @@ import 'package:neologism/pages/bulletin_pages/bulletin_board.dart';
 import 'package:neologism/pages/dictionary_page/dict_neologism.dart';
 import 'package:neologism/pages/startpage.dart';
 import 'package:neologism/pages/user_page/profile.dart';
-
 import '../getx/blackmode.dart';
+
+class BottomWidet {
+  final String name;
+  final IconData icon;
+  final Function des;
+
+  BottomWidet({required this.name, required this.icon, required this.des});
+}
 
 class MyBottomnavigator extends StatefulWidget {
   const MyBottomnavigator({super.key});
@@ -22,28 +29,38 @@ class _MyBottomnavigatorState extends State<MyBottomnavigator> {
   final userid = FirebaseAuth.instance.currentUser!.uid;
   String intro = "";
 
-  getprofile() {
-    final useruid = FirebaseAuth.instance.currentUser!.uid;
-    FirebaseFirestore.instance
-        .collection('user')
-        .doc('userdatabase')
-        .get()
-        .then((value) {
-      final data = value.data();
-      profileimagecontroller.profilePath.value = data![useruid]['imagepath'];
-      profileimagecontroller.isProfilePath.value = data[useruid]['hasimage'];
-      intro = data[useruid]['intro'];
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
+  int pressedAttentionIndex = 0;
   @override
   Widget build(BuildContext context) {
     Get.put(BlackModeController());
+    List<dynamic> mylist = [
+      BottomWidet(
+          name: "홈",
+          icon: Icons.home,
+          des: () {
+            Get.to(()=>const ScreenPage());
+          }),
+      BottomWidet(
+          name: "게임",
+          icon: CupertinoIcons.game_controller_solid,
+          des: () {
+            setState(() {
+              quiz_choice(context);
+            });
+          }),
+      BottomWidet(
+          name: "신조어 사전",
+          icon: CupertinoIcons.book_solid,
+          des: () {
+            Get.to(()=>const NeologismDict());
+          }),
+      BottomWidet(
+          name: "게시판",
+          icon: CupertinoIcons.pen,
+          des: () {
+            Get.to(()=>const BulletinBoard());
+          }),
+    ];
     return GetBuilder(
       init: BlackModeController(),
       builder: (_) => Padding(
@@ -55,53 +72,38 @@ class _MyBottomnavigatorState extends State<MyBottomnavigator> {
           child: ClipRRect(
             borderRadius: BorderRadius.circular(30),
             child: BottomAppBar(
-              color: Get.find<BlackModeController>().blackmode
-                  ? Colors.black
-                  : Colors.deepPurple[50],
-              height: 70,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  BottomAppWidget(
-                      appicon: Icons.home,
-                      name: "홈",
-                      des: () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) {
-                          return const ScreenPage();
-                        }));
-                      }),
-                  BottomAppWidget(
-                      appicon: CupertinoIcons.game_controller_solid,
-                      name: "게임",
-                      des: () {
-                        setState(() {
-                          quiz_choice(context);
-                        });
-                      }),
-                  BottomAppWidget(
-                      appicon: CupertinoIcons.book_solid,
-                      name: "신조어 사전",
-                      des: () {
-                        Get.to(NeologismDict());
-                      }),
-                  BottomAppWidget(
-                      appicon: CupertinoIcons.pencil,
-                      name: "게시판",
-                      des: () {
-                        Get.to(const BulletinBoard());
-                      }),
-                  BottomAppWidget(
-                      appicon: Icons.dark_mode,
-                      name: "다크모드",
-                      des: () {
-                        setState(() {
-                          Get.find<BlackModeController>().blackmodechange();
-                        });
-                      }),
-                ],
-              ),
-            ),
+                color: Get.find<BlackModeController>().blackmode
+                    ? Colors.black
+                    : Colors.deepPurple[50],
+                height: 70,
+                child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: mylist.length,
+                    itemBuilder: (context, index) {
+                      final pressAttention = pressedAttentionIndex == index;
+                      return Padding(
+                        padding: const EdgeInsets.only(left: 5),
+                        child: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              pressedAttentionIndex = index;
+                              
+                            });
+                          },
+                          child: Container(
+                            color: pressAttention
+                                ? Colors.amber
+                                : Colors.deepPurple[50],
+                            height: 70,
+                            width: 90,
+                            child: BottomAppButton(
+                                name: mylist[index].name,
+                                appicon: mylist[index].icon,
+                                des: mylist[index].des),
+                          ),
+                        ),
+                      );
+                    })),
           ),
         ),
       ),
@@ -109,8 +111,8 @@ class _MyBottomnavigatorState extends State<MyBottomnavigator> {
   }
 }
 
-class BottomAppWidget extends StatefulWidget {
-  const BottomAppWidget(
+class BottomAppButton extends StatefulWidget {
+  const BottomAppButton(
       {super.key, this.name, required this.des, this.appicon});
 
   final name;
@@ -118,10 +120,10 @@ class BottomAppWidget extends StatefulWidget {
   final des;
 
   @override
-  State<BottomAppWidget> createState() => _BottomAppWidgetState();
+  State<BottomAppButton> createState() => _BottomAppButtonState();
 }
 
-class _BottomAppWidgetState extends State<BottomAppWidget> {
+class _BottomAppButtonState extends State<BottomAppButton> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -134,6 +136,7 @@ class _BottomAppWidgetState extends State<BottomAppWidget> {
             color: Get.find<BlackModeController>().blackmode
                 ? Colors.white
                 : Colors.black,
+            size: 30,
           ),
           const SizedBox(
             height: 5,

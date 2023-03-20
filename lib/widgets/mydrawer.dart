@@ -76,6 +76,29 @@ class _MyDrawerState extends State<MyDrawer> {
               height: 20,
             ),
             ListTile(
+              leading: Icon(
+                Icons.dark_mode,
+                color: Get.find<BlackModeController>().blackmode
+                    ? Colors.yellow
+                    : Colors.grey,
+              ),
+              title: Text(
+                "다크 모드",
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Get.find<BlackModeController>().blackmode
+                      ? Colors.white
+                      : Colors.black,
+                ),
+              ),
+              onTap: () {
+                Get.find<BlackModeController>().blackmodechange();
+              },
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            ListTile(
                 leading: Icon(
                   Icons.person,
                   color: Get.find<BlackModeController>().blackmode
