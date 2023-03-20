@@ -209,7 +209,6 @@ class _ScreenPageState extends State<ScreenPage> {
   Widget build(BuildContext context) {
     Get.put(ProfileImageController());
     Get.put(BlackModeController());
-    final blackmode = Get.find<BlackModeController>().blackmode;
     return GetBuilder(
       init: BlackModeController(),
       builder: (_) => Scaffold(
@@ -295,13 +294,23 @@ class _ScreenPageState extends State<ScreenPage> {
                         )
                       ],
                     )),
-                Padding(
-                  padding: const EdgeInsets.all(15.0),
-                  child: Text(
-                    "최근 기록",
-                    style: TextStyle(
-                        fontSize: 20,
-                        color: Get.find<BlackModeController>().blackmode ? Colors.white : Colors.black),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 20),
+                    child: Container(
+                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(30),color: Get.find<BlackModeController>().blackmode ? Colors.grey :Colors.white),
+                      width: MediaQuery.of(context).size.width * 0.9,
+                      height: MediaQuery.of(context).size.height,
+                      child: Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: Text(
+                          "최근 기록",
+                          style: TextStyle(
+                              fontSize: 20,
+                              color: Get.find<BlackModeController>().blackmode ? Colors.white : Colors.black),
+                        ),
+                      ),
+                    ),
                   ),
                 ),
               ],

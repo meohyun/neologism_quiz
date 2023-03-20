@@ -38,7 +38,7 @@ class _MyBottomnavigatorState extends State<MyBottomnavigator> {
           name: "홈",
           icon: Icons.home,
           des: () {
-            Get.to(()=>const ScreenPage());
+            Get.to(() => const ScreenPage());
           }),
       BottomWidet(
           name: "게임",
@@ -52,13 +52,13 @@ class _MyBottomnavigatorState extends State<MyBottomnavigator> {
           name: "신조어 사전",
           icon: CupertinoIcons.book_solid,
           des: () {
-            Get.to(()=>const NeologismDict());
+            Get.to(() => const NeologismDict());
           }),
       BottomWidet(
           name: "게시판",
           icon: CupertinoIcons.pen,
           des: () {
-            Get.to(()=>const BulletinBoard());
+            Get.to(() => const BulletinBoard());
           }),
     ];
     return GetBuilder(
@@ -67,10 +67,13 @@ class _MyBottomnavigatorState extends State<MyBottomnavigator> {
         padding: const EdgeInsets.all(8.0),
         child: Container(
           decoration: BoxDecoration(
+              color: Get.find<BlackModeController>().blackmode
+                  ? Colors.black
+                  : Colors.deepPurple[50],
               border: Border.all(width: 2, color: Colors.white),
               borderRadius: BorderRadius.circular(30)),
           child: ClipRRect(
-            borderRadius: BorderRadius.circular(30),
+            borderRadius: BorderRadius.circular(50),
             child: BottomAppBar(
                 color: Get.find<BlackModeController>().blackmode
                     ? Colors.black
@@ -87,13 +90,9 @@ class _MyBottomnavigatorState extends State<MyBottomnavigator> {
                           onTap: () {
                             setState(() {
                               pressedAttentionIndex = index;
-                              
                             });
                           },
-                          child: Container(
-                            color: pressAttention
-                                ? Colors.amber
-                                : Colors.deepPurple[50],
+                          child: SizedBox(
                             height: 70,
                             width: 90,
                             child: BottomAppButton(
