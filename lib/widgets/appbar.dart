@@ -30,7 +30,7 @@ class _QuizAppBarState extends State<QuizAppBar> {
         title: Text(
           widget.apptitle,
           style:
-              TextStyle(fontFamily: 'MapleStory', fontWeight: FontWeight.bold),
+              const TextStyle(fontFamily: 'MapleStory', fontWeight: FontWeight.bold),
         ),
         leading: GestureDetector(
           child: Icon(

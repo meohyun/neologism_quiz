@@ -34,7 +34,7 @@ class MainPageButton extends StatelessWidget {
             },
             child: Text(
               text,
-              style: TextStyle(color: Colors.white, fontSize: 18.0),
+              style: const TextStyle(color: Colors.white, fontSize: 18.0),
             )),
       ),
     );
@@ -50,7 +50,7 @@ class BlackModeButton extends StatefulWidget {
 }
 
 class _BlackModeButtonState extends State<BlackModeButton> {
-  BlackModeController _blackModeController = Get.put(BlackModeController());
+  final _blackModeController = Get.put(BlackModeController());
   @override
   Widget build(BuildContext context) {
     return IconButton(

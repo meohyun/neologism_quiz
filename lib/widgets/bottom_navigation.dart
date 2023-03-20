@@ -43,97 +43,108 @@ class _MyBottomnavigatorState extends State<MyBottomnavigator> {
 
   @override
   Widget build(BuildContext context) {
-    int index = 0;
-    return BottomAppBar(
-      color: Colors.deepPurple[50],
-      height: 70,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
+    Get.put(BlackModeController());
+    return GetBuilder(
+      init: BlackModeController(),
+      builder: (_) => Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Container(
+          decoration: BoxDecoration(
+              border: Border.all(width: 2, color: Colors.white),
+              borderRadius: BorderRadius.circular(30)),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(30),
+            child: BottomAppBar(
+              color: Get.find<BlackModeController>().blackmode
+                  ? Colors.black
+                  : Colors.deepPurple[50],
+              height: 70,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  BottomAppWidget(
+                      appicon: Icons.home,
+                      name: "홈",
+                      des: () {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) {
+                          return const ScreenPage();
+                        }));
+                      }),
+                  BottomAppWidget(
+                      appicon: CupertinoIcons.game_controller_solid,
+                      name: "게임",
+                      des: () {
+                        setState(() {
+                          quiz_choice(context);
+                        });
+                      }),
+                  BottomAppWidget(
+                      appicon: CupertinoIcons.book_solid,
+                      name: "신조어 사전",
+                      des: () {
+                        Get.to(NeologismDict());
+                      }),
+                  BottomAppWidget(
+                      appicon: CupertinoIcons.pencil,
+                      name: "게시판",
+                      des: () {
+                        Get.to(const BulletinBoard());
+                      }),
+                  BottomAppWidget(
+                      appicon: Icons.dark_mode,
+                      name: "다크모드",
+                      des: () {
+                        setState(() {
+                          Get.find<BlackModeController>().blackmodechange();
+                        });
+                      }),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class BottomAppWidget extends StatefulWidget {
+  const BottomAppWidget(
+      {super.key, this.name, required this.des, this.appicon});
+
+  final name;
+  final appicon;
+  final des;
+
+  @override
+  State<BottomAppWidget> createState() => _BottomAppWidgetState();
+}
+
+class _BottomAppWidgetState extends State<BottomAppWidget> {
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: widget.des,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          GestureDetector(
-            onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return const Startpage();
-              }));
-            },
-            child: const Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(Icons.home),
-                SizedBox(
-                  height: 5,
-                ),
-                Text("홈")
-              ],
-            ),
+          Icon(
+            widget.appicon,
+            color: Get.find<BlackModeController>().blackmode
+                ? Colors.white
+                : Colors.black,
           ),
-          GestureDetector(
-            onTap: () {
-              setState(() {
-                quiz_choice(context);
-              });
-            },
-            child: const Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(CupertinoIcons.game_controller_solid),
-                SizedBox(
-                  height: 5,
-                ),
-                Text("게임")
-              ],
-            ),
+          const SizedBox(
+            height: 5,
           ),
-          GestureDetector(
-            onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return NeologismDict();
-              }));
-            },
-            child: const Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(CupertinoIcons.book_fill),
-                SizedBox(
-                  height: 5,
-                ),
-                Text("신조어 사전")
-              ],
-            ),
-          ),
-          GestureDetector(
-            onTap: () {
-              Get.to(const BulletinBoard());
-            },
-            child: const Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(CupertinoIcons.pencil),
-                SizedBox(
-                  height: 5,
-                ),
-                Text("게시판")
-              ],
-            ),
-          ),
-          GestureDetector(
-            onTap: () {
-              Get.find<BlackModeController>().blackmodechange();
-            },
-            child: const Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  Icons.dark_mode,
-                  size: 30,
-                ),
-                SizedBox(
-                  height: 5,
-                ),
-                Text("다크 모드")
-              ],
-            ),
-          ),
+          Text(
+            widget.name,
+            style: TextStyle(
+                color: Get.find<BlackModeController>().blackmode
+                    ? Colors.white
+                    : Colors.black),
+          )
         ],
       ),
     );

@@ -61,6 +61,9 @@ class _BulletinBoardState extends State<BulletinBoard> {
     return GetBuilder(
         init: BlackModeController(),
         builder: (_) => Scaffold(
+          backgroundColor: Get.find<BlackModeController>().blackmode
+                    ? blackmodecolor
+                    : notblackmodecolor,
           bottomNavigationBar: const MyBottomnavigator(),
               appBar: AppBar(
                 leading: IconButton(
