@@ -95,7 +95,7 @@ class _MyBottomnavigatorState extends State<MyBottomnavigator> {
                           child: SizedBox(
                             height: 70,
                             width: 90,
-                            child: BottomAppButton(
+                            child: MyIconButton(
                                 name: mylist[index].name,
                                 appicon: mylist[index].icon,
                                 des: mylist[index].des),
@@ -110,8 +110,8 @@ class _MyBottomnavigatorState extends State<MyBottomnavigator> {
   }
 }
 
-class BottomAppButton extends StatefulWidget {
-  const BottomAppButton(
+class MyIconButton extends StatefulWidget {
+  const MyIconButton(
       {super.key, this.name, required this.des, this.appicon});
 
   final name;
@@ -119,10 +119,10 @@ class BottomAppButton extends StatefulWidget {
   final des;
 
   @override
-  State<BottomAppButton> createState() => _BottomAppButtonState();
+  State<MyIconButton> createState() => _MyIconButtonState();
 }
 
-class _BottomAppButtonState extends State<BottomAppButton> {
+class _MyIconButtonState extends State<MyIconButton> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(

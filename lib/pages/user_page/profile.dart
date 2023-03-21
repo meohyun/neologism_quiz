@@ -142,7 +142,7 @@ class _UserProfileState extends State<UserProfile> {
                         ),
                   const SizedBox(
                     height: 15,
-                  ),                
+                  ),
                   Column(
                     children: [
                       Container(
@@ -197,72 +197,73 @@ class _UserProfileState extends State<UserProfile> {
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.5,
-                      child: StreamBuilder<DocumentSnapshot<Map>>(
-                          stream: FirebaseFirestore.instance
-                              .collection('user')
-                              .doc('userdatabase')
-                              .snapshots(),
-                          builder: (context,
-                              AsyncSnapshot<DocumentSnapshot<Map>> snapshot) {
-                            if (snapshot.connectionState ==
-                                ConnectionState.waiting) {
-                              return const CircularProgressIndicator();
-                            }
-                            final userdocs =
-                                snapshot.data![widget.userid]['result'];
-                            return ListView.builder(
-                                itemCount: userdocs.length,
-                                itemBuilder: (context, index) {
-                                  final timestamp = userdocs[index]['time'];
-                                  DateTime dt = timestamp.toDate();
-                                  final mytime =
-                                      DateFormat('MM.dd HH:mm').format(dt);
-                                  return Column(
-                                    children: [
-                                      ListTile(
-                                        title: Text(
-                                          "맞춘개수 : " +
-                                              "${userdocs[index]['result']}",
-                                          style: TextStyle(
-                                              fontSize: 20,
-                                              color: blackmode
-                                                  ? Colors.white
-                                                  : blackmodecolor),
-                                        ),
-                                        subtitle: userdocs[index]['type'] ==
-                                                "WordQuiz"
-                                            ? Text("단어퀴즈",
-                                                style: TextStyle(
-                                                    color: blackmode
-                                                        ? Colors.white
-                                                        : blackmodecolor))
-                                            : Text("문장퀴즈",
-                                                style: TextStyle(
-                                                    color: blackmode
-                                                        ? Colors.white
-                                                        : blackmodecolor)),
-                                        trailing: Padding(
-                                          padding:
-                                              const EdgeInsets.only(top: 10),
-                                          child: Opacity(
-                                              opacity: 0.6,
-                                              child: Text(mytime.toString(),
+                    child: SingleChildScrollView(
+                      child: SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.6,
+                        child: StreamBuilder<DocumentSnapshot<Map>>(
+                            stream: FirebaseFirestore.instance
+                                .collection('user')
+                                .doc('userdatabase')
+                                .snapshots(),
+                            builder: (context,
+                                AsyncSnapshot<DocumentSnapshot<Map>> snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return const CircularProgressIndicator();
+                              }
+                              final userdocs =
+                                  snapshot.data![widget.userid]['result'];
+                              return ListView.builder(
+                                  itemCount: userdocs.length,
+                                  itemBuilder: (context, index) {
+                                    final timestamp = userdocs[index]['time'];
+                                    DateTime dt = timestamp.toDate();
+                                    final mytime =
+                                        DateFormat('MM.dd HH:mm').format(dt);
+                                    return Column(
+                                      children: [
+                                        ListTile(
+                                          title: Text(
+                                            "맞춘개수 : ${userdocs[index]['result']}",
+                                            style: TextStyle(
+                                                fontSize: 20,
+                                                color: blackmode
+                                                    ? Colors.white
+                                                    : blackmodecolor),
+                                          ),
+                                          subtitle: userdocs[index]['type'] ==
+                                                  "WordQuiz"
+                                              ? Text("단어퀴즈",
                                                   style: TextStyle(
                                                       color: blackmode
                                                           ? Colors.white
-                                                          : blackmodecolor))),
+                                                          : blackmodecolor))
+                                              : Text("문장퀴즈",
+                                                  style: TextStyle(
+                                                      color: blackmode
+                                                          ? Colors.white
+                                                          : blackmodecolor)),
+                                          trailing: Padding(
+                                            padding:
+                                                const EdgeInsets.only(top: 10),
+                                            child: Opacity(
+                                                opacity: 0.6,
+                                                child: Text(mytime.toString(),
+                                                    style: TextStyle(
+                                                        color: blackmode
+                                                            ? Colors.white
+                                                            : blackmodecolor))),
+                                          ),
                                         ),
-                                      ),
-                                      const Divider(
-                                        height: 10,
-                                        thickness: 1.5,
-                                      )
-                                    ],
-                                  );
-                                });
-                          }),
+                                        const Divider(
+                                          height: 10,
+                                          thickness: 1.5,
+                                        )
+                                      ],
+                                    );
+                                  });
+                            }),
+                      ),
                     ),
                   ),
                 ],

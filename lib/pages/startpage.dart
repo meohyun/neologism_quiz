@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:neologism/getx/blackmode.dart';
 import 'package:neologism/getx/profileimage.dart';
+import 'package:neologism/neo_function/login_func.dart';
 import 'package:neologism/neo_function/quiz_func.dart';
 import 'package:neologism/pages/bulletin_pages/bulletin_board.dart';
 import 'package:neologism/pages/dictionary_page/dict_neologism.dart';
@@ -213,7 +214,6 @@ class _ScreenPageState extends State<ScreenPage> {
       init: BlackModeController(),
       builder: (_) => Scaffold(
           bottomNavigationBar: const MyBottomnavigator(),
-          drawer: const MyDrawer(),
           backgroundColor: Get.find<BlackModeController>().blackmode
               ? blackmodecolor
               : notblackmodecolor,
@@ -228,7 +228,7 @@ class _ScreenPageState extends State<ScreenPage> {
             title: const Padding(
               padding: EdgeInsets.only(top: 10.0),
               child: Text(
-                "Neologism Quiz",
+                "신조어 퀴즈",
                 style: TextStyle(
                     color: Colors.teal,
                     fontSize: 25.0,
@@ -238,6 +238,62 @@ class _ScreenPageState extends State<ScreenPage> {
             backgroundColor: Get.find<BlackModeController>().blackmode == true
                 ? blackmodecolor
                 : notblackmodecolor,
+            leading: Padding(
+              padding: const EdgeInsets.fromLTRB(10, 15, 0, 0),
+              child: GestureDetector(
+                onTap: () {
+                  setState(() {
+                    logout(context);
+                  });
+                },
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.logout_outlined,
+                      color: Get.find<BlackModeController>().blackmode
+                          ? Colors.white
+                          : Colors.black,
+                    ),
+                    Text(
+                      "로그아웃",
+                      style: TextStyle(
+                          color: Get.find<BlackModeController>().blackmode
+                              ? Colors.white
+                              : Colors.black),
+                    )
+                  ],
+                ),
+              ),
+            ),
+            actions: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(0, 15, 15, 0),
+                child: GestureDetector(
+                  onTap: () {
+                    Get.find<BlackModeController>().blackmodechange();
+                  },
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.dark_mode,
+                        color: Get.find<BlackModeController>().blackmode
+                            ? Colors.yellow
+                            : Colors.black,
+                      ),
+                      Text(
+                        "다크 모드",
+                        style: TextStyle(
+                            color: Get.find<BlackModeController>().blackmode
+                                ? Colors.white
+                                : Colors.black),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ],
           ),
           body: WillPopScope(
             onWillPop: () => onWillPop(context),
@@ -246,69 +302,75 @@ class _ScreenPageState extends State<ScreenPage> {
               children: [
                 Padding(
                     padding: const EdgeInsets.all(15.0),
-                    child: Row(
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            Get.to(UserProfile(
-                              userid: useruid,
-                              imagepath:
-                                  profileimagecontroller.profilePath.value,
-                              hasimage:
-                                  profileimagecontroller.isProfilePath.value,
-                              intro: intro,
-                            ));
-                          },
-                          child: CircleAvatar(
-                            backgroundImage:
-                                profileimagecontroller.isProfilePath.value ==
+                    child: GestureDetector(
+                      onTap: () {
+                        Get.to(UserProfile(
+                          userid: useruid,
+                          imagepath: profileimagecontroller.profilePath.value,
+                          hasimage: profileimagecontroller.isProfilePath.value,
+                          intro: intro,
+                        ));
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color: Get.find<BlackModeController>().blackmode
+                                ? Colors.black
+                                : Colors.deepPurple[50],
+                            borderRadius: BorderRadius.circular(30),
+                            border: Border.all(width: 2, color: Colors.white)),
+                        width: MediaQuery.of(context).size.width * 0.9,
+                        height: MediaQuery.of(context).size.height * 0.09,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            children: [
+                              CircleAvatar(
+                                backgroundImage: profileimagecontroller
+                                            .isProfilePath.value ==
                                         true
                                     ? NetworkImage(profileimagecontroller
                                         .profilePath.value) as ImageProvider
                                     : const AssetImage(
                                         "assets/userimage3.png",
                                       ),
-                            radius: 25,
+                                radius: 25,
+                              ),
+                              const SizedBox(
+                                width: 20,
+                              ),
+                              Text(
+                                username.toString(),
+                                style: TextStyle(
+                                    fontSize: 20,
+                                    color: Get.find<BlackModeController>()
+                                            .blackmode
+                                        ? Colors.white
+                                        : Colors.black),
+                              )
+                            ],
                           ),
                         ),
-                        const SizedBox(
-                          width: 20,
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            Get.to(UserProfile(
-                              userid: useruid,
-                              imagepath:
-                                  profileimagecontroller.profilePath.value,
-                              hasimage:
-                                  profileimagecontroller.isProfilePath.value,
-                              intro: intro,
-                            ));
-                          },
-                          child: Text(
-                            username.toString(),
-                            style: TextStyle(
-                                fontSize: 20,
-                                color: Get.find<BlackModeController>().blackmode ? Colors.white : Colors.black),
-                          ),
-                        )
-                      ],
+                      ),
                     )),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 20),
-                    child: Container(
-                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(30),color: Get.find<BlackModeController>().blackmode ? Colors.grey :Colors.white),
-                      width: MediaQuery.of(context).size.width * 0.9,
-                      height: MediaQuery.of(context).size.height,
-                      child: Padding(
-                        padding: const EdgeInsets.all(15.0),
-                        child: Text(
-                          "최근 기록",
-                          style: TextStyle(
-                              fontSize: 20,
-                              color: Get.find<BlackModeController>().blackmode ? Colors.white : Colors.black),
-                        ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 20),
+                  child: Container(
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(30),
+                        color: Get.find<BlackModeController>().blackmode
+                            ? Colors.grey
+                            : Colors.white),
+                    width: MediaQuery.of(context).size.width * 0.9,
+                    height: MediaQuery.of(context).size.height * 0.3,
+                    child: Padding(
+                      padding: const EdgeInsets.all(15.0),
+                      child: Text(
+                        "최근 기록",
+                        style: TextStyle(
+                            fontSize: 20,
+                            color: Get.find<BlackModeController>().blackmode
+                                ? Colors.white
+                                : Colors.black),
                       ),
                     ),
                   ),
