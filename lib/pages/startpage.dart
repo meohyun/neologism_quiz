@@ -17,6 +17,7 @@ import 'package:neologism/pages/user_page/profile.dart';
 import 'package:neologism/widgets/Buttons.dart';
 import 'package:neologism/widgets/bottom_navigation.dart';
 import 'package:neologism/widgets/mydrawer.dart';
+import 'package:neologism/widgets/records.dart';
 
 var blackmodecolor = Colors.black;
 var notblackmodecolor = Colors.deepPurple[100];
@@ -297,85 +298,122 @@ class _ScreenPageState extends State<ScreenPage> {
           ),
           body: WillPopScope(
             onWillPop: () => onWillPop(context),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                    padding: const EdgeInsets.all(15.0),
-                    child: GestureDetector(
-                      onTap: () {
-                        Get.to(UserProfile(
-                          userid: useruid,
-                          imagepath: profileimagecontroller.profilePath.value,
-                          hasimage: profileimagecontroller.isProfilePath.value,
-                          intro: intro,
-                        ));
-                      },
-                      child: Container(
-                        decoration: BoxDecoration(
-                            color: Get.find<BlackModeController>().blackmode
-                                ? Colors.black
-                                : Colors.deepPurple[50],
-                            borderRadius: BorderRadius.circular(30),
-                            border: Border.all(width: 2, color: Colors.white)),
-                        width: MediaQuery.of(context).size.width * 0.9,
-                        height: MediaQuery.of(context).size.height * 0.09,
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(
-                            children: [
-                              CircleAvatar(
-                                backgroundImage: profileimagecontroller
-                                            .isProfilePath.value ==
-                                        true
-                                    ? NetworkImage(profileimagecontroller
-                                        .profilePath.value) as ImageProvider
-                                    : const AssetImage(
-                                        "assets/userimage3.png",
-                                      ),
-                                radius: 25,
-                              ),
-                              const SizedBox(
-                                width: 20,
-                              ),
-                              Text(
-                                username.toString(),
-                                style: TextStyle(
-                                    fontSize: 20,
-                                    color: Get.find<BlackModeController>()
-                                            .blackmode
-                                        ? Colors.white
-                                        : Colors.black),
-                              )
-                            ],
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                      padding: const EdgeInsets.all(15.0),
+                      child: GestureDetector(
+                        onTap: () {
+                          Get.to(UserProfile(
+                            userid: useruid,
+                            imagepath: profileimagecontroller.profilePath.value,
+                            hasimage: profileimagecontroller.isProfilePath.value,
+                            intro: intro,
+                          ));
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                              color: Get.find<BlackModeController>().blackmode
+                                  ? Colors.black
+                                  : Colors.deepPurple[50],
+                              borderRadius: BorderRadius.circular(30),
+                              border: Border.all(width: 2, color: Colors.white)),
+                          width: MediaQuery.of(context).size.width * 0.9,
+                          height: MediaQuery.of(context).size.height * 0.09,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              children: [
+                                CircleAvatar(
+                                  backgroundImage: profileimagecontroller
+                                              .isProfilePath.value ==
+                                          true
+                                      ? NetworkImage(profileimagecontroller
+                                          .profilePath.value) as ImageProvider
+                                      : const AssetImage(
+                                          "assets/userimage3.png",
+                                        ),
+                                  radius: 25,
+                                ),
+                                const SizedBox(
+                                  width: 20,
+                                ),
+                                Text(
+                                  username.toString(),
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      color: Get.find<BlackModeController>()
+                                              .blackmode
+                                          ? Colors.white
+                                          : Colors.black),
+                                )
+                              ],
+                            ),
                           ),
                         ),
+                      )),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(30, 10, 0, 10),
+                        child: Text(
+                          "최근 기록",
+                          style: TextStyle(
+                              fontSize: 20,
+                              color: Get.find<BlackModeController>().blackmode
+                                  ? Colors.white
+                                  : Colors.black),
+                        ),
                       ),
-                    )),
-                Padding(
-                  padding: const EdgeInsets.only(left: 20),
-                  child: Container(
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(30),
-                        color: Get.find<BlackModeController>().blackmode
-                            ? Colors.grey
-                            : Colors.white),
-                    width: MediaQuery.of(context).size.width * 0.9,
-                    height: MediaQuery.of(context).size.height * 0.3,
-                    child: Padding(
-                      padding: const EdgeInsets.all(15.0),
-                      child: Text(
-                        "최근 기록",
-                        style: TextStyle(
-                            fontSize: 20,
-                            color: Get.find<BlackModeController>().blackmode
-                                ? Colors.white
-                                : Colors.black),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 20),
+                        child: Container(
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(30),
+                              border: Border.all(width: 2,color:Colors.white),
+                              color: Get.find<BlackModeController>().blackmode
+                                  ? Colors.black
+                                  : Colors.deepPurple[50]),
+                          width: MediaQuery.of(context).size.width * 0.9,
+                          height: MediaQuery.of(context).size.height * 0.5,
+                          child: GameRecord(userid: useruid,)
+                        ),
                       ),
-                    ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(30, 30, 0, 10),
+                        child: Text(
+                          "게시판",
+                          style: TextStyle(
+                              fontSize: 20,
+                              color: Get.find<BlackModeController>().blackmode
+                                  ? Colors.white
+                                  : Colors.black),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 20),
+                        child: Container(
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(30),
+                              border: Border.all(width: 2,color:Colors.white),
+                              color: Get.find<BlackModeController>().blackmode
+                                  ? Colors.black
+                                  : Colors.deepPurple[50]),
+                          width: MediaQuery.of(context).size.width * 0.9,
+                          height: MediaQuery.of(context).size.height * 0.5,
+                          child: const Padding(
+                            padding: EdgeInsets.fromLTRB(8, 8, 8, 8),
+                            child: Blluettin(),
+                          )
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           )),
     );

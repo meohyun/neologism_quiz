@@ -54,134 +54,133 @@ class BulletinTile extends StatelessWidget {
                       }
                     },
                     child: GetBuilder(
-                        init: BlackModeController(),
-                        builder: (context) {
-                          return Container(
-                            height: 100,
-                            decoration: BoxDecoration(
-                                color: Get.find<BlackModeController>().blackmode
-                                    ? blackmodecolor
-                                    : notblackmodecolor,
-                                border: const Border(
-                                  bottom:
-                                      BorderSide(width: 1, color: Colors.grey),
-                                )),
-                            child: Padding(
-                              padding: const EdgeInsets.only(left: 8),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          docs[index]["name"] +
-                                              "  [${docs[index]["chats"].length}]",
-                                          style: TextStyle(
-                                              fontSize: 20,
-                                              color: Get.find<
-                                                          BlackModeController>()
-                                                      .blackmode
-                                                  ? Colors.white
-                                                  : blackmodecolor),
-                                        ),
-                                        Text(
-                                            docs[index]["admin"]
-                                                    ["usernickname"]
-                                                .toString(),
-                                            style: TextStyle(
-                                                fontSize: 16,
-                                                color: Get.find<
-                                                            BlackModeController>()
-                                                        .blackmode
-                                                    ? Colors.white
-                                                    : blackmodecolor))
-                                      ],
+                      init: BlackModeController(),
+                      builder: (_)=> Container(
+                        height: 100,
+                        decoration: BoxDecoration(
+                            color: Get.find<BlackModeController>().blackmode
+                                ? blackmodecolor
+                                : Colors.deepPurple[50],
+                            border: const Border(
+                              bottom:
+                                  BorderSide(width: 1, color: Colors.grey),
+                            )),
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 8),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      docs[index]["name"] +
+                                          "  [${docs[index]["chats"].length}]",
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          color: Get.find<
+                                                      BlackModeController>()
+                                                  .blackmode
+                                              ? Colors.white
+                                              : blackmodecolor),
                                     ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Opacity(
-                                          opacity: 0.5,
-                                          child: Text(
-                                            d24,
-                                            style: TextStyle(
-                                                fontSize: 18,
-                                                color: Get.find<
-                                                            BlackModeController>()
-                                                        .blackmode
-                                                    ? Colors.white
-                                                    : blackmodecolor),
-                                          ),
-                                        ),
-                                        Opacity(
-                                          opacity: 0.5,
-                                          child: Row(
-                                            children: [
-                                              Icon(
-                                                Icons.thumb_up,
-                                                size: 20,
-                                                color: Get.find<
-                                                            BlackModeController>()
-                                                        .blackmode
-                                                    ? Colors.white
-                                                    : blackmodecolor,
-                                              ),
-                                              const SizedBox(
-                                                width: 5,
-                                              ),
-                                              Text(
-                                                  docs[index]["like"]
-                                                      .toString(),
-                                                  style: TextStyle(
-                                                      color: Get.find<
-                                                                  BlackModeController>()
-                                                              .blackmode
-                                                          ? Colors.white
-                                                          : blackmodecolor)),
-                                              const SizedBox(
-                                                width: 5,
-                                              ),
-                                              Icon(
-                                                Icons.thumb_down,
-                                                size: 20,
-                                                color: Get.find<
-                                                            BlackModeController>()
-                                                        .blackmode
-                                                    ? Colors.white
-                                                    : blackmodecolor,
-                                              ),
-                                              const SizedBox(
-                                                width: 5,
-                                              ),
-                                              Text(
-                                                  docs[index]["dislike"]
-                                                      .toString(),
-                                                  style: TextStyle(
-                                                      color: Get.find<
-                                                                  BlackModeController>()
-                                                              .blackmode
-                                                          ? Colors.white
-                                                          : blackmodecolor)),
-                                            ],
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  )
-                                ],
+                                    Text(
+                                        docs[index]["admin"]
+                                                ["usernickname"]
+                                            .toString(),
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            color: Get.find<
+                                                        BlackModeController>()
+                                                    .blackmode
+                                                ? Colors.white
+                                                : blackmodecolor))
+                                  ],
+                                ),
                               ),
-                            ),
-                          );
-                        }),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Opacity(
+                                      opacity: 0.5,
+                                      child: Text(
+                                        d24,
+                                        style: TextStyle(
+                                            fontSize: 18,
+                                            color: Get.find<
+                                                        BlackModeController>()
+                                                    .blackmode
+                                                ? Colors.white
+                                                : blackmodecolor),
+                                      ),
+                                    ),
+                                    Opacity(
+                                      opacity: 0.5,
+                                      child: Row(
+                                        children: [
+                                          Icon(
+                                            Icons.thumb_up,
+                                            size: 20,
+                                            color: Get.find<
+                                                        BlackModeController>()
+                                                    .blackmode
+                                                ? Colors.white
+                                                : blackmodecolor,
+                                          ),
+                                          const SizedBox(
+                                            width: 5,
+                                          ),
+                                          Text(
+                                              docs[index]["like"]
+                                                  .toString(),
+                                              style: TextStyle(
+                                                  color: Get.find<
+                                                              BlackModeController>()
+                                                          .blackmode
+                                                      ? Colors.white
+                                                      : blackmodecolor)),
+                                          const SizedBox(
+                                            width: 5,
+                                          ),
+                                          Icon(
+                                            Icons.thumb_down,
+                                            size: 20,
+                                            color: Get.find<
+                                                        BlackModeController>()
+                                                    .blackmode
+                                                ? Colors.white
+                                                : blackmodecolor,
+                                          ),
+                                          const SizedBox(
+                                            width: 5,
+                                          ),
+                                          Text(
+                                              docs[index]["dislike"]
+                                                  .toString(),
+                                              style: TextStyle(
+                                                  color: Get.find<
+                                                              BlackModeController>()
+                                                          .blackmode
+                                                      ? Colors.white
+                                                      : blackmodecolor)),
+                                        ],
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
                 );
               }));
