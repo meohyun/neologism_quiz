@@ -379,7 +379,10 @@ class _ScreenPageState extends State<ScreenPage> {
                                   : Colors.deepPurple[50]),
                           width: MediaQuery.of(context).size.width * 0.9,
                           height: MediaQuery.of(context).size.height * 0.5,
-                          child: GameRecord(userid: useruid,)
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: GameRecord(userid: useruid,),
+                          )
                         ),
                       ),
                       Padding(
@@ -405,7 +408,7 @@ class _ScreenPageState extends State<ScreenPage> {
                           width: MediaQuery.of(context).size.width * 0.9,
                           height: MediaQuery.of(context).size.height * 0.5,
                           child: const Padding(
-                            padding: EdgeInsets.fromLTRB(8, 8, 8, 8),
+                            padding: EdgeInsets.all(8),
                             child: Blluettin(),
                           )
                         ),
