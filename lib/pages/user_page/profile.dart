@@ -15,7 +15,7 @@ ProfileImageController profileimagecontroller =
 String userintro = "";
 
 class UserProfile extends StatefulWidget {
-  UserProfile(
+  const UserProfile(
       {super.key,
       this.name,
       this.userid,
