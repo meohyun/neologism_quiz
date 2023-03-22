@@ -307,9 +307,6 @@ class _BulletinPostState extends State<BulletinPost> {
                                                           ? Colors.white
                                                           : blackmodecolor),
                                             ),
-                                            const SizedBox(
-                                              width: 50,
-                                            ),
                                             Text(
                                               widget.datetime.toString(),
                                               style: TextStyle(
