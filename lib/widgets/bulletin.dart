@@ -42,6 +42,7 @@ class BulletinTile extends StatelessWidget {
                             like: docs[index]["like"],
                             dislike: docs[index]["dislike"],
                             admin: docs[index]["admin"]["usernickname"],
+                            adminid: docs[index]["admin"]["userid"],
                             chats: docs[index]["chats"],
                             docId: docs[index].id,
                             userlike: docs[index]["likes"][userid],

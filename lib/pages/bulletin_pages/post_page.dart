@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/instance_manager.dart';
 import 'package:neologism/getx/blackmode.dart';
@@ -16,6 +17,9 @@ bool isLiked = false;
 int likeCount = 0;
 int dislikeCount = 0;
 bool disLiked = false;
+String adminprofileimage = "";
+String adminintro = "";
+bool adminhasimage = false;
 
 class BulletinPost extends StatefulWidget {
   const BulletinPost({
@@ -26,6 +30,7 @@ class BulletinPost extends StatefulWidget {
     this.like,
     this.dislike,
     this.admin,
+    this.adminid,
     this.chats,
     this.docId,
     this.userlike,
@@ -38,6 +43,7 @@ class BulletinPost extends StatefulWidget {
   final like;
   final dislike;
   final admin;
+  final adminid;
   final chats;
   final docId;
   final userlike;
@@ -52,7 +58,23 @@ class _BulletinPostState extends State<BulletinPost> {
 
   final userid = FirebaseAuth.instance.currentUser!.uid;
   final username = FirebaseAuth.instance.currentUser!.displayName;
-  
+
+  adminprofile() {
+    FirebaseFirestore.instance
+        .collection('user')
+        .doc('userdatabase')
+        .get()
+        .then((value) {
+      final data = value.data();
+
+      setState(() {
+        adminprofileimage = data![widget.adminid]['imagepath'];
+        adminintro = data[widget.adminid]['intro'];
+        adminhasimage = data[widget.adminid]['hasimage'];
+      });
+    });
+  }
+
   updateChatUser() {
     FirebaseFirestore.instance
         .collection('post')
@@ -60,7 +82,7 @@ class _BulletinPostState extends State<BulletinPost> {
         .get()
         .then((val) {
       final datas = val.data();
-      for (int i = 0; i < datas!["chats"].length; i++){
+      for (int i = 0; i < datas!["chats"].length; i++) {
         if (datas["chats"][i]["user"] == userid) {
           List<dynamic> exchat = [
             {
@@ -127,7 +149,8 @@ class _BulletinPostState extends State<BulletinPost> {
   }
 
   @override
-  void initState() {   
+  void initState() {
+    adminprofile();
     updateChatUser();
     Get.put(chatcontroller());
     super.initState();
@@ -137,7 +160,6 @@ class _BulletinPostState extends State<BulletinPost> {
         isLiked = widget.userlike;
         disLiked = widget.userdislike;
         dislikeCount = widget.dislike;
-        
       });
     });
     Get.find<chatcontroller>().chatmodified.value = false;
@@ -278,7 +300,7 @@ class _BulletinPostState extends State<BulletinPost> {
                               child: Container(
                                   width:
                                       MediaQuery.of(context).size.width * 0.9,
-                                  height: 70,
+                                  height: 120,
                                   decoration: BoxDecoration(
                                       color: blackcontroller.blackmode
                                           ? blackmodecolor
@@ -299,13 +321,57 @@ class _BulletinPostState extends State<BulletinPost> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
                                           children: [
-                                            Text(
-                                              widget.admin.toString(),
-                                              style: TextStyle(
-                                                  color:
-                                                      blackcontroller.blackmode
-                                                          ? Colors.white
-                                                          : blackmodecolor),
+                                            Row(
+                                              children: [
+                                                GestureDetector(
+                                                  onTap: () {
+                                                    Get.to(() => UserProfile(
+                                                          name: widget.admin,
+                                                          userid:
+                                                              widget.adminid,
+                                                          hasimage:
+                                                              adminhasimage,
+                                                          imagepath:
+                                                              adminprofileimage,
+                                                          intro: adminintro,
+                                                        ));
+                                                  },
+                                                  child: CircleAvatar(
+                                                      backgroundImage: adminhasimage ==
+                                                              true
+                                                          ? NetworkImage(
+                                                                  adminprofileimage)
+                                                              as ImageProvider
+                                                          : const AssetImage(
+                                                              'assets/userimage3.png')),
+                                                ),
+                                                const SizedBox(
+                                                  width: 10,
+                                                ),
+                                                GestureDetector(
+                                                  onTap: () {
+                                                    Get.to(() => UserProfile(
+                                                          name: widget.admin,
+                                                          userid:
+                                                              widget.adminid,
+                                                          hasimage:
+                                                              adminhasimage,
+                                                          imagepath:
+                                                              adminprofileimage,
+                                                          intro: adminintro,
+                                                        ));
+                                                  },
+                                                  child: Text(
+                                                    widget.admin.toString(),
+                                                    style: TextStyle(
+                                                        fontSize: 18,
+                                                        color: blackcontroller
+                                                                .blackmode
+                                                            ? Colors.white
+                                                            : blackmodecolor),
+                                                  ),
+                                                ),
+                                              ],
                                             ),
                                             Text(
                                               widget.datetime.toString(),
@@ -319,7 +385,7 @@ class _BulletinPostState extends State<BulletinPost> {
                                         ),
                                         Padding(
                                           padding:
-                                              const EdgeInsets.only(top: 8.0),
+                                              const EdgeInsets.only(top: 20),
                                           child: Text(widget.name,
                                               style: TextStyle(
                                                   fontSize: 20,

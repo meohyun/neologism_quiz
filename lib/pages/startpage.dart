@@ -309,7 +309,8 @@ class _ScreenPageState extends State<ScreenPage> {
                           Get.to(UserProfile(
                             userid: useruid,
                             imagepath: profileimagecontroller.profilePath.value,
-                            hasimage: profileimagecontroller.isProfilePath.value,
+                            hasimage:
+                                profileimagecontroller.isProfilePath.value,
                             intro: intro,
                           ));
                         },
@@ -319,7 +320,8 @@ class _ScreenPageState extends State<ScreenPage> {
                                   ? Colors.black
                                   : Colors.deepPurple[50],
                               borderRadius: BorderRadius.circular(30),
-                              border: Border.all(width: 2, color: Colors.white)),
+                              border:
+                                  Border.all(width: 2, color: Colors.white)),
                           width: MediaQuery.of(context).size.width * 0.9,
                           height: MediaQuery.of(context).size.height * 0.09,
                           child: Padding(
@@ -371,47 +373,76 @@ class _ScreenPageState extends State<ScreenPage> {
                       Padding(
                         padding: const EdgeInsets.only(left: 20),
                         child: Container(
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(30),
-                              border: Border.all(width: 2,color:Colors.white),
-                              color: Get.find<BlackModeController>().blackmode
-                                  ? Colors.black
-                                  : Colors.deepPurple[50]),
-                          width: MediaQuery.of(context).size.width * 0.9,
-                          height: MediaQuery.of(context).size.height * 0.5,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: GameRecord(userid: useruid,),
-                          )
-                        ),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(30),
+                                border:
+                                    Border.all(width: 2, color: Colors.white),
+                                color: Get.find<BlackModeController>().blackmode
+                                    ? Colors.black
+                                    : Colors.deepPurple[50]),
+                            width: MediaQuery.of(context).size.width * 0.9,
+                            height: MediaQuery.of(context).size.height * 0.5,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: GameRecord(
+                                userid: useruid,
+                              ),
+                            )),
                       ),
                       Padding(
                         padding: const EdgeInsets.fromLTRB(30, 30, 0, 10),
-                        child: Text(
-                          "게시판",
-                          style: TextStyle(
-                              fontSize: 20,
-                              color: Get.find<BlackModeController>().blackmode
-                                  ? Colors.white
-                                  : Colors.black),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "게시판",
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  color:
+                                      Get.find<BlackModeController>().blackmode
+                                          ? Colors.white
+                                          : Colors.black),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(right: 30),
+                              child: Container(
+                                width: 70,
+                                height: 38,
+                                decoration: BoxDecoration(
+                                    color: Colors.blue,
+                                    border: Border.all(
+                                        width: 1, color: Colors.white),
+                                    borderRadius: BorderRadius.circular(15)),
+                                child: TextButton(
+                                    onPressed: () {
+                                      Get.to(() => const BulletinBoard());
+                                    },
+                                    child: const Text(
+                                      "더 보기",
+                                      style: TextStyle(
+                                          fontSize: 15, color: Colors.white),
+                                    )),
+                              ),
+                            )
+                          ],
                         ),
                       ),
                       Padding(
                         padding: const EdgeInsets.only(left: 20),
                         child: Container(
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(30),
-                              border: Border.all(width: 2,color:Colors.white),
-                              color: Get.find<BlackModeController>().blackmode
-                                  ? Colors.black
-                                  : Colors.deepPurple[50]),
-                          width: MediaQuery.of(context).size.width * 0.9,
-                          height: MediaQuery.of(context).size.height * 0.5,
-                          child: const Padding(
-                            padding: EdgeInsets.all(8),
-                            child: Blluettin(),
-                          )
-                        ),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(30),
+                                border:
+                                    Border.all(width: 2, color: Colors.white),
+                                color: Get.find<BlackModeController>().blackmode
+                                    ? Colors.black
+                                    : Colors.deepPurple[50]),
+                            width: MediaQuery.of(context).size.width * 0.9,
+                            height: MediaQuery.of(context).size.height * 0.5,
+                            child: const Padding(
+                              padding: EdgeInsets.all(8),
+                              child: Blluettin(),
+                            )),
                       ),
                     ],
                   ),

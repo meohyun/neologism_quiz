@@ -327,7 +327,7 @@ class _BulletinUpdateIconState extends State<BulletinUpdateIcon> {
           );
         })));
       },
-      icon: Icon(CupertinoIcons.pen),
+      icon: const Icon(CupertinoIcons.pen),
       iconSize: 30,
       color: blackcontroller.blackmode ? Colors.white : blackmodecolor,
     );
