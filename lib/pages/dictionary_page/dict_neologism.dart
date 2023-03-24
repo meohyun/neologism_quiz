@@ -121,7 +121,7 @@ class _NeologismDictState extends State<NeologismDict> {
                           })),
                     ),
                   )
-                : const CategoryFilter(),
+                : CategoryFilter(category: category_filtered,),
           ],
         ),
       ),

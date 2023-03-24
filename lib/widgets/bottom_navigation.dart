@@ -92,14 +92,29 @@ class _MyBottomnavigatorState extends State<MyBottomnavigator> {
                               pressedAttentionIndex = index;
                             });
                           },
-                          child: SizedBox(
-                            height: 70,
-                            width: 90,
-                            child: MyIconButton(
-                                name: mylist[index].name,
-                                appicon: mylist[index].icon,
-                                des: mylist[index].des),
-                          ),
+                          child: Padding(
+                              padding: const EdgeInsets.only(bottom: 8),
+                              child: pressAttention
+                                  ? Container(
+                                      decoration: const BoxDecoration(
+                                          border: Border(
+                                              bottom: BorderSide(
+                                                  width: 1,
+                                                  color: Colors.black))),
+                                      height: 70,
+                                      width: 90,
+                                      child: MyIconButton(
+                                          name: mylist[index].name,
+                                          appicon: mylist[index].icon,
+                                          des: mylist[index].des),
+                                    )
+                                  : SizedBox(
+                                      height: 70,
+                                      width: 90,
+                                      child: MyIconButton(
+                                          name: mylist[index].name,
+                                          appicon: mylist[index].icon,
+                                          des: mylist[index].des))),
                         ),
                       );
                     })),
@@ -111,8 +126,7 @@ class _MyBottomnavigatorState extends State<MyBottomnavigator> {
 }
 
 class MyIconButton extends StatefulWidget {
-  const MyIconButton(
-      {super.key, this.name, required this.des, this.appicon});
+  const MyIconButton({super.key, this.name, required this.des, this.appicon});
 
   final name;
   final appicon;

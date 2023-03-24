@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:neologism/getx/blackmode.dart';
 import 'package:neologism/pages/dictionary_page/dict_info.dart';
 import 'package:neologism/pages/dictionary_page/dict_neologism.dart';
-
 import 'package:neologism/pages/startpage.dart';
 import 'package:neologism/datas/quizdata.dart';
 
@@ -103,7 +102,7 @@ class CustomSearchDelegate extends SearchDelegate {
                                   : notblackmodecolor,
                           child: ListTile(
                             shape: RoundedRectangleBorder(
-                              side: BorderSide(color: Colors.white),
+                              side: const BorderSide(color: Colors.white),
                               borderRadius: BorderRadius.circular(15),
                             ),
                             tileColor:
@@ -176,12 +175,12 @@ class _CategorysState extends State<CategoryButton> {
               width: 70,
               child: TextButton(
                 onPressed: () {
-                  widget.onChanged(datas[index]["category"]);
-                  widget.changedindex(index);
                   setState(() {
                     pressedAttentionIndex = index;
                     category_selected = true;
                   });
+                  widget.onChanged(datas[pressedAttentionIndex]["category"]);
+                  widget.changedindex(pressedAttentionIndex);
                 },
                 style: TextButton.styleFrom(
                   backgroundColor:
@@ -208,7 +207,9 @@ class _CategorysState extends State<CategoryButton> {
 }
 
 class CategoryFilter extends StatefulWidget {
-  const CategoryFilter({super.key});
+  const CategoryFilter({super.key,this.category});
+
+  final category;
 
   @override
   State<CategoryFilter> createState() => _CategoryFilterState();
@@ -221,7 +222,7 @@ class _CategoryFilterState extends State<CategoryFilter> {
     List<int> matchindex = [];
 
     for (int i = 0; i < datas.length; i++) {
-      if (datas[i]['category'].toLowerCase().contains(category_filtered)) {
+      if (datas[i]['category'].toLowerCase().contains(widget.category)) {
         matchQuery.add(datas[i]['desc_title']);
         matchindex.add(i);
       }
