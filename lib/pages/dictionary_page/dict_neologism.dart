@@ -17,8 +17,9 @@ setinit() {
 }
 
 class NeologismDict extends StatefulWidget {
-  const NeologismDict({super.key});
+  const NeologismDict({super.key,this.index});
 
+  final index;
   @override
   State<NeologismDict> createState() => _NeologismDictState();
 }

@@ -147,7 +147,9 @@ class Authentication extends StatelessWidget {
 }
 
 class ScreenPage extends StatefulWidget {
-  const ScreenPage({super.key});
+  const ScreenPage({super.key, this.index});
+
+  final index;
 
   @override
   State<ScreenPage> createState() => _ScreenPageState();

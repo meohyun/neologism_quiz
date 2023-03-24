@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -7,9 +6,9 @@ import 'package:neologism/neo_function/quiz_func.dart';
 import 'package:neologism/pages/bulletin_pages/bulletin_board.dart';
 import 'package:neologism/pages/dictionary_page/dict_neologism.dart';
 import 'package:neologism/pages/startpage.dart';
-import 'package:neologism/pages/user_page/profile.dart';
 import '../getx/blackmode.dart';
 
+int pressedAttentionIndex = 0;
 class BottomWidet {
   final String name;
   final IconData icon;
@@ -29,7 +28,7 @@ class _MyBottomnavigatorState extends State<MyBottomnavigator> {
   final userid = FirebaseAuth.instance.currentUser!.uid;
   String intro = "";
 
-  int pressedAttentionIndex = 0;
+  
   @override
   Widget build(BuildContext context) {
     Get.put(BlackModeController());
@@ -85,38 +84,35 @@ class _MyBottomnavigatorState extends State<MyBottomnavigator> {
                     itemBuilder: (context, index) {
                       final pressAttention = pressedAttentionIndex == index;
                       return Padding(
-                        padding: const EdgeInsets.only(left: 5),
-                        child: GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              pressedAttentionIndex = index;
-                            });
-                          },
-                          child: Padding(
-                              padding: const EdgeInsets.only(bottom: 8),
-                              child: pressAttention
-                                  ? Container(
-                                      decoration: const BoxDecoration(
-                                          border: Border(
-                                              bottom: BorderSide(
-                                                  width: 1,
-                                                  color: Colors.black))),
-                                      height: 70,
-                                      width: 90,
-                                      child: MyIconButton(
-                                          name: mylist[index].name,
-                                          appicon: mylist[index].icon,
-                                          des: mylist[index].des),
-                                    )
-                                  : SizedBox(
-                                      height: 70,
-                                      width: 90,
-                                      child: MyIconButton(
-                                          name: mylist[index].name,
-                                          appicon: mylist[index].icon,
-                                          des: mylist[index].des))),
-                        ),
-                      );
+                          padding: const EdgeInsets.only(left: 20),
+                          child: GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  pressedAttentionIndex = index;
+                                });
+                              },
+                              child: 
+                              pressAttention? 
+                              SizedBox(
+                                height: 70,
+                                width: 70,
+                                child: MyIconButton(
+                                      name: mylist[index].name,
+                                      appicon: mylist[index].icon,
+                                      des: mylist[index].des,
+                                      color: Colors.blue,
+                                      blackmodecolor: Colors.blue,),
+                              ):
+                              SizedBox(
+                                    height: 70,
+                                    width: 70,
+                                    child: MyIconButton(
+                                        name: mylist[index].name,
+                                        appicon: mylist[index].icon,
+                                        des: mylist[index].des,
+                                        color: Colors.black,
+                                        blackmodecolor: Colors.white,)
+                                  )));
                     })),
           ),
         ),
@@ -126,12 +122,13 @@ class _MyBottomnavigatorState extends State<MyBottomnavigator> {
 }
 
 class MyIconButton extends StatefulWidget {
-  const MyIconButton({super.key, this.name, required this.des, this.appicon});
+  const MyIconButton({super.key, this.name, required this.des, this.appicon,this.color,this.blackmodecolor});
 
   final name;
   final appicon;
   final des;
-
+  final color;
+  final blackmodecolor;
   @override
   State<MyIconButton> createState() => _MyIconButtonState();
 }
@@ -147,8 +144,8 @@ class _MyIconButtonState extends State<MyIconButton> {
           Icon(
             widget.appicon,
             color: Get.find<BlackModeController>().blackmode
-                ? Colors.white
-                : Colors.black,
+                ? widget.blackmodecolor
+                : widget.color,
             size: 30,
           ),
           const SizedBox(
@@ -158,8 +155,8 @@ class _MyIconButtonState extends State<MyIconButton> {
             widget.name,
             style: TextStyle(
                 color: Get.find<BlackModeController>().blackmode
-                    ? Colors.white
-                    : Colors.black),
+                    ? widget.blackmodecolor
+                    : widget.color),
           )
         ],
       ),
