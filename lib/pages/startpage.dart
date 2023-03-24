@@ -1,9 +1,7 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:neologism/getx/blackmode.dart';
@@ -11,10 +9,8 @@ import 'package:neologism/getx/profileimage.dart';
 import 'package:neologism/neo_function/login_func.dart';
 import 'package:neologism/neo_function/quiz_func.dart';
 import 'package:neologism/pages/bulletin_pages/bulletin_board.dart';
-import 'package:neologism/pages/dictionary_page/dict_neologism.dart';
 import 'package:neologism/pages/quiz_page/word_quiz.dart';
 import 'package:neologism/pages/user_page/profile.dart';
-import 'package:neologism/widgets/Buttons.dart';
 import 'package:neologism/widgets/bottom_navigation.dart';
 import 'package:neologism/widgets/mydrawer.dart';
 import 'package:neologism/widgets/records.dart';
@@ -147,15 +143,15 @@ class Authentication extends StatelessWidget {
 }
 
 class ScreenPage extends StatefulWidget {
-  const ScreenPage({super.key, this.index});
+  const ScreenPage({super.key});
 
-  final index;
 
   @override
   State<ScreenPage> createState() => _ScreenPageState();
 }
 
 class _ScreenPageState extends State<ScreenPage> {
+  int index = 0;
   final useruid = FirebaseAuth.instance.currentUser!.uid;
   final username = FirebaseAuth.instance.currentUser!.displayName;
   DateTime? currentBackPressTime;
@@ -202,6 +198,7 @@ class _ScreenPageState extends State<ScreenPage> {
 
   @override
   void initState() {
+    index = 0;
     makeuserprofile();
     getprofile();
     final _auth = FirebaseAuth.instance.currentUser!;
@@ -216,7 +213,7 @@ class _ScreenPageState extends State<ScreenPage> {
     return GetBuilder(
       init: BlackModeController(),
       builder: (_) => Scaffold(
-          bottomNavigationBar: const MyBottomnavigator(),
+          bottomNavigationBar: MyBottomnavigator(index: index,),
           backgroundColor: Get.find<BlackModeController>().blackmode
               ? blackmodecolor
               : notblackmodecolor,

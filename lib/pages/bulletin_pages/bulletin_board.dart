@@ -17,6 +17,7 @@ class BulletinBoard extends StatefulWidget {
 }
 
 class _BulletinBoardState extends State<BulletinBoard> {
+  int index = 3;
   getAdminName() async {
     final user = FirebaseAuth.instance.currentUser!;
     final userid = user.uid;
@@ -46,10 +47,9 @@ class _BulletinBoardState extends State<BulletinBoard> {
     }
   }
 
-
-
   @override
   void initState() {
+    index = 3;
     getAdminName();
     super.initState();
   }
@@ -62,7 +62,7 @@ class _BulletinBoardState extends State<BulletinBoard> {
           backgroundColor: Get.find<BlackModeController>().blackmode
                     ? blackmodecolor
                     : notblackmodecolor,
-          bottomNavigationBar: const MyBottomnavigator(),
+          bottomNavigationBar: MyBottomnavigator(index:index),
               appBar: AppBar(
                 leading: IconButton(
                     onPressed: () {

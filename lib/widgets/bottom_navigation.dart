@@ -8,7 +8,6 @@ import 'package:neologism/pages/dictionary_page/dict_neologism.dart';
 import 'package:neologism/pages/startpage.dart';
 import '../getx/blackmode.dart';
 
-int pressedAttentionIndex = 0;
 class BottomWidet {
   final String name;
   final IconData icon;
@@ -18,7 +17,9 @@ class BottomWidet {
 }
 
 class MyBottomnavigator extends StatefulWidget {
-  const MyBottomnavigator({super.key});
+  const MyBottomnavigator({super.key,this.index});
+
+  final index;
 
   @override
   State<MyBottomnavigator> createState() => _MyBottomnavigatorState();
@@ -27,7 +28,6 @@ class MyBottomnavigator extends StatefulWidget {
 class _MyBottomnavigatorState extends State<MyBottomnavigator> {
   final userid = FirebaseAuth.instance.currentUser!.uid;
   String intro = "";
-
   
   @override
   Widget build(BuildContext context) {
@@ -82,37 +82,29 @@ class _MyBottomnavigatorState extends State<MyBottomnavigator> {
                     scrollDirection: Axis.horizontal,
                     itemCount: mylist.length,
                     itemBuilder: (context, index) {
-                      final pressAttention = pressedAttentionIndex == index;
                       return Padding(
                           padding: const EdgeInsets.only(left: 20),
-                          child: GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  pressedAttentionIndex = index;
-                                });
-                              },
-                              child: 
-                              pressAttention? 
-                              SizedBox(
+                          child: index == widget.index? 
+                          SizedBox(
+                            height: 70,
+                            width: 70,
+                            child: MyIconButton(
+                                  name: mylist[index].name,
+                                  appicon: mylist[index].icon,
+                                  des: mylist[index].des,
+                                  color: Colors.blue,
+                                  blackmodecolor: Colors.blue,),
+                          ):
+                          SizedBox(
                                 height: 70,
                                 width: 70,
                                 child: MyIconButton(
-                                      name: mylist[index].name,
-                                      appicon: mylist[index].icon,
-                                      des: mylist[index].des,
-                                      color: Colors.blue,
-                                      blackmodecolor: Colors.blue,),
-                              ):
-                              SizedBox(
-                                    height: 70,
-                                    width: 70,
-                                    child: MyIconButton(
-                                        name: mylist[index].name,
-                                        appicon: mylist[index].icon,
-                                        des: mylist[index].des,
-                                        color: Colors.black,
-                                        blackmodecolor: Colors.white,)
-                                  )));
+                                    name: mylist[index].name,
+                                    appicon: mylist[index].icon,
+                                    des: mylist[index].des,
+                                    color: Colors.black,
+                                    blackmodecolor: Colors.white,)
+                              ));
                     })),
           ),
         ),

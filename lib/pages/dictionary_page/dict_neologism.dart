@@ -17,16 +17,19 @@ setinit() {
 }
 
 class NeologismDict extends StatefulWidget {
-  const NeologismDict({super.key,this.index});
+  const NeologismDict({super.key});
 
-  final index;
+  
+
   @override
   State<NeologismDict> createState() => _NeologismDictState();
 }
 
 class _NeologismDictState extends State<NeologismDict> {
+  int index = 2;
   @override
   void initState() {
+    index = 2;
     super.initState();
     setinit();
   }
@@ -61,7 +64,7 @@ class _NeologismDictState extends State<NeologismDict> {
             ),
           ],
         ),
-        bottomNavigationBar: const MyBottomnavigator(),
+        bottomNavigationBar: MyBottomnavigator(index: index,),
         backgroundColor: Get.find<BlackModeController>().blackmode == true
             ? blackmodecolor
             : notblackmodecolor,
