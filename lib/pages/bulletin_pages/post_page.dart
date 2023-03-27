@@ -11,6 +11,7 @@ import 'package:neologism/pages/bulletin_pages/postCRUD.dart';
 import 'package:neologism/pages/bulletin_pages/chatbox.dart';
 import 'package:neologism/pages/startpage.dart';
 import 'package:neologism/pages/user_page/profile.dart';
+import 'package:neologism/widgets/bottom_navigation.dart';
 
 final userid = FirebaseAuth.instance.currentUser!.uid;
 bool isLiked = false;

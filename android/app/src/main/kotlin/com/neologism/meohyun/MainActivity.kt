@@ -1,4 +1,4 @@
-package com.example.neologism
+package com.neologism.meohyun
 
 import io.flutter.embedding.android.FlutterActivity
 
