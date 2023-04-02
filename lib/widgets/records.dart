@@ -28,6 +28,7 @@ class _GameRecodrState extends State<GameRecord> {
             return const CircularProgressIndicator();
           }
           final userdocs = snapshot.data![widget.userid]['result'];
+
           return ListView.builder(
               itemCount: userdocs.length,
               itemBuilder: (context, index) {
