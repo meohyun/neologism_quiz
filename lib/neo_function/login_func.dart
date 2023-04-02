@@ -6,6 +6,7 @@ import 'package:neologism/pages/startpage.dart';
 
 void logout(context) {
   showDialog(
+      barrierDismissible: false,
       context: context,
       builder: (context) {
         return GetBuilder(

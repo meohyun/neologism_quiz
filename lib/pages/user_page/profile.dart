@@ -199,7 +199,7 @@ class _UserProfileState extends State<UserProfile> {
                     padding: const EdgeInsets.all(8.0),
                     child: SingleChildScrollView(
                       child: SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.6,
+                        height: MediaQuery.of(context).size.height * 0.59,
                         child: StreamBuilder<DocumentSnapshot<Map>>(
                             stream: FirebaseFirestore.instance
                                 .collection('user')

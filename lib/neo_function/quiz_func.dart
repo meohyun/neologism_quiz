@@ -13,7 +13,6 @@ import 'package:neologism/pages/startpage.dart';
 import 'package:neologism/datas/quizdata.dart';
 import 'package:neologism/widgets/Buttons.dart';
 
-
 Timer? _timer;
 int order = 0;
 int idx = 1;
@@ -42,48 +41,50 @@ nextpage() {
 }
 
 Future<bool> onWillPop(context) async {
-    return await showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: const Text("종료 하시겠습니까?"),
-            actions: [
-              TextButton(
-                  onPressed: () {
-                    SystemNavigator.pop();
-                  },
-                  child: const Text("예",style: TextStyle(fontSize: 18))),
-               TextButton(
-                  onPressed: () {
-                    Navigator.pop(context, false);
-                  },
-                  child: const Text("아니오",style: TextStyle(fontSize: 18)))
-            ],
-          );
-        });
-  }
+  return await showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("종료 하시겠습니까?"),
+          actions: [
+            TextButton(
+                onPressed: () {
+                  SystemNavigator.pop();
+                },
+                child: const Text("예", style: TextStyle(fontSize: 18))),
+            TextButton(
+                onPressed: () {
+                  Navigator.pop(context, false);
+                },
+                child: const Text("아니오", style: TextStyle(fontSize: 18)))
+          ],
+        );
+      });
+}
 
 Future<bool> quizonWillPop(context) async {
-    return await showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: const Text("퀴즈를 종료 하시겠습니까?"),
-            actions: [
-              TextButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/');
-                  },
-                  child: const Text("예",style: TextStyle(fontSize: 18))),
-               TextButton(
-                  onPressed: () {
-                    Navigator.pop(context, false);
-                  },
-                  child: const Text("아니오",style: TextStyle(fontSize: 18)))
-            ],
-          );
-        });
-  }
+  return await showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("퀴즈를 종료 하시겠습니까?"),
+          actions: [
+            TextButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, '/');
+                },
+                child: const Text("예", style: TextStyle(fontSize: 18))),
+            TextButton(
+                onPressed: () {
+                  Navigator.pop(context, false);
+                },
+                child: const Text("아니오", style: TextStyle(fontSize: 18)))
+          ],
+        );
+      });
+}
 
 quizresult(String quiztype) {
   final user = FirebaseAuth.instance.currentUser!;
@@ -150,7 +151,7 @@ endpage(context, page, String quiztype) {
                             },
                             child: const Text("홈으로",
                                 style: TextStyle(color: Colors.white))),
-                       const  SizedBox(
+                        const SizedBox(
                           width: 50,
                         ),
                         TextButton(
@@ -160,7 +161,7 @@ endpage(context, page, String quiztype) {
                               Navigator.pushNamed(context, page);
                               textcontroller.text = "";
                             },
-                            child: const  Text(
+                            child: const Text(
                               "다시하기",
                               style: TextStyle(color: Colors.white),
                             )),
@@ -348,5 +349,3 @@ showdesc(context, bool answer) {
         );
       });
 }
-
-

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/instance_manager.dart';
 import 'package:get/route_manager.dart';
 import 'package:neologism/getx/blackmode.dart';
@@ -50,18 +51,20 @@ class BlackModeButton extends StatefulWidget {
 }
 
 class _BlackModeButtonState extends State<BlackModeButton> {
-  final _blackModeController = Get.put(BlackModeController());
   @override
   Widget build(BuildContext context) {
-    return IconButton(
-        onPressed: () {
-          _blackModeController.blackmodechange();
-        },
-        icon: Icon(
-          Icons.dark_mode,
-          color: Get.find<BlackModeController>().blackmode == true
-              ? Colors.yellow
-              : Colors.grey,
-        ));
+    return GetBuilder(
+      init: BlackModeController(),
+      builder:(_)=> IconButton(
+          onPressed: () {
+            Get.find<BlackModeController>().blackmodechange();
+          },
+          icon: Icon(
+            Icons.dark_mode,
+            color: Get.find<BlackModeController>().blackmode
+                ? Colors.yellow
+                : Colors.grey,
+          )),
+    );
   }
 }

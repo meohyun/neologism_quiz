@@ -68,6 +68,14 @@ class Authentication extends StatelessWidget {
     return StreamBuilder(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          if (snapshot.connectionState == ConnectionState.none){
+            return const Center(child: Text("응답이 없습니다"),);
+          }
           if (!snapshot.hasData) {
             return Container(
               color: Colors.deepPurple[100],
@@ -145,7 +153,6 @@ class Authentication extends StatelessWidget {
 class ScreenPage extends StatefulWidget {
   const ScreenPage({super.key});
 
-
   @override
   State<ScreenPage> createState() => _ScreenPageState();
 }
@@ -213,7 +220,9 @@ class _ScreenPageState extends State<ScreenPage> {
     return GetBuilder(
       init: BlackModeController(),
       builder: (_) => Scaffold(
-          bottomNavigationBar: MyBottomnavigator(index: index,),
+          bottomNavigationBar: MyBottomnavigator(
+            index: index,
+          ),
           backgroundColor: Get.find<BlackModeController>().blackmode
               ? blackmodecolor
               : notblackmodecolor,

@@ -118,8 +118,7 @@ class _EssayQuizState extends State<EssayQuiz> {
                               "$idx/10",
                               style: TextStyle(
                                   color:
-                                      Get.find<BlackModeController>().blackmode ==
-                                              true
+                                      Get.find<BlackModeController>().blackmode 
                                           ? Colors.white
                                           : Colors.black,
                                   fontSize: 20),
@@ -133,8 +132,7 @@ class _EssayQuizState extends State<EssayQuiz> {
                                   color: essayTime <= 3
                                       ? Colors.red
                                       : (Get.find<BlackModeController>()
-                                                  .blackmode ==
-                                              true
+                                                  .blackmode 
                                           ? Colors.white
                                           : Colors.black)),
                             )
@@ -165,8 +163,7 @@ class _EssayQuizState extends State<EssayQuiz> {
                               Text("X$hint_num",
                                   style: TextStyle(
                                       color: Get.find<BlackModeController>()
-                                                  .blackmode ==
-                                              true
+                                                  .blackmode 
                                           ? Colors.white
                                           : Colors.black,
                                       fontSize: 20))
@@ -175,8 +172,7 @@ class _EssayQuizState extends State<EssayQuiz> {
                           Text("맞춘개수: $number_answer",
                               style: TextStyle(
                                   color:
-                                      Get.find<BlackModeController>().blackmode ==
-                                              true
+                                      Get.find<BlackModeController>().blackmode
                                           ? Colors.white
                                           : Colors.black,
                                   fontSize: 20))
@@ -331,8 +327,7 @@ class _EssayQuizState extends State<EssayQuiz> {
                                           style: TextStyle(
                                               color:
                                                   Get.find<BlackModeController>()
-                                                              .blackmode ==
-                                                          true
+                                                              .blackmode 
                                                       ? Colors.white
                                                       : Colors.black,
                                               fontSize: 22,
@@ -346,8 +341,7 @@ class _EssayQuizState extends State<EssayQuiz> {
                                   child: Text(sen_data[order]["desc"],
                                       style: TextStyle(
                                           color: Get.find<BlackModeController>()
-                                                      .blackmode ==
-                                                  true
+                                                      .blackmode 
                                               ? Colors.white
                                               : Colors.black,
                                           fontSize: 20.0,
@@ -423,8 +417,7 @@ class _EssayQuizState extends State<EssayQuiz> {
                                                   style: TextStyle(
                                                       color:
                                                           Get.find<BlackModeController>()
-                                                                      .blackmode ==
-                                                                  true
+                                                                      .blackmode 
                                                               ? Colors.white
                                                               : Colors.black,
                                                       fontSize: 22,
@@ -437,8 +430,7 @@ class _EssayQuizState extends State<EssayQuiz> {
                                               style: TextStyle(
                                                   color:
                                                       Get.find<BlackModeController>()
-                                                                  .blackmode ==
-                                                              true
+                                                                  .blackmode 
                                                           ? Colors.white
                                                           : Colors.black,
                                                   fontSize: 20.0,
@@ -456,8 +448,7 @@ class _EssayQuizState extends State<EssayQuiz> {
                                       text: '오답입니다! 기회가 ',
                                       style: TextStyle(
                                           color: Get.find<BlackModeController>()
-                                                      .blackmode ==
-                                                  true
+                                                      .blackmode 
                                               ? Colors.white
                                               : Colors.black,
                                           fontSize: 20.0,
@@ -473,8 +464,7 @@ class _EssayQuizState extends State<EssayQuiz> {
                                         text: "번 남았습니다!",
                                         style: TextStyle(
                                             color: Get.find<BlackModeController>()
-                                                        .blackmode ==
-                                                    true
+                                                        .blackmode
                                                 ? Colors.white
                                                 : Colors.black,
                                             fontSize: 20.0,
