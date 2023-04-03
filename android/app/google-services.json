@@ -30,6 +30,14 @@
           }
         },
         {
+          "client_id": "200024650804-lm8b8uvljcupj01g4nlmeoei631r3cis.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.neologism.meohyun",
+            "certificate_hash": "2e0fb101934188d9a5668696b21876900d7fde63"
+          }
+        },
+        {
           "client_id": "200024650804-u944j61ot8lb9chsff1nhfi5qbvls3hv.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
