@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:neologism/getx/blackmode.dart';
 import 'package:neologism/neo_function/bgm.dart';
 import 'package:neologism/neo_function/quiz_func.dart';
+import 'package:neologism/pages/quiz_page/essay_quiz.dart';
 import 'package:neologism/pages/startpage.dart';
 import 'package:neologism/datas/quizdata.dart';
 import 'package:neologism/widgets/appbar.dart';
@@ -12,12 +13,14 @@ import 'package:neologism/widgets/Buttons.dart';
 Timer? _timer;
 bool descblocked = false;
 int time = 10;
+List<int> word_orders = [];
 String _time = "10";
 
 setinit() {
   time = 10;
   answer = false;
-  order = makenumber(datas.length)[0];
+  word_orders = makenumber(datas.length);
+  order = word_orders[0];
   answershow = false;
   idx = 1;
   hint_num = 5;

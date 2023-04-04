@@ -11,7 +11,6 @@ import 'package:neologism/pages/bulletin_pages/postCRUD.dart';
 import 'package:neologism/pages/bulletin_pages/chatbox.dart';
 import 'package:neologism/pages/startpage.dart';
 import 'package:neologism/pages/user_page/profile.dart';
-import 'package:neologism/widgets/bottom_navigation.dart';
 
 final userid = FirebaseAuth.instance.currentUser!.uid;
 bool isLiked = false;
@@ -99,7 +98,6 @@ class _BulletinPostState extends State<BulletinPost> {
               .collection('post')
               .doc(widget.docId)
               .update({"chats": FieldValue.arrayRemove(exchat)});
-
           List<dynamic> chat = [
             {
               "content": datas["chats"][i]["content"],

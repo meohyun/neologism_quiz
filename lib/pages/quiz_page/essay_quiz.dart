@@ -17,6 +17,7 @@ String wordhint = "";
 bool typetext = true;
 int answer_chance = 3;
 int word_num = 0;
+List<int> sen_orders = [];
 Timer? _essaytimer;
 int essayTime = 15;
 String _essayTime = "15";
@@ -24,7 +25,8 @@ String _essayTime = "15";
 setinit() {
   essayTime = 15;
   answer = false;
-  order = makenumber(sen_data.length)[0];
+  sen_orders = makenumber(sen_data.length);
+  order = sen_orders[0];
   essay_answershow = false;
   idx = 1;
   answer_chance = 3;

@@ -31,7 +31,7 @@ bool essay_running = true;
 nextpage() {
   answer = false;
   answershow = false;
-  order = makenumber(datas.length)[idx - 1];
+  order = word_orders[idx];
   hintclicked = false;
   hintblocked = false;
   idx++;
