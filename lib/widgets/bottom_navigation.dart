@@ -146,6 +146,7 @@ class _MyIconButtonState extends State<MyIconButton> {
           Text(
             widget.name,
             style: TextStyle(
+              fontSize: 12,
                 color: Get.find<BlackModeController>().blackmode
                     ? widget.blackmodecolor
                     : widget.color),

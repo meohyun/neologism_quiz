@@ -68,14 +68,6 @@ class Authentication extends StatelessWidget {
     return StreamBuilder(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-          if (snapshot.connectionState == ConnectionState.none){
-            return const Center(child: Text("응답이 없습니다"),);
-          }
           if (!snapshot.hasData) {
             return Container(
               color: Colors.deepPurple[100],
@@ -259,7 +251,7 @@ class _ScreenPageState extends State<ScreenPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Icon(
-                      Icons.logout_outlined,
+                      Icons.power_settings_new,
                       color: Get.find<BlackModeController>().blackmode
                           ? Colors.white
                           : Colors.black,
@@ -267,6 +259,7 @@ class _ScreenPageState extends State<ScreenPage> {
                     Text(
                       "로그아웃",
                       style: TextStyle(
+                          fontSize: 12,
                           color: Get.find<BlackModeController>().blackmode
                               ? Colors.white
                               : Colors.black),
@@ -294,6 +287,7 @@ class _ScreenPageState extends State<ScreenPage> {
                       Text(
                         "다크 모드",
                         style: TextStyle(
+                            fontSize: 12,
                             color: Get.find<BlackModeController>().blackmode
                                 ? Colors.white
                                 : Colors.black),
@@ -310,6 +304,17 @@ class _ScreenPageState extends State<ScreenPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(30, 10, 0, 0),
+                    child: Text(
+                      "프로필",
+                      style: TextStyle(
+                          fontSize: 20,
+                          color: Get.find<BlackModeController>().blackmode
+                              ? Colors.white
+                              : Colors.black),
+                    ),
+                  ),
                   Padding(
                       padding: const EdgeInsets.all(15.0),
                       child: GestureDetector(
@@ -395,61 +400,6 @@ class _ScreenPageState extends State<ScreenPage> {
                               child: GameRecord(
                                 userid: useruid,
                               ),
-                            )),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(30, 30, 0, 10),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              "게시판",
-                              style: TextStyle(
-                                  fontSize: 20,
-                                  color:
-                                      Get.find<BlackModeController>().blackmode
-                                          ? Colors.white
-                                          : Colors.black),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(right: 30),
-                              child: Container(
-                                width: 70,
-                                height: 38,
-                                decoration: BoxDecoration(
-                                    color: Colors.blue,
-                                    border: Border.all(
-                                        width: 1, color: Colors.white),
-                                    borderRadius: BorderRadius.circular(15)),
-                                child: TextButton(
-                                    onPressed: () {
-                                      Get.to(() => const BulletinBoard());
-                                    },
-                                    child: const Text(
-                                      "더 보기",
-                                      style: TextStyle(
-                                          fontSize: 15, color: Colors.white),
-                                    )),
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 20),
-                        child: Container(
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(30),
-                                border:
-                                    Border.all(width: 2, color: Colors.white),
-                                color: Get.find<BlackModeController>().blackmode
-                                    ? Colors.black
-                                    : Colors.deepPurple[50]),
-                            width: MediaQuery.of(context).size.width * 0.9,
-                            height: MediaQuery.of(context).size.height * 0.5,
-                            child: const Padding(
-                              padding: EdgeInsets.all(8),
-                              child: Blluettin(),
                             )),
                       ),
                     ],
