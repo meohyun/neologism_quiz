@@ -79,6 +79,8 @@ class BulletinTile extends StatelessWidget {
                               Text(
                                 docs[index]["name"] +
                                     "  [${docs[index]["chats"].length}]",
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
                                     fontSize: 20,
                                     color: Get.find<BlackModeController>()

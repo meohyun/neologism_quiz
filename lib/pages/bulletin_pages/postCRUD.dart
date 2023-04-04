@@ -38,7 +38,7 @@ class _BulletinCreateState extends State<BulletinCreate> {
       'dislikes': {userid: false}
     });
 
-    Navigator.pushNamed(context, '/bulletin');
+   Navigator.pushNamed(context, '/bulletin');
   }
 
   @override
@@ -94,6 +94,9 @@ class _BulletinCreateState extends State<BulletinCreate> {
                             validator: (value) {
                               if (value == null) {
                                 return "제목을 입력해주세요.";
+                              }
+                              if (value.length >= 20) {
+                                return "제목은 20자 미만으로 작성해주세요.";
                               }
                               if (value.contains(RegExp("씨발"))) {
                                 return "비속어를 사용할 수 없습니다.";
