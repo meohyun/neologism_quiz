@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +7,7 @@ import 'package:neologism/getx/profileimage.dart';
 import 'package:neologism/pages/startpage.dart';
 import 'package:intl/intl.dart';
 import 'package:neologism/pages/user_page/nickname.dart';
+import 'package:neologism/pages/user_page/profile_image.dart';
 import 'package:neologism/widgets/bottom_navigation.dart';
 
 ProfileImageController profileimagecontroller =
@@ -114,13 +114,18 @@ class _UserProfileState extends State<UserProfile> {
                   const SizedBox(
                     height: 10,
                   ),
-                  CircleAvatar(
-                    backgroundImage: widget.hasimage == true
-                        ? NetworkImage(widget.imagepath) as ImageProvider
-                        : const AssetImage(
-                            "assets/userimage3.png",
-                          ),
-                    radius: 35,
+                  GestureDetector(
+                    onTap: (){
+                      Get.to(()=> ProfileImage(user: widget.name == null ? username: widget.name,imageurl: widget.imagepath,));
+                    },
+                    child: CircleAvatar(
+                      backgroundImage: widget.hasimage == true
+                          ? NetworkImage(widget.imagepath) as ImageProvider
+                          : const AssetImage(
+                              "assets/userimage3.png",
+                            ),
+                      radius: 35,
+                    ),
                   ),
                   const SizedBox(
                     height: 10,

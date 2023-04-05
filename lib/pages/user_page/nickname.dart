@@ -18,7 +18,7 @@ final useruid = FirebaseAuth.instance.currentUser!.uid;
 String imageUrl = "";
 
 class UpdateNickname extends StatefulWidget {
-  const UpdateNickname({super.key,this.intro});
+  const UpdateNickname({super.key, this.intro});
 
   final intro;
 
@@ -82,10 +82,10 @@ class _UpdateNicknameState extends State<UpdateNickname> {
             ),
             leading: const SizedBox(),
             backgroundColor: blackmode ? blackmodecolor : notblackmodecolor,
-            elevation: 0.0,    
+            elevation: 0.0,
           ),
           body: WillPopScope(
-            onWillPop: (){
+            onWillPop: () {
               return Future(() => false);
             },
             child: Container(
@@ -147,8 +147,9 @@ class _UpdateNicknameState extends State<UpdateNickname> {
                               style: TextStyle(
                                   fontSize: 18,
                                   fontWeight: FontWeight.bold,
-                                  color:
-                                      blackmode ? Colors.white : blackmodecolor),
+                                  color: blackmode
+                                      ? Colors.white
+                                      : blackmodecolor),
                             ),
                           ],
                         ),
@@ -162,8 +163,9 @@ class _UpdateNicknameState extends State<UpdateNickname> {
                             height: 50,
                             child: TextFormField(
                                 style: TextStyle(
-                                    color:
-                                        blackmode ? Colors.white : Colors.black),
+                                    color: blackmode
+                                        ? Colors.white
+                                        : Colors.black),
                                 onSaved: (value) {
                                   setState(() {
                                     _nicknameController.text = value as String;
@@ -224,8 +226,9 @@ class _UpdateNicknameState extends State<UpdateNickname> {
                               style: TextStyle(
                                   fontSize: 18,
                                   fontWeight: FontWeight.bold,
-                                  color:
-                                      blackmode ? Colors.white : blackmodecolor),
+                                  color: blackmode
+                                      ? Colors.white
+                                      : blackmodecolor),
                             ),
                           ],
                         ),
@@ -236,8 +239,8 @@ class _UpdateNicknameState extends State<UpdateNickname> {
                             key: _introformkey,
                             child: TextFormField(
                               style: TextStyle(
-                                    color:
-                                        blackmode ? Colors.white : Colors.black),
+                                  color:
+                                      blackmode ? Colors.white : Colors.black),
                               controller: _introController,
                               decoration: InputDecoration(
                                   border: OutlineInputBorder(
@@ -282,7 +285,8 @@ class _UpdateNicknameState extends State<UpdateNickname> {
                             style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
-                                color: blackmode ? Colors.white : blackmodecolor),
+                                color:
+                                    blackmode ? Colors.white : blackmodecolor),
                           ),
                           const SizedBox(
                             height: 10,
@@ -292,7 +296,8 @@ class _UpdateNicknameState extends State<UpdateNickname> {
                             style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
-                                color: blackmode ? Colors.white : blackmodecolor),
+                                color:
+                                    blackmode ? Colors.white : blackmodecolor),
                           ),
                           const SizedBox(
                             height: 10,
@@ -302,7 +307,8 @@ class _UpdateNicknameState extends State<UpdateNickname> {
                             style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
-                                color: blackmode ? Colors.white : blackmodecolor),
+                                color:
+                                    blackmode ? Colors.white : blackmodecolor),
                           ),
                           const SizedBox(
                             height: 10,
@@ -312,7 +318,8 @@ class _UpdateNicknameState extends State<UpdateNickname> {
                             style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
-                                color: blackmode ? Colors.white : blackmodecolor),
+                                color:
+                                    blackmode ? Colors.white : blackmodecolor),
                           ),
                           const SizedBox(
                             height: 40,
@@ -366,7 +373,7 @@ class _UpdateNicknameState extends State<UpdateNickname> {
                                         hasimage: profileimagecontroller
                                             .isProfilePath.value,
                                         intro: _introController.text,
-                                        route: Startpage(),
+                                        route: const Startpage(),
                                       );
                                     }));
                                   }
@@ -396,7 +403,7 @@ Widget bottomsheet(BuildContext context) {
   return Container(
     width: double.infinity,
     height: size.height * 0.2,
-    margin: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+    margin: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
     child: Column(
       children: [
         const Text(
@@ -411,44 +418,70 @@ Widget bottomsheet(BuildContext context) {
           children: [
             InkWell(
               onTap: () {
-                takePhoto(ImageSource.gallery);
+                normalImage();
               },
-              child: Column(
+              child: const Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
+                children: [
                   Icon(
-                    Icons.image,
-                    size: 50,
+                    Icons.person,
+                    size: 40,
                   ),
                   Text(
-                    "앨범에서 찾기",
+                    "기본 이미지로 변경",
                     style: TextStyle(
-                      fontSize: 20,
+                      fontSize: 15,
                     ),
                   )
                 ],
               ),
             ),
             const SizedBox(
-              width: 80,
+              width: 35,
+            ),
+            InkWell(
+              onTap: () {
+                takePhoto(ImageSource.gallery);
+              },
+              child: const Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.image,
+                    size: 40,
+                  ),
+                  Text(
+                    "앨범에서 찾기",
+                    style: TextStyle(
+                      fontSize: 15,
+                    ),
+                  )
+                ],
+              ),
+            ),
+            const SizedBox(
+              width: 40,
             ),
             InkWell(
               onTap: () {
                 takePhoto(ImageSource.camera);
               },
-              child: Column(
-                children: const [
+              child: const Column(
+                children: [
                   Icon(
                     Icons.camera_enhance,
-                    size: 50,
+                    size: 40,
                   ),
                   Text(
                     "사진 찍기",
-                    style: TextStyle(fontSize: 20),
+                    style: TextStyle(fontSize: 15),
                   )
                 ],
               ),
-            )
+            ),
+            const SizedBox(
+              width: 20,
+            ),
           ],
         )
       ],
@@ -468,16 +501,28 @@ void takePhoto(ImageSource source) async {
   try {
     await referenceImageToUpload.putFile(File(pickedimage!.path));
     imageUrl = await referenceImageToUpload.getDownloadURL();
+    profileimagecontroller.isProfilePath.value = true;
+    profileimagecontroller.setProfileImagePath(imageUrl);
   } catch (error) {
     //some error occurred
   }
-  profileimagecontroller.isProfilePath.value = true;
-  profileimagecontroller.setProfileImagePath(imageUrl);
 
   FirebaseFirestore.instance
       .collection('user')
       .doc('userdatabase')
       .update({'$useruid.imagepath': imageUrl, '$useruid.hasimage': true});
+
+  Get.back();
+}
+
+void normalImage(){
+  
+  profileimagecontroller.isProfilePath.value = false;
+  profileimagecontroller.setProfileImagePath("https://firebasestorage.googleapis.com/v0/b/neologismquiz.appspot.com/o/image%2Fuserimage3.png?alt=media&token=1bca2275-037e-4470-904d-81491727fdbb");
+  FirebaseFirestore.instance
+      .collection('user')
+      .doc('userdatabase')
+      .update({'$useruid.imagepath': "https://firebasestorage.googleapis.com/v0/b/neologismquiz.appspot.com/o/image%2Fuserimage3.png?alt=media&token=1bca2275-037e-4470-904d-81491727fdbb", '$useruid.hasimage': false});
 
   Get.back();
 }
