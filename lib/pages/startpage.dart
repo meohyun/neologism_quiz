@@ -8,7 +8,6 @@ import 'package:neologism/getx/blackmode.dart';
 import 'package:neologism/getx/profileimage.dart';
 import 'package:neologism/neo_function/login_func.dart';
 import 'package:neologism/neo_function/quiz_func.dart';
-import 'package:neologism/pages/bulletin_pages/bulletin_board.dart';
 import 'package:neologism/pages/quiz_page/word_quiz.dart';
 import 'package:neologism/pages/user_page/profile.dart';
 import 'package:neologism/widgets/bottom_navigation.dart';
@@ -341,16 +340,22 @@ class _ScreenPageState extends State<ScreenPage> {
                             padding: const EdgeInsets.all(8.0),
                             child: Row(
                               children: [
-                                CircleAvatar(
-                                  backgroundImage: profileimagecontroller
-                                              .isProfilePath.value ==
-                                          true
-                                      ? NetworkImage(profileimagecontroller
-                                          .profilePath.value) as ImageProvider
-                                      : const AssetImage(
-                                          "assets/userimage3.png",
-                                        ),
-                                  radius: 25,
+                                Container(
+                                  decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      border: Border.all(
+                                          color: Colors.white, width: 2)),
+                                  child: CircleAvatar(
+                                    backgroundImage: profileimagecontroller
+                                                .isProfilePath.value ==
+                                            true
+                                        ? NetworkImage(profileimagecontroller
+                                            .profilePath.value) as ImageProvider
+                                        : const AssetImage(
+                                            "assets/userimage3.png",
+                                          ),
+                                    radius: 25,
+                                  ),
                                 ),
                                 const SizedBox(
                                   width: 20,
