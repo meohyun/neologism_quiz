@@ -237,7 +237,7 @@ class _UserProfileState extends State<UserProfile> {
                                                     : blackmodecolor),
                                           ),
                                           subtitle: userdocs[index]['type'] ==
-                                                  "WordQuiz"
+                                                  "wordquiz"
                                               ? Text("단어퀴즈",
                                                   style: TextStyle(
                                                       color: blackmode

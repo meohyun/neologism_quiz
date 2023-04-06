@@ -75,7 +75,7 @@ class _BulletinPostState extends State<BulletinPost> {
     });
   }
 
-  updateChatUser() async{
+  updateChatUser() async {
     FirebaseFirestore.instance
         .collection('post')
         .doc(widget.docId)
@@ -89,21 +89,24 @@ class _BulletinPostState extends State<BulletinPost> {
             .get()
             .then((value) {
           final userdata = value.data();
-          if (datas["chats"][i]["nickname"] != userdata![datas["chats"][i]["user"]]["user"] ){
+          if (datas["chats"][i]["nickname"] !=
+                  userdata![datas["chats"][i]["user"]]["user"] ||
+              datas["chats"][i]["imagepath"] !=
+                  userdata[datas["chats"][i]["user"]]["imagepath"]) {
             List<dynamic> exchat = [
-            {
-              "content": datas["chats"][i]["content"],
-              "time": datas["chats"][i]["time"],
-              "user": datas["chats"][i]["user"],
-              "nickname": datas["chats"][i]["nickname"],
-              "imagepath": datas["chats"][i]["imagepath"],
-              "hasimage": datas["chats"][i]["hasimage"],
-            },
-          ];
-          FirebaseFirestore.instance
-              .collection('post')
-              .doc(widget.docId)
-              .update({"chats": FieldValue.arrayRemove(exchat)});
+              {
+                "content": datas["chats"][i]["content"],
+                "time": datas["chats"][i]["time"],
+                "user": datas["chats"][i]["user"],
+                "nickname": datas["chats"][i]["nickname"],
+                "imagepath": datas["chats"][i]["imagepath"],
+                "hasimage": datas["chats"][i]["hasimage"],
+              },
+            ];
+            FirebaseFirestore.instance
+                .collection('post')
+                .doc(widget.docId)
+                .update({"chats": FieldValue.arrayRemove(exchat)});
           }
           List<dynamic> chat = [
             {

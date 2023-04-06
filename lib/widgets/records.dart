@@ -48,7 +48,7 @@ class _GameRecodrState extends State<GameRecord> {
                                   ? Colors.white
                                   : blackmodecolor),
                         ),
-                        subtitle: userdocs[index]['type'] == "WordQuiz"
+                        subtitle: userdocs[index]['type'] == "wordquiz"
                             ? Text("단어퀴즈",
                                 style: TextStyle(
                                     color: Get.find<BlackModeController>()
