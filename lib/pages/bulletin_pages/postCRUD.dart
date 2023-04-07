@@ -38,14 +38,16 @@ class _BulletinCreateState extends State<BulletinCreate> {
       'dislikes': {userid: false}
     });
 
-   Navigator.pushNamed(context, '/bulletin');
+    Navigator.pushNamed(context, '/bulletin');
   }
 
   @override
   void initState() {
     super.initState();
-    _titleController.text = "";
-    _contentController.text = "";
+    Future.delayed(Duration.zero, () {
+      _titleController.text = "";
+      _contentController.text = "";
+    });
   }
 
   @override
@@ -92,7 +94,7 @@ class _BulletinCreateState extends State<BulletinCreate> {
                               _titleController.text = value as String;
                             },
                             validator: (value) {
-                              if (value == null) {
+                              if (value == null || value.isEmpty) {
                                 return "제목을 입력해주세요.";
                               }
                               if (value.length >= 20) {
@@ -155,6 +157,8 @@ class _BulletinCreateState extends State<BulletinCreate> {
                       onPressed: () {
                         if (_contentformkey.currentState!.validate() &&
                             _titleformkey.currentState!.validate()) {
+                          _contentformkey.currentState!.save();
+                          _titleformkey.currentState!.save();
                           makepost(context);
                         }
                       },
@@ -185,11 +189,16 @@ class BulletinUpdate extends StatefulWidget {
 }
 
 class _BulletinUpdateState extends State<BulletinUpdate> {
+  final _titleformkey = GlobalKey<FormState>();
+  final _contentformkey = GlobalKey<FormState>();
+
   @override
   void initState() {
     super.initState();
-    _titleController.text = widget.title;
-    _contentController.text = widget.content;
+    Future.delayed(Duration.zero, () {
+      _titleController.text = widget.title;
+      _contentController.text = widget.content;
+    });
   }
 
   Future<void> updatepost() async {
@@ -241,21 +250,38 @@ class _BulletinUpdateState extends State<BulletinUpdate> {
                       padding: const EdgeInsets.all(15.0),
                       child: SizedBox(
                         width: MediaQuery.of(context).size.width * 0.85,
-                        child: TextField(
-                          controller: _titleController,
-                          onSubmitted: (value) {
-                            _titleController.text = value;
-                          },
-                          decoration: InputDecoration(
-                              filled: true,
-                              fillColor: Colors.grey[300],
-                              hintText: "제목을 입력하세요!",
-                              focusedBorder: const OutlineInputBorder(
-                                  borderSide:
-                                      BorderSide(width: 1, color: Colors.grey)),
-                              border: const OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      width: 1, color: Colors.grey))),
+                        child: Form(
+                          key: _titleformkey,
+                          child: TextFormField(
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return "제목을 입력해주세요.";
+                              }
+                              if (value.length < 2) {
+                                return "두 글자 이상 입력해주세요.";
+                              }
+                              if (value.length > 25) {
+                                return "제목은 25자 이내로 적어주세요.";
+                              }
+                              if (value.contains(RegExp("씨발"))) {
+                                return "비속어를 사용할 수 없습니다.";
+                              }
+                            },
+                            controller: _titleController,
+                            onSaved: (value) {
+                              _titleController.text = value as String;
+                            },
+                            decoration: InputDecoration(
+                                filled: true,
+                                fillColor: Colors.grey[300],
+                                hintText: "제목을 입력하세요!",
+                                focusedBorder: const OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        width: 1, color: Colors.grey)),
+                                border: const OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        width: 1, color: Colors.grey))),
+                          ),
                         ),
                       ),
                     ),
@@ -264,31 +290,44 @@ class _BulletinUpdateState extends State<BulletinUpdate> {
                       child: Container(
                         margin: const EdgeInsets.all(8),
                         padding: const EdgeInsets.only(bottom: 40),
-                        child: TextFormField(
-                          controller: _contentController,
-                          onFieldSubmitted: (value) {
-                            _contentController.text = value;
-                          },
-                          decoration: InputDecoration(
-                              focusedBorder: const OutlineInputBorder(
-                                  borderSide:
-                                      BorderSide(width: 1, color: Colors.grey)),
-                              border: const OutlineInputBorder(
-                                  borderSide:
-                                      BorderSide(width: 1, color: Colors.grey)),
-                              contentPadding:
-                                  const EdgeInsets.fromLTRB(20, 0, 0, 80),
-                              hintText: "내용을 입력하세요",
-                              filled: true,
-                              fillColor: Colors.grey[300]),
-                          keyboardType: TextInputType.multiline,
-                          maxLines: 15,
+                        child: Form(
+                          key: _contentformkey,
+                          child: TextFormField(
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return "내용을 입력하세요.";
+                              }
+                            },
+                            controller: _contentController,
+                            onSaved: (value) {
+                              _contentController.text = value as String;
+                            },
+                            decoration: InputDecoration(
+                                focusedBorder: const OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        width: 1, color: Colors.grey)),
+                                border: const OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        width: 1, color: Colors.grey)),
+                                contentPadding:
+                                    const EdgeInsets.fromLTRB(20, 0, 0, 80),
+                                hintText: "내용을 입력하세요",
+                                filled: true,
+                                fillColor: Colors.grey[300]),
+                            keyboardType: TextInputType.multiline,
+                            maxLines: 15,
+                          ),
                         ),
                       ),
                     ),
                     TextButton(
                       onPressed: () {
-                        updatepost();
+                        if (_titleformkey.currentState!.validate() &&
+                            _contentformkey.currentState!.validate()) {
+                          _titleformkey.currentState!.save();
+                          _contentformkey.currentState!.save();
+                          updatepost();
+                        }
                       },
                       style: TextButton.styleFrom(backgroundColor: Colors.blue),
                       child: const Text(

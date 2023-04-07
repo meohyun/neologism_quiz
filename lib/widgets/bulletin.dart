@@ -117,51 +117,42 @@ class BulletinTile extends StatelessWidget {
                                           : blackmodecolor),
                                 ),
                               ),
-                              Opacity(
-                                opacity: 0.5,
-                                child: Row(
-                                  children: [
-                                    Icon(
-                                      Icons.thumb_up,
-                                      size: 20,
-                                      color: Get.find<BlackModeController>()
-                                              .blackmode
-                                          ? Colors.white
-                                          : blackmodecolor,
-                                    ),
-                                    const SizedBox(
-                                      width: 5,
-                                    ),
-                                    Text(docs[index]["like"].toString(),
-                                        style: TextStyle(
-                                            color:
-                                                Get.find<BlackModeController>()
-                                                        .blackmode
-                                                    ? Colors.white
-                                                    : blackmodecolor)),
-                                    const SizedBox(
-                                      width: 5,
-                                    ),
-                                    Icon(
-                                      Icons.thumb_down,
-                                      size: 20,
-                                      color: Get.find<BlackModeController>()
-                                              .blackmode
-                                          ? Colors.white
-                                          : blackmodecolor,
-                                    ),
-                                    const SizedBox(
-                                      width: 5,
-                                    ),
-                                    Text(docs[index]["dislike"].toString(),
-                                        style: TextStyle(
-                                            color:
-                                                Get.find<BlackModeController>()
-                                                        .blackmode
-                                                    ? Colors.white
-                                                    : blackmodecolor)),
-                                  ],
-                                ),
+                              Row(
+                                children: [
+                                  const Icon(
+                                    Icons.thumb_up,
+                                    size: 20,
+                                    color: Colors.red
+                                  ),
+                                  const SizedBox(
+                                    width: 5,
+                                  ),
+                                  Text(docs[index]["like"].toString(),
+                                      style: TextStyle(
+                                          color:
+                                              Get.find<BlackModeController>()
+                                                      .blackmode
+                                                  ? Colors.white
+                                                  : blackmodecolor)),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  const Icon(
+                                    Icons.thumb_down,
+                                    size: 20,
+                                    color: Colors.blue,
+                                  ),
+                                  const SizedBox(
+                                    width: 5,
+                                  ),
+                                  Text(docs[index]["dislike"].toString(),
+                                      style: TextStyle(
+                                          color:
+                                              Get.find<BlackModeController>()
+                                                      .blackmode
+                                                  ? Colors.white
+                                                  : blackmodecolor)),
+                                ],
                               )
                             ],
                           ),
