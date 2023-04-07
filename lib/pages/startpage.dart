@@ -74,14 +74,24 @@ class Authentication extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 25),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 25),
                       child: Text(
                         "Neologism Quiz",
                         style: TextStyle(
                             fontSize: 35,
                             fontWeight: FontWeight.bold,
-                            color: Colors.teal),
+                            color: Colors.tealAccent[700]),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 25),
+                      child: Text(
+                        "신조어 퀴즈",
+                        style: TextStyle(
+                            fontSize: 35,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.tealAccent[700]),
                       ),
                     ),
                     const Padding(
@@ -225,12 +235,12 @@ class _ScreenPageState extends State<ScreenPage> {
             toolbarHeight: 80.0,
             elevation: 0.0,
             centerTitle: true,
-            title: const Padding(
-              padding: EdgeInsets.only(top: 10.0),
+            title: Padding(
+              padding: const EdgeInsets.only(top: 10.0),
               child: Text(
                 "신조어 퀴즈",
                 style: TextStyle(
-                    color: Colors.teal,
+                    color: Colors.tealAccent[700],
                     fontSize: 25.0,
                     fontWeight: FontWeight.w700),
               ),
