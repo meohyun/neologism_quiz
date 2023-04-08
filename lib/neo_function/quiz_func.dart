@@ -138,6 +138,35 @@ endpage(context, page, String quiztype) {
                     const SizedBox(
                       height: 30,
                     ),
+                    number_answer < 5
+                        ? Text("아직 신조어 공부가 좀 더 필요해요.",
+                            style: TextStyle(
+                                fontSize: 18.0,
+                                color:
+                                    Get.find<BlackModeController>().blackmode ==
+                                            true
+                                        ? Colors.white
+                                        : Colors.black))
+                        : number_answer == 10
+                            ? Text("당신은 신조어 박사입니다!",
+                                style: TextStyle(
+                                    fontSize: 18.0,
+                                    color: Get.find<BlackModeController>()
+                                                .blackmode ==
+                                            true
+                                        ? Colors.white
+                                        : Colors.black))
+                            : Text("신조어 잘알이시네요!",
+                                style: TextStyle(
+                                    fontSize: 18.0,
+                                    color: Get.find<BlackModeController>()
+                                                .blackmode ==
+                                            true
+                                        ? Colors.white
+                                        : Colors.black)),
+                    const SizedBox(
+                      height: 30,
+                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
