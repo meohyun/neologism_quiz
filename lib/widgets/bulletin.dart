@@ -83,20 +83,27 @@ class BulletinTile extends StatelessWidget {
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
                                     fontSize: 20,
-                                    color: Get.find<BlackModeController>()
-                                            .blackmode
-                                        ? Colors.white
-                                        : blackmodecolor),
+                                    color: docs[index]["admin"]["userid"] ==
+                                            "kcUEDlqhZfU7JmyVXvHRyC46UJz1"
+                                        ? Colors.red
+                                        : (Get.find<BlackModeController>()
+                                                .blackmode
+                                            ? Colors.white
+                                            : blackmodecolor)),
                               ),
                               Text(
                                   docs[index]["admin"]["usernickname"]
                                       .toString(),
                                   style: TextStyle(
                                       fontSize: 16,
-                                      color: Get.find<BlackModeController>()
+                                      color:
+                                      docs[index]["admin"]["userid"] ==
+                                            "kcUEDlqhZfU7JmyVXvHRyC46UJz1"
+                                        ? Colors.red :(
+                                      Get.find<BlackModeController>()
                                               .blackmode
                                           ? Colors.white
-                                          : blackmodecolor))
+                                          : blackmodecolor)))
                             ],
                           ),
                         ),
@@ -119,21 +126,17 @@ class BulletinTile extends StatelessWidget {
                               ),
                               Row(
                                 children: [
-                                  const Icon(
-                                    Icons.thumb_up,
-                                    size: 20,
-                                    color: Colors.red
-                                  ),
+                                  const Icon(Icons.thumb_up,
+                                      size: 20, color: Colors.red),
                                   const SizedBox(
                                     width: 5,
                                   ),
                                   Text(docs[index]["like"].toString(),
                                       style: TextStyle(
-                                          color:
-                                              Get.find<BlackModeController>()
-                                                      .blackmode
-                                                  ? Colors.white
-                                                  : blackmodecolor)),
+                                          color: Get.find<BlackModeController>()
+                                                  .blackmode
+                                              ? Colors.white
+                                              : blackmodecolor)),
                                   const SizedBox(
                                     width: 10,
                                   ),
@@ -147,11 +150,10 @@ class BulletinTile extends StatelessWidget {
                                   ),
                                   Text(docs[index]["dislike"].toString(),
                                       style: TextStyle(
-                                          color:
-                                              Get.find<BlackModeController>()
-                                                      .blackmode
-                                                  ? Colors.white
-                                                  : blackmodecolor)),
+                                          color: Get.find<BlackModeController>()
+                                                  .blackmode
+                                              ? Colors.white
+                                              : blackmodecolor)),
                                 ],
                               )
                             ],

@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:neologism/getx/blackmode.dart';
+import 'package:neologism/pages/bulletin_pages/postCRUD.dart';
 import 'package:neologism/pages/startpage.dart';
 import 'package:intl/intl.dart';
 import 'package:neologism/search/bulletin_search.dart';
@@ -59,11 +60,12 @@ class _BulletinBoardState extends State<BulletinBoard> {
     return GetBuilder(
         init: BlackModeController(),
         builder: (_) => Scaffold(
-          backgroundColor: Get.find<BlackModeController>().blackmode
-                    ? blackmodecolor
-                    : notblackmodecolor,
-          bottomNavigationBar: MyBottomnavigator(index:index),
+              backgroundColor: Get.find<BlackModeController>().blackmode
+                  ? blackmodecolor
+                  : notblackmodecolor,
+              bottomNavigationBar: MyBottomnavigator(index: index),
               appBar: AppBar(
+                shadowColor: Colors.white,
                 leading: IconButton(
                     onPressed: () {
                       Navigator.pushNamed(context, '/');
@@ -81,22 +83,22 @@ class _BulletinBoardState extends State<BulletinBoard> {
                   ),
                 ),
                 actions: [
-                  CircleAvatar(
-                    backgroundColor: Get.find<BlackModeController>().blackmode
-                        ? blackmodecolor
-                        : notblackmodecolor,
-                    child: IconButton(
-                        onPressed: () {
-                          Navigator.pushNamed(context, '/create');
-                        },
-                        icon: Icon(Icons.add,
+                  TextButton(
+                      onPressed: () {
+                        Get.to(()=>const BulletinCreate());
+                      },
+                      child: Text(
+                        "글쓰기",
+                        style: TextStyle(
+                          fontSize: 18,
                             color: Get.find<BlackModeController>().blackmode
                                 ? Colors.white
-                                : blackmodecolor)),
-                  ),
+                                : blackmodecolor),
+                      )),
                   IconButton(
                       onPressed: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context){
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) {
                           return const BulletinSearch();
                         }));
                       },

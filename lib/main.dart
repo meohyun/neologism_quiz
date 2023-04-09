@@ -6,7 +6,6 @@ import 'package:neologism/pages/bulletin_pages/bulletin_board.dart';
 import 'package:neologism/pages/bulletin_pages/postCRUD.dart';
 import 'package:neologism/pages/bulletin_pages/post_page.dart';
 import 'package:neologism/pages/dictionary_page/dict_neologism.dart';
-import 'package:neologism/pages/user_page/nickname.dart';
 import 'package:neologism/pages/quiz_page/essay_quiz.dart';
 import 'package:neologism/pages/quiz_page/word_quiz.dart';
 import 'package:neologism/pages/startpage.dart';

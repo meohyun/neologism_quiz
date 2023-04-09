@@ -315,72 +315,85 @@ class _ScreenPageState extends State<ScreenPage> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.fromLTRB(30, 10, 0, 0),
-                    child: Text(
-                      "프로필",
-                      style: TextStyle(
-                          fontSize: 20,
-                          color: Get.find<BlackModeController>().blackmode
-                              ? Colors.white
-                              : Colors.black),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "프로필",
+                          style: TextStyle(
+                              fontSize: 20,
+                              color: Get.find<BlackModeController>().blackmode
+                                  ? Colors.white
+                                  : Colors.black),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(right: 30),
+                          child: TextButton(
+                              onPressed: () {
+                                Get.to(UserProfile(
+                                  userid: useruid,
+                                  imagepath:
+                                      profileimagecontroller.profilePath.value,
+                                  hasimage: profileimagecontroller
+                                      .isProfilePath.value,
+                                  intro: intro,
+                                ));
+                              },
+                              child: const Text(
+                                "더 보기",
+                                style: TextStyle(
+                                  fontSize: 18,
+                                ),
+                              )),
+                        )
+                      ],
                     ),
                   ),
                   Padding(
                       padding: const EdgeInsets.all(15.0),
-                      child: GestureDetector(
-                        onTap: () {
-                          Get.to(UserProfile(
-                            userid: useruid,
-                            imagepath: profileimagecontroller.profilePath.value,
-                            hasimage:
-                                profileimagecontroller.isProfilePath.value,
-                            intro: intro,
-                          ));
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                              color: Get.find<BlackModeController>().blackmode
-                                  ? Colors.black
-                                  : Colors.deepPurple[50],
-                              borderRadius: BorderRadius.circular(30),
-                              border:
-                                  Border.all(width: 2, color: Colors.white)),
-                          width: MediaQuery.of(context).size.width * 0.9,
-                          height: MediaQuery.of(context).size.height * 0.09,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              children: [
-                                Container(
-                                  decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      border: Border.all(
-                                          color: Colors.white, width: 2)),
-                                  child: CircleAvatar(
-                                    backgroundImage: profileimagecontroller
-                                                .isProfilePath.value ==
-                                            true
-                                        ? NetworkImage(profileimagecontroller
-                                            .profilePath.value) as ImageProvider
-                                        : const AssetImage(
-                                            "assets/userimage3.png",
-                                          ),
-                                    radius: 25,
-                                  ),
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color: Get.find<BlackModeController>().blackmode
+                                ? Colors.black
+                                : Colors.deepPurple[50],
+                            borderRadius: BorderRadius.circular(30),
+                            border: Border.all(width: 2, color: Colors.white)),
+                        width: MediaQuery.of(context).size.width * 0.9,
+                        height: MediaQuery.of(context).size.height * 0.09,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            children: [
+                              Container(
+                                decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    border: Border.all(
+                                        color: Colors.white, width: 2)),
+                                child: CircleAvatar(
+                                  backgroundImage: profileimagecontroller
+                                              .isProfilePath.value ==
+                                          true
+                                      ? NetworkImage(profileimagecontroller
+                                          .profilePath.value) as ImageProvider
+                                      : const AssetImage(
+                                          "assets/userimage3.png",
+                                        ),
+                                  radius: 25,
                                 ),
-                                const SizedBox(
-                                  width: 20,
-                                ),
-                                Text(
-                                  username.toString(),
-                                  style: TextStyle(
-                                      fontSize: 20,
-                                      color: Get.find<BlackModeController>()
-                                              .blackmode
-                                          ? Colors.white
-                                          : Colors.black),
-                                )
-                              ],
-                            ),
+                              ),
+                              const SizedBox(
+                                width: 20,
+                              ),
+                              Text(
+                                username.toString(),
+                                style: TextStyle(
+                                    fontSize: 20,
+                                    color: Get.find<BlackModeController>()
+                                            .blackmode
+                                        ? Colors.white
+                                        : Colors.black),
+                              )
+                            ],
                           ),
                         ),
                       )),

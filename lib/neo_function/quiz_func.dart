@@ -295,7 +295,7 @@ quiz_choice(context) {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         MainPageButton(
-                          page: NeologismQuiz(),
+                          page: const NeologismQuiz(),
                           text: "단어 퀴즈",
                         ),
                         MainPageButton(

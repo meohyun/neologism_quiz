@@ -29,9 +29,10 @@ class UpdateNickname extends StatefulWidget {
 class _UpdateNicknameState extends State<UpdateNickname> {
   final _formkey = GlobalKey<FormState>();
   final _introformkey = GlobalKey<FormState>();
+  List usernicknames = [];
 
-  getprofile() async {
-    await FirebaseFirestore.instance
+  getprofile() {
+    FirebaseFirestore.instance
         .collection('user')
         .doc('userdatabase')
         .get()
@@ -40,6 +41,10 @@ class _UpdateNicknameState extends State<UpdateNickname> {
       _nicknameController.text = datas![useruid]['user'];
       profileimagecontroller.profilePath.value = datas[useruid]['imagepath'];
       profileimagecontroller.isProfilePath.value = datas[useruid]['hasimage'];
+
+      for (int i = 0; i<datas.length; i++){
+        print(datas);
+      }
     });
   }
 
@@ -499,7 +504,7 @@ void takePhoto(ImageSource source) async {
   Reference referenceImageToUpload = referenceDirImages.child(useruid);
 
   try {
-    await referenceImageToUpload.putFile(File(pickedimage!.path));
+    referenceImageToUpload.putFile(File(pickedimage!.path));
     imageUrl = await referenceImageToUpload.getDownloadURL();
     profileimagecontroller.isProfilePath.value = true;
     profileimagecontroller.setProfileImagePath(imageUrl);

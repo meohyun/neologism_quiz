@@ -257,9 +257,6 @@ class _BulletinUpdateState extends State<BulletinUpdate> {
                               if (value == null || value.isEmpty) {
                                 return "제목을 입력해주세요.";
                               }
-                              if (value.length < 2) {
-                                return "두 글자 이상 입력해주세요.";
-                              }
                               if (value.length > 25) {
                                 return "제목은 25자 이내로 적어주세요.";
                               }
