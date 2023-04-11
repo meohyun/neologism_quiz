@@ -10,6 +10,8 @@ import 'package:neologism/neo_function/bulletin_func.dart';
 import 'package:neologism/pages/startpage.dart';
 import 'package:neologism/pages/user_page/profile.dart';
 
+import '../../neo_function/firebase_message.dart';
+
 TextEditingController chatController = TextEditingController();
 TextEditingController updateChatController = TextEditingController();
 final user = FirebaseAuth.instance.currentUser!.displayName;
@@ -21,11 +23,13 @@ class ChatContainer extends StatefulWidget {
   const ChatContainer({
     super.key,
     this.docId,
+    this.adminId,
     this.chats,
     this.username,
   });
 
   final docId;
+  final adminId;
   final chats;
   final username;
 
@@ -50,6 +54,7 @@ class _ChatContainerState extends State<ChatContainer> {
         .doc(widget.docId)
         .update({"chats": FieldValue.arrayUnion(chat)});
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -123,9 +128,18 @@ class _ChatContainerState extends State<ChatContainer> {
                         borderSide: BorderSide(
                             width: 1,
                             color: blackmode ? Colors.white : Colors.black))),
-                onFieldSubmitted: (value) {
+                onFieldSubmitted: (value) async {
                   chatController.text = value;
                   addchat();
+                  DocumentSnapshot snap = await FirebaseFirestore.instance
+                      .collection('UserTokens')
+                      .doc(widget.adminId)
+                      .get();
+                  String token = snap['token'];
+
+                  sendPushMessage(token,"댓글이 달렸습니다.",chatController.text);
+
+                  print('token');
                   chatController.text = "";
                 },
               ),
@@ -327,7 +341,7 @@ class _ChatBoxState extends State<ChatBox> {
   void initState() {
     super.initState();
   }
-  
+
   Future<void> deletechat(docs) async {
     List<dynamic> chat = [
       {
@@ -411,7 +425,7 @@ class _ChatBoxState extends State<ChatBox> {
                                           width: 10,
                                         ),
                                         GestureDetector(
-                                          onTap: () async{
+                                          onTap: () async {
                                             Navigator.push(context,
                                                 MaterialPageRoute(
                                                     builder: (context) {
@@ -423,7 +437,7 @@ class _ChatBoxState extends State<ChatBox> {
                                                 imagepath: docs['chats'][index]
                                                     ['imagepath'],
                                                 hasimage: docs['chats'][index]
-                                                    ['hasimage'],                              
+                                                    ['hasimage'],
                                               );
                                             }));
                                           },
@@ -507,7 +521,8 @@ class _ChatBoxState extends State<ChatBox> {
                                                                   deletechat,
                                                                   docs);
                                                             },
-                                                            child: const Text("삭제",
+                                                            child: const Text(
+                                                                "삭제",
                                                                 style: TextStyle(
                                                                     color: Colors
                                                                         .blue)))

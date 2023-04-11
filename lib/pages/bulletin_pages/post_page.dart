@@ -496,6 +496,7 @@ class _BulletinPostState extends State<BulletinPost> {
                                         ),
                                         ChatContainer(
                                           docId: widget.docId,
+                                          adminId: widget.adminid,
                                           chats: widget.chats,
                                           username: username,
                                         )

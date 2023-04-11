@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -14,6 +15,8 @@ import 'package:neologism/widgets/bottom_navigation.dart';
 import 'package:neologism/widgets/mydrawer.dart';
 import 'package:neologism/widgets/records.dart';
 
+import '../neo_function/firebase_message.dart';
+
 var blackmodecolor = Colors.black;
 var notblackmodecolor = Colors.deepPurple[100];
 
@@ -26,10 +29,24 @@ class Startpage extends StatefulWidget {
 
 class _StartpageState extends State<Startpage> {
   Timer? _timer;
+  String? mtoken = "";
+
+  void getToken() async {
+    await FirebaseMessaging.instance.getToken().then((token) {
+      setState(() {
+        mtoken = token;
+        print("My token is $mtoken");
+      });
+      saveToken(token!);
+    });
+  }
 
   @override
   void initState() {
     descblocked = true;
+    requestPermission();
+    getToken();
+    initInfo();
     super.initState();
   }
 

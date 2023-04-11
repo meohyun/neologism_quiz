@@ -1,4 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import "package:flutter/material.dart";
 import 'package:get/route_manager.dart';
 import 'package:neologism/firebase_options.dart';
@@ -10,11 +11,18 @@ import 'package:neologism/pages/quiz_page/essay_quiz.dart';
 import 'package:neologism/pages/quiz_page/word_quiz.dart';
 import 'package:neologism/pages/startpage.dart';
 
+
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message)async{
+  print("Handling a background message ${message.messageId}");
+}
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  await FirebaseMessaging.instance.getInitialMessage();
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   runApp(const Neologism());
 }
 
