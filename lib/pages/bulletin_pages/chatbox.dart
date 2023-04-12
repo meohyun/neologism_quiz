@@ -1,12 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:neologism/getx/blackmode.dart';
 import 'package:neologism/getx/chatmodify.dart';
 import 'package:neologism/getx/profileimage.dart';
 import 'package:neologism/neo_function/bulletin_func.dart';
+import 'package:neologism/pages/bulletin_pages/post_page.dart';
 import 'package:neologism/pages/startpage.dart';
 import 'package:neologism/pages/user_page/profile.dart';
 import '../../neo_function/firebase_message.dart';
@@ -25,8 +28,23 @@ class ChatContainer extends StatefulWidget {
     this.adminId,
     this.chats,
     this.username,
+    this.name,
+    this.content,
+    this.datetime,
+    this.like,
+    this.dislike,
+    this.admin,
+    this.userlike,
+    this.userdislike,
   });
-
+  final name;
+  final content;
+  final datetime;
+  final like;
+  final dislike;
+  final admin;
+  final userlike;
+  final userdislike;
   final docId;
   final adminId;
   final chats;
@@ -52,6 +70,87 @@ class _ChatContainerState extends State<ChatContainer> {
         .collection('post')
         .doc(widget.docId)
         .update({"chats": FieldValue.arrayUnion(chat)});
+  }
+
+  move(context) {
+    Get.to(() => BulletinPost(
+          name: widget.name,
+          content: widget.content,
+          datetime: widget.datetime,
+          like: widget.like,
+          dislike: widget.dislike,
+          admin: widget.admin,
+          adminid: widget.adminId,
+          chats: widget.chats,
+          docId: widget.docId,
+          userlike: widget.userlike,
+          userdislike: widget.userdislike,
+        ));
+  }
+
+  initInfo(context) {
+    var androidInitialize =
+        const AndroidInitializationSettings('@mipmap/ic_launcher');
+    var iOSIntialize = const DarwinInitializationSettings();
+    var initializationSettings =
+        InitializationSettings(android: androidInitialize, iOS: iOSIntialize);
+    FlutterLocalNotificationsPlugin().initialize(initializationSettings,
+        onDidReceiveNotificationResponse:
+            (NotificationResponse notificationResponse) {
+      switch (notificationResponse.notificationResponseType) {
+        case NotificationResponseType.selectedNotification:
+          move(context);
+          break;
+        case NotificationResponseType.selectedNotificationAction:
+          break;
+      }
+    }, onDidReceiveBackgroundNotificationResponse:
+            (NotificationResponse notificationResponse) {
+      switch (notificationResponse.notificationResponseType) {
+        case NotificationResponseType.selectedNotification:
+          move(context);
+          break;
+        case NotificationResponseType.selectedNotificationAction:
+          break;
+      }
+    });
+
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
+      print("...........................onMessage...........");
+      print(
+          "onMessage: ${message.notification?.title}/${message.notification?.body}");
+
+      BigTextStyleInformation bigTextStyleInformation = BigTextStyleInformation(
+        message.notification!.body.toString(),
+        htmlFormatBigText: true,
+        contentTitle: message.notification!.title.toString(),
+        htmlFormatContentTitle: true,
+      );
+
+      AndroidNotificationDetails androidPlatformChannelSpecifics =
+          AndroidNotificationDetails('neologism', 'neologism',
+              importance: Importance.high,
+              styleInformation: bigTextStyleInformation,
+              priority: Priority.high,
+              playSound: false);
+      NotificationDetails platformChannelSpecifics = NotificationDetails(
+          android: androidPlatformChannelSpecifics,
+          iOS: const DarwinNotificationDetails());
+
+      await FlutterLocalNotificationsPlugin().show(
+        0,
+        message.notification?.title,
+        message.notification?.body,
+        platformChannelSpecifics,
+        payload: message.data['body'],
+      );
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    initInfo(context);
   }
 
   @override
@@ -129,16 +228,18 @@ class _ChatContainerState extends State<ChatContainer> {
                 onFieldSubmitted: (value) async {
                   chatController.text = value;
                   addchat();
-
-                  DocumentSnapshot snap = await FirebaseFirestore.instance
-                      .collection('UserTokens')
-                      .doc(widget.adminId)
-                      .get();
-                  String token = snap['token'];
-                  sendPushMessage(
-                      token,
-                      "${widget.username}님이 댓글을 남겼습니다.: ${chatController.text}",
-                      "신조어 퀴즈");
+                  
+                  if (widget.adminId != userid) {
+                    DocumentSnapshot snap = await FirebaseFirestore.instance
+                        .collection('UserTokens')
+                        .doc(widget.adminId)
+                        .get();
+                    String token = snap['token'];
+                    sendPushMessage(
+                        token,
+                        "${widget.username}님이 댓글을 남겼습니다: ${chatController.text}",
+                        "${widget.name}");
+                  }
 
                   chatController.text = "";
                 },
