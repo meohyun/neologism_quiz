@@ -9,7 +9,6 @@ import 'package:neologism/getx/profileimage.dart';
 import 'package:neologism/neo_function/bulletin_func.dart';
 import 'package:neologism/pages/startpage.dart';
 import 'package:neologism/pages/user_page/profile.dart';
-
 import '../../neo_function/firebase_message.dart';
 
 TextEditingController chatController = TextEditingController();
@@ -54,7 +53,6 @@ class _ChatContainerState extends State<ChatContainer> {
         .doc(widget.docId)
         .update({"chats": FieldValue.arrayUnion(chat)});
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -131,15 +129,17 @@ class _ChatContainerState extends State<ChatContainer> {
                 onFieldSubmitted: (value) async {
                   chatController.text = value;
                   addchat();
+
                   DocumentSnapshot snap = await FirebaseFirestore.instance
                       .collection('UserTokens')
                       .doc(widget.adminId)
                       .get();
                   String token = snap['token'];
+                  sendPushMessage(
+                      token,
+                      "${widget.username}님이 댓글을 남겼습니다.: ${chatController.text}",
+                      "신조어 퀴즈");
 
-                  sendPushMessage(token,"댓글이 달렸습니다.",chatController.text);
-
-                  print('token');
                   chatController.text = "";
                 },
               ),

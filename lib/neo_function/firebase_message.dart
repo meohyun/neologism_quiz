@@ -1,9 +1,12 @@
 import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:http/http.dart' as http;
+
 import '../pages/user_page/nickname.dart';
+
 
 void requestPermission() async {
   FirebaseMessaging messaging = FirebaseMessaging.instance;
@@ -28,6 +31,7 @@ void requestPermission() async {
 }
 
 void saveToken(String token) async {
+  final useruid = FirebaseAuth.instance.currentUser!.uid;
   await FirebaseFirestore.instance
       .collection('UserTokens')
       .doc('$useruid')
@@ -37,18 +41,19 @@ void saveToken(String token) async {
 }
 
 initInfo() {
-  var androidInitialize = const AndroidInitializationSettings('@mipmap/icon');
-  var iOSIntialize = const IOSInitializationSettings();
+  var androidInitialize = const AndroidInitializationSettings('@mipmap/ic_launcher');
+  var iOSIntialize = const DarwinInitializationSettings();
   var initializationSettings =
       InitializationSettings(android: androidInitialize, iOS: iOSIntialize);
   FlutterLocalNotificationsPlugin().initialize(initializationSettings,
-      onSelectNotification: (String? payload) async {
-    try {
-      if (payload != null && payload.isNotEmpty) {
-      } else {}
-    } catch (e) {
-      return;
-    }
+      onDidReceiveNotificationResponse:
+        (NotificationResponse notificationResponse) {
+      switch (notificationResponse.notificationResponseType) {
+        case NotificationResponseType.selectedNotification:    
+          break;
+        case NotificationResponseType.selectedNotificationAction:
+          break;
+      }
   });
 
   FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
@@ -64,18 +69,22 @@ initInfo() {
     );
 
     AndroidNotificationDetails androidPlatformChannelSpecifics =
-        AndroidNotificationDetails('neologism', 'neologism', 'neologism',
+        AndroidNotificationDetails('neologism', 'neologism',
             importance: Importance.high,
             styleInformation: bigTextStyleInformation,
             priority: Priority.high,
             playSound: false);
     NotificationDetails platformChannelSpecifics = NotificationDetails(
         android: androidPlatformChannelSpecifics,
-        iOS: const IOSNotificationDetails());
+        iOS: const DarwinNotificationDetails());
 
-    await FlutterLocalNotificationsPlugin().show(0, message.notification?.title,
-        message.notification?.body, platformChannelSpecifics,
-        payload: message.data['body']);
+    await FlutterLocalNotificationsPlugin().show(
+      0,
+      message.notification?.title,
+      message.notification?.body,
+      platformChannelSpecifics,
+      payload: message.data['body'],
+    );
   });
 }
 

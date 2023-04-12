@@ -14,7 +14,6 @@ import 'package:neologism/pages/user_page/profile.dart';
 import 'package:neologism/widgets/bottom_navigation.dart';
 import 'package:neologism/widgets/mydrawer.dart';
 import 'package:neologism/widgets/records.dart';
-
 import '../neo_function/firebase_message.dart';
 
 var blackmodecolor = Colors.black;
@@ -29,24 +28,11 @@ class Startpage extends StatefulWidget {
 
 class _StartpageState extends State<Startpage> {
   Timer? _timer;
-  String? mtoken = "";
-
-  void getToken() async {
-    await FirebaseMessaging.instance.getToken().then((token) {
-      setState(() {
-        mtoken = token;
-        print("My token is $mtoken");
-      });
-      saveToken(token!);
-    });
-  }
+  
 
   @override
   void initState() {
     descblocked = true;
-    requestPermission();
-    getToken();
-    initInfo();
     super.initState();
   }
 
@@ -141,15 +127,11 @@ class Authentication extends StatelessWidget {
                         onPressed: () {
                           signInWithGoogle();
                         },
-                        child: Row(
+                        child: const Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
-                            Image.network(
-                              'http://pngimg.com/uploads/google/google_PNG19635.png',
-                              fit: BoxFit.cover,
-                              height: 50,
-                            ),
-                            const Text(
+                            Image(image: AssetImage('assets/googlelogo.png'),width: 50,height: 50,),
+                            Text(
                               "구글계정으로 로그인하기",
                               style:
                                   TextStyle(color: Colors.black, fontSize: 18),
@@ -177,9 +159,20 @@ class ScreenPage extends StatefulWidget {
 
 class _ScreenPageState extends State<ScreenPage> {
   int index = 0;
+  String? mtoken = "";
   final useruid = FirebaseAuth.instance.currentUser!.uid;
   final username = FirebaseAuth.instance.currentUser!.displayName;
   DateTime? currentBackPressTime;
+
+  void getToken() async {
+    await FirebaseMessaging.instance.getToken().then((token) {
+      setState(() {
+        mtoken = token;
+        print("My token is $mtoken");
+      });
+      saveToken(token!);
+    });
+  }
 
   makeuserprofile() async {
     await FirebaseFirestore.instance
@@ -223,6 +216,9 @@ class _ScreenPageState extends State<ScreenPage> {
 
   @override
   void initState() {
+    requestPermission();
+    getToken();
+    initInfo();
     index = 0;
     makeuserprofile();
     getprofile();

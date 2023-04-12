@@ -14,7 +14,6 @@ File? pickedFile;
 ImagePicker imagePicker = ImagePicker();
 TextEditingController _nicknameController = TextEditingController();
 TextEditingController _introController = TextEditingController();
-final useruid = FirebaseAuth.instance.currentUser!.uid;
 String imageUrl = "";
 
 class UpdateNickname extends StatefulWidget {
@@ -27,6 +26,7 @@ class UpdateNickname extends StatefulWidget {
 }
 
 class _UpdateNicknameState extends State<UpdateNickname> {
+  final useruid = FirebaseAuth.instance.currentUser!.uid;
   final _formkey = GlobalKey<FormState>();
   final _introformkey = GlobalKey<FormState>();
   List usernicknames = [];
@@ -495,6 +495,7 @@ Widget bottomsheet(BuildContext context) {
 }
 
 void takePhoto(ImageSource source) async {
+  final useruid = FirebaseAuth.instance.currentUser!.uid;
   final pickedimage =
       await imagePicker.pickImage(source: source, imageQuality: 100);
 
@@ -521,7 +522,7 @@ void takePhoto(ImageSource source) async {
 }
 
 void normalImage(){
-  
+  final useruid = FirebaseAuth.instance.currentUser!.uid;
   profileimagecontroller.isProfilePath.value = false;
   profileimagecontroller.setProfileImagePath("https://firebasestorage.googleapis.com/v0/b/neologismquiz.appspot.com/o/image%2Fuserimage3.png?alt=media&token=1bca2275-037e-4470-904d-81491727fdbb");
   FirebaseFirestore.instance
