@@ -2,8 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
-import 'package:get/instance_manager.dart';
 import 'package:neologism/getx/blackmode.dart';
 import 'package:neologism/getx/chatmodify.dart';
 import 'package:neologism/getx/profileimage.dart';
@@ -495,10 +493,18 @@ class _BulletinPostState extends State<BulletinPost> {
                                               : Colors.black,
                                         ),
                                         ChatContainer(
-                                          docId: widget.docId,
+                                          name: widget.name,
+                                          content:widget.content,
+                                          datetime: widget.datetime,
+                                          like:widget.like,
+                                          dislike:widget.dislike,                                        
+                                          admin:widget.admin,
                                           adminId: widget.adminid,
                                           chats: widget.chats,
+                                          docId: widget.docId,
                                           username: username,
+                                          userlike: widget.userlike,
+                                          userdislike: widget.userdislike,
                                         )
                                       ],
                                     ),

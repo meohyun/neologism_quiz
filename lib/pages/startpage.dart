@@ -218,7 +218,6 @@ class _ScreenPageState extends State<ScreenPage> {
   void initState() {
     requestPermission();
     getToken();
-    initInfo();
     index = 0;
     makeuserprofile();
     getprofile();

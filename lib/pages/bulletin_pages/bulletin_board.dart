@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:neologism/getx/blackmode.dart';
 import 'package:neologism/pages/bulletin_pages/postCRUD.dart';
 import 'package:neologism/pages/startpage.dart';
-import 'package:intl/intl.dart';
 import 'package:neologism/search/bulletin_search.dart';
 import 'package:neologism/widgets/bottom_navigation.dart';
 import 'package:neologism/widgets/bulletin.dart';
@@ -138,7 +137,6 @@ class Blluettin extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final userid = FirebaseAuth.instance.currentUser!.uid;
     final board = FirebaseFirestore.instance.collection('post');
     return StreamBuilder(
         stream: board.orderBy('time', descending: true).snapshots(),

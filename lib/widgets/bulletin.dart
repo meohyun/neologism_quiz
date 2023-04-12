@@ -33,7 +33,7 @@ class BulletinTile extends StatelessWidget {
                       .update(
                           {'likes.$userid': false, 'dislikes.$userid': false});
                 }
-                if (docs[index]["likes"][userid] != null) {
+                else {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => BulletinPost(
                             name: docs[index]["name"],

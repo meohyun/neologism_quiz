@@ -3,10 +3,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-
-import '../pages/user_page/nickname.dart';
-
+import 'package:neologism/pages/bulletin_pages/bulletin_board.dart';
+import '../pages/bulletin_pages/post_page.dart';
 
 void requestPermission() async {
   FirebaseMessaging messaging = FirebaseMessaging.instance;
@@ -40,53 +40,6 @@ void saveToken(String token) async {
   });
 }
 
-initInfo() {
-  var androidInitialize = const AndroidInitializationSettings('@mipmap/ic_launcher');
-  var iOSIntialize = const DarwinInitializationSettings();
-  var initializationSettings =
-      InitializationSettings(android: androidInitialize, iOS: iOSIntialize);
-  FlutterLocalNotificationsPlugin().initialize(initializationSettings,
-      onDidReceiveNotificationResponse:
-        (NotificationResponse notificationResponse) {
-      switch (notificationResponse.notificationResponseType) {
-        case NotificationResponseType.selectedNotification:    
-          break;
-        case NotificationResponseType.selectedNotificationAction:
-          break;
-      }
-  });
-
-  FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
-    print("...........................onMessage...........");
-    print(
-        "onMessage: ${message.notification?.title}/${message.notification?.body}");
-
-    BigTextStyleInformation bigTextStyleInformation = BigTextStyleInformation(
-      message.notification!.body.toString(),
-      htmlFormatBigText: true,
-      contentTitle: message.notification!.title.toString(),
-      htmlFormatContentTitle: true,
-    );
-
-    AndroidNotificationDetails androidPlatformChannelSpecifics =
-        AndroidNotificationDetails('neologism', 'neologism',
-            importance: Importance.high,
-            styleInformation: bigTextStyleInformation,
-            priority: Priority.high,
-            playSound: false);
-    NotificationDetails platformChannelSpecifics = NotificationDetails(
-        android: androidPlatformChannelSpecifics,
-        iOS: const DarwinNotificationDetails());
-
-    await FlutterLocalNotificationsPlugin().show(
-      0,
-      message.notification?.title,
-      message.notification?.body,
-      platformChannelSpecifics,
-      payload: message.data['body'],
-    );
-  });
-}
 
 sendPushMessage(String token, String body, String title) async {
   try {
