@@ -1,4 +1,3 @@
-import 'package:neologism/datas/quizdata.dart';
 import 'package:neologism/neo_function/bgm.dart';
 import 'package:neologism/neo_function/quiz_func.dart';
 import 'package:neologism/datas/sentence_data.dart';

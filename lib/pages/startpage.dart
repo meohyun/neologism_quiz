@@ -162,7 +162,6 @@ class _ScreenPageState extends State<ScreenPage> {
   String? mtoken = "";
   final useruid = FirebaseAuth.instance.currentUser!.uid;
   final username = FirebaseAuth.instance.currentUser!.displayName;
-  DateTime? currentBackPressTime;
 
   void getToken() async {
     await FirebaseMessaging.instance.getToken().then((token) {
@@ -218,6 +217,7 @@ class _ScreenPageState extends State<ScreenPage> {
   void initState() {
     requestPermission();
     getToken();
+    initInfo(context);
     index = 0;
     makeuserprofile();
     getprofile();

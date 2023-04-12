@@ -10,6 +10,8 @@ import 'package:neologism/pages/bulletin_pages/chatbox.dart';
 import 'package:neologism/pages/startpage.dart';
 import 'package:neologism/pages/user_page/profile.dart';
 
+import '../../neo_function/firebase_message.dart';
+
 final userid = FirebaseAuth.instance.currentUser!.uid;
 bool isLiked = false;
 int likeCount = 0;
@@ -150,7 +152,6 @@ class _BulletinPostState extends State<BulletinPost> {
   }
 
   getpostlike() {
-    final userid = FirebaseAuth.instance.currentUser!.uid;
     var collection = FirebaseFirestore.instance.collection('post');
     collection.doc(widget.docId).snapshots().listen((docSnapshot) {
       if (docSnapshot.exists) {
@@ -163,7 +164,7 @@ class _BulletinPostState extends State<BulletinPost> {
     });
   }
 
-  postlike() {
+  postlike() async {
     getpostlike();
     if (isLiked && !disLiked) {
       likeCount -= 1;
@@ -187,6 +188,15 @@ class _BulletinPostState extends State<BulletinPost> {
       'dislikes.$userid': disLiked,
       'dislike': dislikeCount
     });
+
+    if (widget.adminid != userid && isLiked == true)  {
+      DocumentSnapshot snap = await FirebaseFirestore.instance
+          .collection('UserTokens')
+          .doc(widget.adminid)
+          .get();
+      String token = snap['token'];
+      sendPushMessage(token, "$username님이 게시물을 좋아합니다", "${widget.name}");
+    }
   }
 
   postdislike() {
@@ -494,11 +504,11 @@ class _BulletinPostState extends State<BulletinPost> {
                                         ),
                                         ChatContainer(
                                           name: widget.name,
-                                          content:widget.content,
+                                          content: widget.content,
                                           datetime: widget.datetime,
-                                          like:widget.like,
-                                          dislike:widget.dislike,                                        
-                                          admin:widget.admin,
+                                          like: widget.like,
+                                          dislike: widget.dislike,
+                                          admin: widget.admin,
                                           adminId: widget.adminid,
                                           chats: widget.chats,
                                           docId: widget.docId,

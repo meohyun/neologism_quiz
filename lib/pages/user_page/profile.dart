@@ -48,6 +48,12 @@ class _UserProfileState extends State<UserProfile> {
       });
     });
   }
+  
+  // profile에서 backbutton을 누르면 초기화면으로 이동
+   Future<bool> _onBackPressed(BuildContext context) async {
+    Get.to(()=> const ScreenPage());
+    return true;
+  }
 
   @override
   void initState() {
@@ -105,173 +111,178 @@ class _UserProfileState extends State<UserProfile> {
             backgroundColor: blackmode ? blackmodecolor : notblackmodecolor,
             elevation: 0.0,
           ),
-          body: SingleChildScrollView(
-            child: Container(
-              height: MediaQuery.of(context).size.height,
-              color: blackmode ? blackmodecolor : notblackmodecolor,
-              child: Column(
-                children: [
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  GestureDetector(
-                    onTap: (){
-                      Get.to(()=> ProfileImage(user: widget.name == null ? username: widget.name,imageurl: widget.imagepath,));
-                    },
-                    child: CircleAvatar(
-                      backgroundImage: widget.hasimage == true
-                          ? NetworkImage(widget.imagepath) as ImageProvider
-                          : const AssetImage(
-                              "assets/userimage3.png",
-                            ),
-                      radius: 35,
+          body: WillPopScope(
+            onWillPop: (){
+             return _onBackPressed(context);
+            },
+            child: SingleChildScrollView(
+              child: Container(
+                height: MediaQuery.of(context).size.height,
+                color: blackmode ? blackmodecolor : notblackmodecolor,
+                child: Column(
+                  children: [
+                    const SizedBox(
+                      height: 10,
                     ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  widget.name == null
-                      ? Text(
-                          username.toString(),
-                          style: TextStyle(
-                              fontSize: 20,
-                              color: blackmode ? Colors.white : blackmodecolor,
-                              fontWeight: FontWeight.bold),
-                        )
-                      : Text(
-                          widget.name,
-                          style: TextStyle(
-                              fontSize: 20,
-                              color: blackmode ? Colors.white : blackmodecolor,
-                              fontWeight: FontWeight.bold),
-                        ),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  Column(
-                    children: [
-                      Container(
-                          decoration: BoxDecoration(
-                              border: Border.all(
-                                width: 1,
-                                color:
-                                    blackmode ? Colors.white : blackmodecolor,
+                    GestureDetector(
+                      onTap: (){
+                        Get.to(()=> ProfileImage(user: widget.name == null ? username: widget.name,imageurl: widget.imagepath,));
+                      },
+                      child: CircleAvatar(
+                        backgroundImage: widget.hasimage == true
+                            ? NetworkImage(widget.imagepath) as ImageProvider
+                            : const AssetImage(
+                                "assets/userimage3.png",
                               ),
-                              borderRadius: BorderRadius.circular(15)),
-                          height: 80,
-                          width: MediaQuery.of(context).size.width * 0.95,
-                          child: Padding(
-                            padding: const EdgeInsets.all(12),
-                            child: userintro == ""
-                                ? Text(
-                                    "자기소개가 없습니다.",
-                                    style: TextStyle(
-                                        fontSize: 20,
-                                        color: blackmode
-                                            ? Colors.white
-                                            : blackmodecolor),
-                                  )
-                                : Text(
-                                    userintro,
-                                    style: TextStyle(
-                                        fontSize: 20,
-                                        color: blackmode
-                                            ? Colors.white
-                                            : blackmodecolor),
-                                  ),
-                          ))
-                    ],
-                  ),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(20, 20, 0, 0),
-                        child: Text(
-                          "게임 기록",
-                          style: TextStyle(
-                              fontSize: 20,
-                              color: blackmode ? Colors.white : blackmodecolor),
-                        ),
+                        radius: 35,
                       ),
-                    ],
-                  ),
-                  const Divider(
-                    height: 30,
-                    thickness: 2,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: SingleChildScrollView(
-                      child: SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.59,
-                        child: StreamBuilder<DocumentSnapshot<Map>>(
-                            stream: FirebaseFirestore.instance
-                                .collection('user')
-                                .doc('userdatabase')
-                                .snapshots(),
-                            builder: (context,
-                                AsyncSnapshot<DocumentSnapshot<Map>> snapshot) {
-                              if (snapshot.connectionState ==
-                                  ConnectionState.waiting) {
-                                return const CircularProgressIndicator();
-                              }
-                              final userdocs =
-                                  snapshot.data![widget.userid]['result'];
-                              return ListView.builder(
-                                  itemCount: userdocs.length,
-                                  itemBuilder: (context, index) {
-                                    final timestamp = userdocs[index]['time'];
-                                    DateTime dt = timestamp.toDate();
-                                    final mytime =
-                                        DateFormat('MM.dd HH:mm').format(dt);
-                                    return Column(
-                                      children: [
-                                        ListTile(
-                                          title: Text(
-                                            "맞춘개수 : ${userdocs[index]['result']}",
-                                            style: TextStyle(
-                                                fontSize: 20,
-                                                color: blackmode
-                                                    ? Colors.white
-                                                    : blackmodecolor),
-                                          ),
-                                          subtitle: userdocs[index]['type'] ==
-                                                  "wordquiz"
-                                              ? Text("단어퀴즈",
-                                                  style: TextStyle(
-                                                      color: blackmode
-                                                          ? Colors.white
-                                                          : blackmodecolor))
-                                              : Text("문장퀴즈",
-                                                  style: TextStyle(
-                                                      color: blackmode
-                                                          ? Colors.white
-                                                          : blackmodecolor)),
-                                          trailing: Padding(
-                                            padding:
-                                                const EdgeInsets.only(top: 10),
-                                            child: Opacity(
-                                                opacity: 0.6,
-                                                child: Text(mytime.toString(),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    widget.name == null
+                        ? Text(
+                            username.toString(),
+                            style: TextStyle(
+                                fontSize: 20,
+                                color: blackmode ? Colors.white : blackmodecolor,
+                                fontWeight: FontWeight.bold),
+                          )
+                        : Text(
+                            widget.name,
+                            style: TextStyle(
+                                fontSize: 20,
+                                color: blackmode ? Colors.white : blackmodecolor,
+                                fontWeight: FontWeight.bold),
+                          ),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    Column(
+                      children: [
+                        Container(
+                            decoration: BoxDecoration(
+                                border: Border.all(
+                                  width: 1,
+                                  color:
+                                      blackmode ? Colors.white : blackmodecolor,
+                                ),
+                                borderRadius: BorderRadius.circular(15)),
+                            height: 80,
+                            width: MediaQuery.of(context).size.width * 0.95,
+                            child: Padding(
+                              padding: const EdgeInsets.all(12),
+                              child: userintro == ""
+                                  ? Text(
+                                      "자기소개가 없습니다.",
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          color: blackmode
+                                              ? Colors.white
+                                              : blackmodecolor),
+                                    )
+                                  : Text(
+                                      userintro,
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          color: blackmode
+                                              ? Colors.white
+                                              : blackmodecolor),
+                                    ),
+                            ))
+                      ],
+                    ),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(20, 20, 0, 0),
+                          child: Text(
+                            "게임 기록",
+                            style: TextStyle(
+                                fontSize: 20,
+                                color: blackmode ? Colors.white : blackmodecolor),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const Divider(
+                      height: 30,
+                      thickness: 2,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: SingleChildScrollView(
+                        child: SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.59,
+                          child: StreamBuilder<DocumentSnapshot<Map>>(
+                              stream: FirebaseFirestore.instance
+                                  .collection('user')
+                                  .doc('userdatabase')
+                                  .snapshots(),
+                              builder: (context,
+                                  AsyncSnapshot<DocumentSnapshot<Map>> snapshot) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return const CircularProgressIndicator();
+                                }
+                                final userdocs =
+                                    snapshot.data![widget.userid]['result'];
+                                return ListView.builder(
+                                    itemCount: userdocs.length,
+                                    itemBuilder: (context, index) {
+                                      final timestamp = userdocs[index]['time'];
+                                      DateTime dt = timestamp.toDate();
+                                      final mytime =
+                                          DateFormat('MM.dd HH:mm').format(dt);
+                                      return Column(
+                                        children: [
+                                          ListTile(
+                                            title: Text(
+                                              "맞춘개수 : ${userdocs[index]['result']}",
+                                              style: TextStyle(
+                                                  fontSize: 20,
+                                                  color: blackmode
+                                                      ? Colors.white
+                                                      : blackmodecolor),
+                                            ),
+                                            subtitle: userdocs[index]['type'] ==
+                                                    "wordquiz"
+                                                ? Text("단어퀴즈",
                                                     style: TextStyle(
                                                         color: blackmode
                                                             ? Colors.white
-                                                            : blackmodecolor))),
+                                                            : blackmodecolor))
+                                                : Text("문장퀴즈",
+                                                    style: TextStyle(
+                                                        color: blackmode
+                                                            ? Colors.white
+                                                            : blackmodecolor)),
+                                            trailing: Padding(
+                                              padding:
+                                                  const EdgeInsets.only(top: 10),
+                                              child: Opacity(
+                                                  opacity: 0.6,
+                                                  child: Text(mytime.toString(),
+                                                      style: TextStyle(
+                                                          color: blackmode
+                                                              ? Colors.white
+                                                              : blackmodecolor))),
+                                            ),
                                           ),
-                                        ),
-                                        const Divider(
-                                          height: 10,
-                                          thickness: 1.5,
-                                        )
-                                      ],
-                                    );
-                                  });
-                            }),
+                                          const Divider(
+                                            height: 10,
+                                            thickness: 1.5,
+                                          )
+                                        ],
+                                      );
+                                    });
+                              }),
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           )),
