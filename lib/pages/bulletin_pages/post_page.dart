@@ -188,16 +188,18 @@ class _BulletinPostState extends State<BulletinPost> {
       'dislikes.$userid': disLiked,
       'dislike': dislikeCount
     });
-
-    if (widget.adminid != userid && isLiked == true)  {
-      DocumentSnapshot snap = await FirebaseFirestore.instance
-          .collection('UserTokens')
-          .doc(widget.adminid)
-          .get();
-      String token = snap['token'];
-      sendPushMessage(token, "$username님이 게시물을 좋아합니다", "${widget.name}");
+    if (widget.admin != userid && isLiked == true){
+      // like notification
+    DocumentSnapshot snap = await FirebaseFirestore.instance
+        .collection('UserTokens')
+        .doc(widget.adminid)
+        .get();
+    String token = snap['token'];
+    sendPushMessage(token, "$username님이 게시물을 좋아합니다", "${widget.name}");
     }
+    
   }
+
 
   postdislike() {
     getpostlike();

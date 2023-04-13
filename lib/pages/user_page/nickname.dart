@@ -505,7 +505,7 @@ void takePhoto(ImageSource source) async {
   Reference referenceImageToUpload = referenceDirImages.child(useruid);
 
   try {
-    referenceImageToUpload.putFile(File(pickedimage!.path));
+    await referenceImageToUpload.putFile(File(pickedimage!.path));
     imageUrl = await referenceImageToUpload.getDownloadURL();
     profileimagecontroller.isProfilePath.value = true;
     profileimagecontroller.setProfileImagePath(imageUrl);

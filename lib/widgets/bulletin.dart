@@ -32,8 +32,7 @@ class BulletinTile extends StatelessWidget {
                       .doc(docs[index].id)
                       .update(
                           {'likes.$userid': false, 'dislikes.$userid': false});
-                }
-                else {
+                } else {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => BulletinPost(
                             name: docs[index]["name"],
@@ -96,14 +95,13 @@ class BulletinTile extends StatelessWidget {
                                       .toString(),
                                   style: TextStyle(
                                       fontSize: 16,
-                                      color:
-                                      docs[index]["admin"]["userid"] ==
-                                            "kcUEDlqhZfU7JmyVXvHRyC46UJz1"
-                                        ? Colors.red :(
-                                      Get.find<BlackModeController>()
-                                              .blackmode
-                                          ? Colors.white
-                                          : blackmodecolor)))
+                                      color: docs[index]["admin"]["userid"] ==
+                                              "kcUEDlqhZfU7JmyVXvHRyC46UJz1"
+                                          ? Colors.red
+                                          : (Get.find<BlackModeController>()
+                                                  .blackmode
+                                              ? Colors.white
+                                              : blackmodecolor)))
                             ],
                           ),
                         ),

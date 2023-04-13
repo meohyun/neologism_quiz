@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'package:neologism/pages/bulletin_pages/bulletin_board.dart';
 import 'package:neologism/pages/startpage.dart';
 
 void requestPermission() async {
@@ -69,9 +68,6 @@ sendPushMessage(String token, String body, String title) async {
   } catch (e) {}
 }
 
-move(context) {
-  Get.to(() => const ScreenPage());
-}
 
 initInfo(context) {
   var androidInitialize =
@@ -84,20 +80,16 @@ initInfo(context) {
           (NotificationResponse notificationResponse) {
     switch (notificationResponse.notificationResponseType) {
       case NotificationResponseType.selectedNotification:
-        move(context);
         break;
       case NotificationResponseType.selectedNotificationAction:
-        move(context);
         break;
     }
   }, onDidReceiveBackgroundNotificationResponse:
           (NotificationResponse notificationResponse) {
     switch (notificationResponse.notificationResponseType) {
       case NotificationResponseType.selectedNotification:
-        move(context);
         break;
       case NotificationResponseType.selectedNotificationAction:
-        move(context);
         break;
     }
   });
