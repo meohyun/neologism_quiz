@@ -19,15 +19,9 @@ void logout(context) {
                           ? Colors.white
                           : Colors.deepPurple.shade100),
                   borderRadius: const BorderRadius.all(Radius.circular(25))),
-            child: Container(
+            child: SizedBox(
               width: MediaQuery.of(context).size.width * 0.7,
               height: 200,
-              decoration: BoxDecoration(
-                  color: Get.find<BlackModeController>().blackmode == true
-                      ? Colors.black
-                      : Colors.white,
-                  borderRadius: BorderRadius.circular(15.0),
-                  border: Border.all(color: Colors.white, width: 1.0)),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
