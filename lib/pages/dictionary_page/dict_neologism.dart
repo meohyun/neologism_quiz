@@ -13,7 +13,6 @@ bool category_selected = false;
 
 setinit() {
   category_filtered = "전체";
-  int category_index = 0;
 }
 
 class NeologismDict extends StatefulWidget {

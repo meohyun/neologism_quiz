@@ -2,12 +2,13 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:neologism/getx/blackmode.dart';
 import 'package:neologism/getx/profileimage.dart';
-import 'package:neologism/neo_function/login_func.dart';
+import 'package:neologism/neo_function/settings.dart';
 import 'package:neologism/neo_function/quiz_func.dart';
 import 'package:neologism/pages/quiz_page/word_quiz.dart';
 import 'package:neologism/pages/user_page/profile.dart';
@@ -28,8 +29,6 @@ class Startpage extends StatefulWidget {
 
 class _StartpageState extends State<Startpage> {
   Timer? _timer;
-  
-
   @override
   void initState() {
     descblocked = true;
@@ -130,7 +129,11 @@ class Authentication extends StatelessWidget {
                         child: const Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
-                            Image(image: AssetImage('assets/googlelogo.png'),width: 50,height: 50,),
+                            Image(
+                              image: AssetImage('assets/googlelogo.png'),
+                              width: 50,
+                              height: 50,
+                            ),
                             Text(
                               "구글계정으로 로그인하기",
                               style:
@@ -159,6 +162,7 @@ class ScreenPage extends StatefulWidget {
 
 class _ScreenPageState extends State<ScreenPage> {
   int index = 0;
+  bool _isChecked = false;
   String? mtoken = "";
   final useruid = FirebaseAuth.instance.currentUser!.uid;
   final username = FirebaseAuth.instance.currentUser!.displayName;
@@ -213,6 +217,135 @@ class _ScreenPageState extends State<ScreenPage> {
     });
   }
 
+  void settings(context) {
+    Get.put(BlackModeController());
+    bool _isChecked = Get.find<BlackModeController>().blackmode;
+    showDialog(
+        context: context,
+        builder: (context) {
+          return GetBuilder(
+            init: BlackModeController(),
+            builder: (_) => Dialog(
+              backgroundColor: Get.find<BlackModeController>().blackmode
+                  ? Colors.black
+                  : Colors.white,
+              shape: RoundedRectangleBorder(
+                  side: BorderSide(
+                      width: 3,
+                      color: Get.find<BlackModeController>().blackmode
+                          ? Colors.white
+                          : Colors.deepPurple.shade100),
+                  borderRadius: const BorderRadius.all(Radius.circular(25))),
+              child: SizedBox(
+                width: MediaQuery.of(context).size.width * 0.8,
+                height: 300,
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(10, 10, 0, 30),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          IconButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              icon: Icon(
+                                CupertinoIcons.xmark_circle,
+                                color: Get.find<BlackModeController>().blackmode
+                                    ? Colors.white
+                                    : Colors.black,
+                              )),
+                          Text("설정",
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  color:
+                                      Get.find<BlackModeController>().blackmode
+                                          ? Colors.white
+                                          : Colors.black)),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 40,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const SizedBox(
+                            width: 30,
+                          ),
+                        Icon(
+                          Icons.dark_mode,
+                          color: Get.find<BlackModeController>().blackmode
+                              ? Colors.white
+                              : Colors.black,
+                        ),
+                        const SizedBox(
+                          width: 20,
+                        ),
+                        Text(
+                          "다크 모드",
+                          style: TextStyle(
+                              fontSize: 20,
+                              color: Get.find<BlackModeController>().blackmode
+                                  ? Colors.white
+                                  : Colors.black),
+                        ),
+                        const SizedBox(
+                          width: 30,
+                        ),
+                        Switch.adaptive(
+                            value: _isChecked,
+                            onChanged: (value) {
+                              setState(() {
+                                _isChecked = value;
+                              });
+                              Get.find<BlackModeController>().blackmodechange();
+                            })
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    GestureDetector(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.power_settings_new,
+                            color: Get.find<BlackModeController>().blackmode
+                                ? Colors.white
+                                : Colors.black,
+                          ),
+                          const SizedBox(
+                            width: 20,
+                          ),
+                          Text(
+                            "로그 아웃",
+                            style: TextStyle(
+                                fontSize: 20,
+                                color: Get.find<BlackModeController>().blackmode
+                                    ? Colors.white
+                                    : Colors.black),
+                          ),
+                          const SizedBox(
+                            width: 30,
+                          ),
+                        ],
+                      ),
+                      onTap: () {
+                        logout(context);
+                      },
+                    )
+                  ],
+                ),
+              ),
+            ),
+          );
+        });
+  }
+
   @override
   void initState() {
     requestPermission();
@@ -260,53 +393,24 @@ class _ScreenPageState extends State<ScreenPage> {
             backgroundColor: Get.find<BlackModeController>().blackmode == true
                 ? blackmodecolor
                 : notblackmodecolor,
-            leading: Padding(
-              padding: const EdgeInsets.fromLTRB(10, 15, 0, 0),
-              child: GestureDetector(
-                onTap: () {
-                  setState(() {
-                    logout(context);
-                  });
-                },
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.power_settings_new,
-                      color: Get.find<BlackModeController>().blackmode
-                          ? Colors.white
-                          : Colors.black,
-                    ),
-                    Text(
-                      "로그아웃",
-                      style: TextStyle(
-                          fontSize: 12,
-                          color: Get.find<BlackModeController>().blackmode
-                              ? Colors.white
-                              : Colors.black),
-                    )
-                  ],
-                ),
-              ),
-            ),
             actions: [
               Padding(
                 padding: const EdgeInsets.fromLTRB(0, 15, 15, 0),
                 child: GestureDetector(
                   onTap: () {
-                    Get.find<BlackModeController>().blackmodechange();
+                    settings(context);
                   },
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Icon(
-                        Icons.dark_mode,
+                        Icons.settings,
                         color: Get.find<BlackModeController>().blackmode
-                            ? Colors.yellow
+                            ? Colors.white
                             : Colors.black,
                       ),
                       Text(
-                        "다크 모드",
+                        "설정",
                         style: TextStyle(
                             fontSize: 12,
                             color: Get.find<BlackModeController>().blackmode
@@ -371,7 +475,7 @@ class _ScreenPageState extends State<ScreenPage> {
                             borderRadius: BorderRadius.circular(30),
                             border: Border.all(width: 2, color: Colors.white)),
                         width: MediaQuery.of(context).size.width * 0.9,
-                        height: MediaQuery.of(context).size.height * 0.09,
+                        height: MediaQuery.of(context).size.height * 0.12,
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Row(
@@ -396,14 +500,41 @@ class _ScreenPageState extends State<ScreenPage> {
                               const SizedBox(
                                 width: 20,
                               ),
-                              Text(
-                                username.toString(),
-                                style: TextStyle(
-                                    fontSize: 20,
-                                    color: Get.find<BlackModeController>()
-                                            .blackmode
-                                        ? Colors.white
-                                        : Colors.black),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      username.toString(),
+                                      style: TextStyle(
+                                          fontSize: 25,
+                                          fontWeight: FontWeight.bold,
+                                          color: Get.find<BlackModeController>()
+                                                  .blackmode
+                                              ? Colors.white
+                                              : Colors.black),
+                                    ),
+                                    const SizedBox(height: 5,),
+                                    Opacity(
+                                      opacity: 0.5,
+                                      child: Row(
+                                        children: [
+                                          Text(
+                                            intro.toString(),
+                                            style: TextStyle(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold,
+                                                color: Get.find<BlackModeController>()
+                                                        .blackmode
+                                                    ? Colors.white
+                                                    : Colors.black),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               )
                             ],
                           ),

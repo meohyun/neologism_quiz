@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:neologism/getx/blackmode.dart';
 import 'package:neologism/getx/profileimage.dart';
-import 'package:neologism/neo_function/login_func.dart';
+import 'package:neologism/neo_function/settings.dart';
 import 'package:neologism/pages/user_page/profile.dart';
 
 String intro = "";

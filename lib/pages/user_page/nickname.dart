@@ -265,7 +265,7 @@ class _UpdateNicknameState extends State<UpdateNickname> {
                                           width: 1, color: Colors.blue))),
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
-                                  return "한 글자 이상 입력해주세요!.";
+                                  return "한 글자 이상 입력해주세요!";
                                 }
                                 if (value.contains(RegExp("씨발"))) {
                                   return "비속어를 사용할 수 없습니다.";

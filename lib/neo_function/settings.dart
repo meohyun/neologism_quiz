@@ -12,9 +12,16 @@ void logout(context) {
         return GetBuilder(
           init: BlackModeController(),
           builder: (_) => Dialog(
+            shape: RoundedRectangleBorder(
+                  side: BorderSide(
+                      width: 3,
+                      color: Get.find<BlackModeController>().blackmode
+                          ? Colors.white
+                          : Colors.deepPurple.shade100),
+                  borderRadius: const BorderRadius.all(Radius.circular(25))),
             child: Container(
-              width: MediaQuery.of(context).size.width * 0.8,
-              height: 300,
+              width: MediaQuery.of(context).size.width * 0.7,
+              height: 200,
               decoration: BoxDecoration(
                   color: Get.find<BlackModeController>().blackmode == true
                       ? Colors.black
